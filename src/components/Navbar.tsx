@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/logo/pixelforge.webp"
+              src="/logo/pixelforgelogo2.png"
               alt="Pixel Forge Logo"
               width={56}
               height={56}

@@ -41,13 +41,13 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-2xl mb-6 shadow-lg p-2">
+              <div className="inline-flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 bg-white rounded-3xl mb-6 shadow-xl p-3">
                 <Image
-                  src="/logo/pixelforge.webp"
+                  src="/logo/pixelforgelogo2.png"
                   alt="Pixel Forge Logo"
-                  width={96}
-                  height={96}
-                  className="w-24 h-24 object-contain"
+                  width={160}
+                  height={160}
+                  className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain"
                 />
               </div>
             </div>

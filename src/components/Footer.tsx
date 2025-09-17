@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image
-                src="/logo/pixelforge.webp"
+                src="/logo/pixelforgelogo2.png"
                 alt="Pixel Forge Logo"
                 width={48}
                 height={48}

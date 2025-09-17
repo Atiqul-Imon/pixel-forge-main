@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Pixel Forge" }],
   icons: {
     icon: [
-      { url: "/logo/pixelforge.webp", sizes: "32x32", type: "image/webp" },
+      { url: "/logo/pixelforgelogo2.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" }
     ],
-    apple: { url: "/logo/pixelforge.webp", sizes: "180x180", type: "image/webp" },
+    apple: { url: "/logo/pixelforgelogo2.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
     title: "Pixel Forge - Web Development Agency",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logo/pixelforge.webp",
+        url: "/logo/pixelforgelogo2.png",
         width: 1200,
         height: 630,
         alt: "Pixel Forge Logo",
