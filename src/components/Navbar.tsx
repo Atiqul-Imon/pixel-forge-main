@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Code } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,10 +38,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Code className="w-5 h-5 text-white" />
-            </div>
+          <Link href="/" className="flex items-center space-x-3">
+            <Image
+              src="/logo/pixelforge.webp"
+              alt="Pixel Forge Logo"
+              width={56}
+              height={56}
+              className="w-14 h-14 object-contain"
+            />
             <span className="text-xl font-bold text-gray-900">Pixel Forge</span>
           </Link>
 

@@ -16,7 +16,6 @@ export default function ServicesPage() {
         'Third-party Integrations'
       ],
       technologies: ['React', 'Next.js', 'Node.js', 'MongoDB', 'PostgreSQL', 'TypeScript'],
-      price: 'Starting from $2,500',
       color: 'blue'
     },
     {
@@ -32,7 +31,6 @@ export default function ServicesPage() {
         'Analytics Integration'
       ],
       technologies: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'Google Analytics', 'Hotjar'],
-      price: 'Starting from $1,500',
       color: 'purple'
     },
     {
@@ -48,7 +46,6 @@ export default function ServicesPage() {
         'Analytics & Reporting'
       ],
       technologies: ['Google Ads', 'Facebook Ads', 'Google Analytics', 'SEMrush', 'Mailchimp'],
-      price: 'Starting from $1,000/month',
       color: 'green'
     },
     {
@@ -64,7 +61,6 @@ export default function ServicesPage() {
         'Bug Fixes & Improvements'
       ],
       technologies: ['Monitoring Tools', 'Security Scanners', 'CDN Management', 'SSL Certificates'],
-      price: 'Starting from $200/month',
       color: 'orange'
     }
   ];
@@ -168,13 +164,10 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-gray-900">
-                    {service.price}
-                  </span>
+                <div className="flex justify-center">
                   <Link
                     href="/contact"
-                    className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200 flex items-center ${
+                    className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors duration-200 flex items-center ${
                       service.color === 'blue' ? 'bg-blue-600 hover:bg-blue-700' :
                       service.color === 'purple' ? 'bg-purple-600 hover:bg-purple-700' :
                       service.color === 'green' ? 'bg-green-600 hover:bg-green-700' : 'bg-orange-600 hover:bg-orange-700'

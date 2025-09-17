@@ -6,10 +6,10 @@ import { ContactFormData } from '@/types';
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
-    const { name, email, company, service, budget, message } = body;
+    const { name, email, company, service, message } = body;
 
     // Validate required fields
-    if (!name || !email || !service || !budget || !message) {
+    if (!name || !email || !service || !message) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
       email,
       company,
       service,
-      budget,
       message,
     });
 

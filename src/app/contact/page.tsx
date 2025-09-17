@@ -9,7 +9,6 @@ export default function ContactPage() {
     email: '',
     company: '',
     service: '',
-    budget: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,14 +23,6 @@ export default function ContactPage() {
     'Other'
   ];
 
-  const budgets = [
-    'Under $1,000',
-    '$1,000 - $5,000',
-    '$5,000 - $10,000',
-    '$10,000 - $25,000',
-    '$25,000+',
-    'Not sure yet'
-  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -61,7 +52,6 @@ export default function ContactPage() {
           email: '',
           company: '',
           service: '',
-          budget: '',
           message: ''
         });
       } else {
@@ -181,26 +171,6 @@ export default function ContactPage() {
                       {services.map((service) => (
                         <option key={service} value={service}>
                           {service}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">
-                      Budget Range *
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="">Select budget range</option>
-                      {budgets.map((budget) => (
-                        <option key={budget} value={budget}>
-                          {budget}
                         </option>
                       ))}
                     </select>
