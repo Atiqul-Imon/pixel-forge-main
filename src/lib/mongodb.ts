@@ -6,7 +6,7 @@ if (!MONGODB_URI) {
   console.warn('MONGODB_URI not found. Database connection will not be available.');
 }
 
-let cached: any = null;
+let cached: typeof mongoose | null = null;
 
 async function connectDB() {
   if (cached) {

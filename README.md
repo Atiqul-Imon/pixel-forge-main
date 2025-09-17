@@ -47,7 +47,7 @@ cp .env.example .env.local
 
 4. Update `.env.local` with your MongoDB Atlas connection string:
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/pixel-forge?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://atiqulimondev_db_user:A35TFXREqNvwvs82@cluster0.xawbviz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 

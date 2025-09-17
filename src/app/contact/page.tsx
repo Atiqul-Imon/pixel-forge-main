@@ -67,7 +67,7 @@ export default function ContactPage() {
       } else {
         setSubmitStatus('error');
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -84,8 +84,8 @@ export default function ContactPage() {
               Get In <span className="gradient-text">Touch</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Ready to start your next project? We'd love to hear from you. 
-              Send us a message and we'll respond within 24 hours.
+              Ready to start your next project? We&apos;d love to hear from you. 
+              Send us a message and we&apos;ll respond within 24 hours.
             </p>
           </div>
         </div>

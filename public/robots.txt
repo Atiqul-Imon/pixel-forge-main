@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Host
+Host: https://pixel-forge.vercel.app
+
+# Sitemaps
+Sitemap: https://pixel-forge.vercel.app/sitemap.xml

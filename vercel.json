@@ -5,6 +5,7 @@
     }
   },
   "env": {
-    "MONGODB_URI": "@mongodb_uri"
+    "MONGODB_URI": "@mongodb_uri",
+    "NEXT_PUBLIC_SITE_URL": "@site_url"
   }
 }

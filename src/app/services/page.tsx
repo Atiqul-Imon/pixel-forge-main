@@ -1,4 +1,4 @@
-import { Code, Palette, BarChart3, Headphones, CheckCircle, ArrowRight, Zap, Shield, Globe, Smartphone } from 'lucide-react';
+import { Code, Palette, BarChart3, Headphones, CheckCircle, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ServicesPage() {
@@ -107,7 +107,7 @@ export default function ServicesPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               We offer comprehensive digital solutions to help your business succeed online. 
-              From custom web development to digital marketing, we've got you covered.
+              From custom web development to digital marketing, we&apos;ve got you covered.
             </p>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function ServicesPage() {
                 </p>
 
                 <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-3">What's Included:</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-3">What&apos;s Included:</h4>
                   <ul className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center text-gray-600">
@@ -233,8 +233,8 @@ export default function ServicesPage() {
               Ready to Start Your Project?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Let's discuss your requirements and create something amazing together. 
-              We're here to help you achieve your digital goals.
+              Let&apos;s discuss your requirements and create something amazing together. 
+              We&apos;re here to help you achieve your digital goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

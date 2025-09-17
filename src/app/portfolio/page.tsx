@@ -100,7 +100,7 @@ export default function PortfolioPage() {
               Our <span className="gradient-text">Portfolio</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Explore our collection of successful projects and see how we've helped businesses 
+              Explore our collection of successful projects and see how we&apos;ve helped businesses 
               achieve their digital goals through innovative web solutions.
             </p>
           </div>
@@ -284,8 +284,8 @@ export default function PortfolioPage() {
               Ready to Create Something Amazing?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Let's work together to bring your vision to life. 
-              We're excited to help you achieve your digital goals.
+              Let&apos;s work together to bring your vision to life. 
+              We&apos;re excited to help you achieve your digital goals.
             </p>
             <Link
               href="/contact"

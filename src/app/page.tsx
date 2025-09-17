@@ -159,7 +159,7 @@ export default function Home() {
                   Why Choose Pixel Forge?
                 </h2>
                 <p className="text-lg text-gray-600 mb-8">
-                  We're committed to delivering exceptional results that exceed your expectations.
+                  We&apos;re committed to delivering exceptional results that exceed your expectations.
                 </p>
               </div>
               <div className="space-y-8">
@@ -217,8 +217,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-3xl font-bold mb-4">Ready to Get Started?</h3>
                 <p className="text-blue-100 mb-8 text-lg leading-relaxed">
-                  Let's discuss your project and create something amazing together. 
-                  We're here to help you achieve your digital goals.
+                  Let&apos;s discuss your project and create something amazing together. 
+                  We&apos;re here to help you achieve your digital goals.
                 </p>
                 <Link
                   href="/contact"
