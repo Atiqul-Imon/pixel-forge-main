@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Pixel Forge - Web Development Agency",
-  description: "Professional web development, landing pages, and digital marketing services. We build high-quality websites for businesses and personal portfolios.",
-  keywords: "web development, landing pages, digital marketing, website design, portfolio, business websites",
-  authors: [{ name: "Pixel Forge" }],
+  title: "Pixel Forge BD - Web Development Agency Bangladesh",
+  description: "Professional web development, e-commerce solutions, and digital marketing services in Bangladesh. We build high-quality websites for businesses and personal portfolios.",
+  keywords: "web development bangladesh, e-commerce development, digital marketing, website design dhaka, portfolio, business websites, MERN stack, Next.js",
+  authors: [{ name: "Pixel Forge BD" }],
   icons: {
     icon: [
       { url: "/logo/pixelforgefavicon.png", sizes: "32x32", type: "image/png" },
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     apple: { url: "/logo/pixelforgefavicon.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
-    title: "Pixel Forge - Web Development Agency",
-    description: "Professional web development, landing pages, and digital marketing services.",
+    title: "Pixel Forge BD - Web Development Agency Bangladesh",
+    description: "Professional web development, e-commerce solutions, and digital marketing services in Bangladesh.",
     type: "website",
     images: [
       {
