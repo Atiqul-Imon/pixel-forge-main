@@ -1,10 +1,13 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /admin/
 Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
 
 # Host
-Host: https://pixel-forge.vercel.app
+Host: https://pixelforgebd.com
 
 # Sitemaps
-Sitemap: https://pixel-forge.vercel.app/sitemap.xml
+Sitemap: https://pixelforgebd.com/sitemap.xml

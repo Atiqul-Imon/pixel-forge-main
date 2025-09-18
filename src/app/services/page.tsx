@@ -1,5 +1,29 @@
 import { Code, Palette, BarChart3, Headphones, CheckCircle, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Web Development Services Bangladesh | Custom Websites & E-commerce',
+  description: 'Professional web development services in Bangladesh. Custom websites, e-commerce solutions, landing pages, and digital marketing. Expert in React, Next.js, MERN stack. Serving Dhaka, Chittagong.',
+  keywords: [
+    'web development services bangladesh',
+    'custom website development dhaka',
+    'e-commerce development bangladesh',
+    'landing page design',
+    'digital marketing services',
+    'react development bangladesh',
+    'next.js development',
+    'mern stack development',
+    'responsive web design',
+    'business website design'
+  ],
+  openGraph: {
+    title: 'Web Development Services Bangladesh | Pixel Forge BD',
+    description: 'Professional web development services in Bangladesh. Custom websites, e-commerce solutions, and digital marketing.',
+    type: 'website',
+    url: 'https://pixelforgebd.com/services',
+  },
+};
 
 export default function ServicesPage() {
   const services = [
