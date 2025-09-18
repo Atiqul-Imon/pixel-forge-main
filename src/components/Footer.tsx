@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Phone, Facebook } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -59,26 +59,26 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Mail className="w-4 h-4 text-blue-400" />
+                <Phone className="w-4 h-4 text-green-400" />
                 <a
-                  href="mailto:hello@pixelforge.com"
+                  href="https://wa.me/8801714918360"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                  hello@pixelforge.com
+                  +880 1714 918360
                 </a>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="w-4 h-4 text-blue-400" />
+                <Facebook className="w-4 h-4 text-blue-400" />
                 <a
-                  href="tel:+1234567890"
+                  href="https://www.facebook.com/pixelforge.official"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                  +1 (234) 567-890
+                  @pixelforge.official
                 </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-4 h-4 text-blue-400" />
-                <span className="text-gray-300">Remote Worldwide</span>
               </div>
             </div>
           </div>

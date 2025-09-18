@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Phone, Send, CheckCircle, AlertCircle, Facebook } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -222,22 +222,24 @@ export default function ContactPage() {
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-blue-600" />
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Phone className="w-6 h-6 text-green-600" />
                       </div>
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                        Email
+                        WhatsApp
                       </h3>
                       <p className="text-gray-600 mb-2">
-                        Send us an email anytime
+                        Chat with us on WhatsApp
                       </p>
                       <a
-                        href="mailto:hello@pixelforge.com"
-                        className="text-blue-600 hover:text-blue-700 font-medium"
+                        href="https://wa.me/8801714918360"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-green-600 hover:text-green-700 font-medium"
                       >
-                        hello@pixelforge.com
+                        +880 1714 918360
                       </a>
                     </div>
                   </div>
@@ -245,41 +247,24 @@ export default function ContactPage() {
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Phone className="w-6 h-6 text-blue-600" />
+                        <Facebook className="w-6 h-6 text-blue-600" />
                       </div>
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                        Phone
+                        Facebook
                       </h3>
                       <p className="text-gray-600 mb-2">
-                        Call us during business hours
+                        Follow us on Facebook
                       </p>
                       <a
-                        href="tel:+1234567890"
+                        href="https://www.facebook.com/pixelforge.official"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-700 font-medium"
                       >
-                        +1 (234) 567-890
+                        @pixelforge.official
                       </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <MapPin className="w-6 h-6 text-blue-600" />
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                        Location
-                      </h3>
-                      <p className="text-gray-600 mb-2">
-                        We work remotely worldwide
-                      </p>
-                      <p className="text-gray-600">
-                        Available globally for remote projects
-                      </p>
                     </div>
                   </div>
                 </div>
