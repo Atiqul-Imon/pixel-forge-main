@@ -6,7 +6,7 @@ export default function StructuredData() {
     "alternateName": "Pixel Forge Bangladesh",
     "url": "https://pixelforgebd.com",
     "logo": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
-    "description": "Leading web development agency in Bangladesh specializing in custom websites, e-commerce solutions, and digital marketing services.",
+    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     "foundingDate": "2024",
     "address": {
       "@type": "PostalAddress",
@@ -72,7 +72,7 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "Pixel Forge BD",
     "url": "https://pixelforgebd.com",
-    "description": "Professional web development, e-commerce solutions, and digital marketing services in Bangladesh",
+    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     "publisher": {
       "@type": "Organization",
       "name": "Pixel Forge BD"
@@ -90,7 +90,7 @@ export default function StructuredData() {
     "@id": "https://pixelforgebd.com/#organization",
     "name": "Pixel Forge BD",
     "image": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
-    "description": "Web development agency in Bangladesh providing custom websites, e-commerce solutions, and digital marketing services",
+    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     "url": "https://pixelforgebd.com",
     "telephone": "+880-1714-918360",
     "address": {

@@ -55,7 +55,7 @@ export default function Home() {
               <span className="gradient-text">Pixel Forge</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Leading web development agency in Bangladesh. We create stunning websites, e-commerce solutions, and digital marketing services that drive business growth. Expert in React, Next.js, and MERN stack development.
+              We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link

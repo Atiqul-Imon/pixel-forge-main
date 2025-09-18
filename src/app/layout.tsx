@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: "Pixel Forge BD - Web Development Agency Bangladesh | Website Design & Digital Marketing",
     template: "%s | Pixel Forge BD - Web Development Agency Bangladesh"
   },
-  description: "Leading web development agency in Bangladesh. We create stunning websites, e-commerce solutions, and digital marketing services. Expert in React, Next.js, MERN stack. Serving Dhaka, Chittagong, and worldwide.",
+  description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online. Expert in React, Next.js, MERN stack. Serving Bangladesh and worldwide.",
   keywords: [
     "web development bangladesh",
     "website design dhaka",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     url: "https://pixelforgebd.com",
     siteName: "Pixel Forge BD",
     title: "Pixel Forge BD - Web Development Agency Bangladesh | Website Design & Digital Marketing",
-    description: "Leading web development agency in Bangladesh. We create stunning websites, e-commerce solutions, and digital marketing services. Expert in React, Next.js, MERN stack.",
+    description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     images: [
       {
         url: "/logo/pixelforgelogo2.png",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Pixel Forge BD - Web Development Agency Bangladesh",
-    description: "Leading web development agency in Bangladesh. We create stunning websites, e-commerce solutions, and digital marketing services.",
+    description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     images: ["/logo/pixelforgelogo2.png"],
     creator: "@pixelforgebd",
   },
