@@ -6,6 +6,7 @@ export interface IContact extends Document {
   company?: string;
   service: string;
   message: string;
+  status?: 'new' | 'read' | 'contacted' | 'closed';
   createdAt: Date;
 }
 
@@ -34,6 +35,11 @@ const ContactSchema: Schema = new Schema({
     type: String,
     required: [true, 'Message is required'],
     trim: true,
+  },
+  status: {
+    type: String,
+    enum: ['new', 'read', 'contacted', 'closed'],
+    default: 'new',
   },
   createdAt: {
     type: Date,

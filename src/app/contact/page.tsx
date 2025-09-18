@@ -47,6 +47,15 @@ export default function ContactPage() {
 
       if (response.ok) {
         setSubmitStatus('success');
+        
+        // Track Facebook Pixel events
+        if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackLead) {
+          ((window as unknown as Record<string, unknown>).trackLead as (email: string, service: string) => void)(formData.email, formData.service);
+        }
+        if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackContactFormSubmit) {
+          ((window as unknown as Record<string, unknown>).trackContactFormSubmit as () => void)();
+        }
+        
         setFormData({
           name: '',
           email: '',
@@ -237,6 +246,11 @@ export default function ContactPage() {
                         href="https://wa.me/8801714918360"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => {
+                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackWhatsAppClick) {
+                            ((window as unknown as Record<string, unknown>).trackWhatsAppClick as () => void)();
+                          }
+                        }}
                         className="text-green-600 hover:text-green-700 font-medium"
                       >
                         +880 1714 918360

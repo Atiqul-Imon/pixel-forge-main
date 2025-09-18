@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Code, Palette, BarChart3, Headphones, Star, CheckCircle } from 'lucide-react';
+import InteractiveButton from '@/components/InteractiveButton';
 
 export default function Home() {
   const services = [
@@ -58,13 +59,14 @@ export default function Home() {
               We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link
-                href="/contact"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group shadow-lg hover:shadow-xl"
-              >
-                Get Started Today
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
+                     <InteractiveButton
+                       href="/contact"
+                       trackEvent="serviceInterest"
+                       className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group shadow-lg hover:shadow-xl"
+                     >
+                       Get Started Today
+                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                     </InteractiveButton>
               <Link
                 href="/portfolio"
                 className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-lg hover:shadow-xl"

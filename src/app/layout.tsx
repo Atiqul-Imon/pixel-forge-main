@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -99,10 +100,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        <StructuredData />
-      </head>
+        <html lang="en" className={inter.variable}>
+          <head>
+            <StructuredData />
+            <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
+          </head>
       <body className="font-sans antialiased">
         <Navbar />
         <main className="min-h-screen">
