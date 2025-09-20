@@ -31,14 +31,18 @@ const Navbar = () => {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
-          : 'bg-transparent'
+          : 'bg-black/20 backdrop-blur-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold text-gray-900">Pixel Forge</span>
+            <span className={`text-xl font-bold transition-colors duration-300 ${
+              scrolled ? 'text-gray-900' : 'text-white drop-shadow-lg'
+            }`}>
+              Pixel Forge
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -47,14 +51,22 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
+                className={`transition-colors duration-200 font-medium hover:text-blue-600 ${
+                  scrolled 
+                    ? 'text-gray-700 hover:text-blue-600' 
+                    : 'text-white/90 hover:text-white drop-shadow-sm'
+                }`}
               >
                 {item.name}
               </Link>
             ))}
             <Link
               href="/contact"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+              className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
+                scrolled
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30'
+              }`}
             >
               Get Started
             </Link>
@@ -64,7 +76,11 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              className={`transition-colors duration-200 ${
+                scrolled 
+                  ? 'text-gray-700 hover:text-blue-600' 
+                  : 'text-white hover:text-white/80'
+              }`}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -74,12 +90,20 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white rounded-lg shadow-lg mt-2">
+            <div className={`px-2 pt-2 pb-3 space-y-1 rounded-lg shadow-lg mt-2 transition-all duration-300 ${
+              scrolled 
+                ? 'bg-white' 
+                : 'bg-black/80 backdrop-blur-md border border-white/20'
+            }`}>
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                  className={`block px-3 py-2 rounded-md transition-colors duration-200 ${
+                    scrolled
+                      ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                      : 'text-white hover:text-white/80 hover:bg-white/10'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
@@ -87,7 +111,11 @@ const Navbar = () => {
               ))}
               <Link
                 href="/contact"
-                className="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 text-center"
+                className={`block px-3 py-2 rounded-md transition-colors duration-200 text-center ${
+                  scrolled
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Get Started

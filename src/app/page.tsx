@@ -35,14 +35,41 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 to-purple-100/30"></div>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          {/* Animated gradient orbs */}
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+          
+          {/* Geometric patterns */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-20 left-10 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-3 h-3 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
+            <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
+            <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-pink-400 rounded-full animate-pulse animation-delay-3000"></div>
+            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-yellow-400 rounded-full animate-pulse animation-delay-4000"></div>
+          </div>
+
+          {/* Floating code elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 text-white/20 text-6xl font-mono animate-float">{"</>"}</div>
+            <div className="absolute top-1/3 right-1/4 text-white/20 text-4xl font-mono animate-float animation-delay-2000">{"{}"}</div>
+            <div className="absolute bottom-1/3 left-1/3 text-white/20 text-5xl font-mono animate-float animation-delay-4000">{"[]"}</div>
+            <div className="absolute bottom-1/4 right-1/3 text-white/20 text-3xl font-mono animate-float animation-delay-6000">{"()"}</div>
+          </div>
+
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20"></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10">
           <div className="text-center">
+            {/* Logo with enhanced styling */}
             <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 bg-white rounded-3xl mb-6 shadow-xl p-3">
+              <div className="inline-flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 bg-white/10 backdrop-blur-md rounded-3xl mb-6 shadow-2xl p-3 border border-white/20 hover:bg-white/20 transition-all duration-300">
                 <Image
                   src="/logo/pixelforgelogo2.png"
                   alt="Pixel Forge Logo"
@@ -52,42 +79,59 @@ export default function Home() {
                 />
               </div>
             </div>
+
+            {/* Main heading with enhanced styling */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="gradient-text">Pixel Forge</span>
+              <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent animate-gradient">
+                Pixel Forge
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+
+            {/* Subtitle with better contrast */}
+            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
               We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.
             </p>
+
+            {/* CTA Buttons with enhanced styling */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                     <InteractiveButton
-                       href="/contact"
-                       trackEvent="serviceInterest"
-                       className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group shadow-lg hover:shadow-xl"
-                     >
-                       Get Started Today
-                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                     </InteractiveButton>
+              <InteractiveButton
+                href="/contact"
+                trackEvent="serviceInterest"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group shadow-2xl hover:shadow-blue-500/25 hover:scale-105 transform"
+              >
+                Get Started Today
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </InteractiveButton>
               <Link
                 href="/portfolio"
-                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="border-2 border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 hover:border-white/50 transition-all duration-300 shadow-2xl hover:shadow-white/10 hover:scale-105 transform backdrop-blur-sm"
               >
                 View Our Work
               </Link>
             </div>
-            <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+
+            {/* Features with enhanced styling */}
+            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300">
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
+                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
                 Free Consultation
               </div>
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
+                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
                 24/7 Support
               </div>
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
+                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
                 Modern Tech
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
