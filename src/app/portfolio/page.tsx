@@ -38,41 +38,41 @@ export default function PortfolioPage() {
     },
     {
       id: 3,
-      title: 'FitnessHub Landing Page',
-      description: 'High-converting landing page for a fitness app with optimized conversion rates and mobile-first design.',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
-      category: 'landing-page',
-      technologies: ['React', 'Tailwind CSS', 'A/B Testing'],
-      liveUrl: '#',
-      featured: false
+      title: 'Shahan Ahmed - Data Analyst Portfolio',
+      description: 'Professional portfolio website for a data analyst showcasing expertise in research, data analysis, BI, and market research with modern design and interactive elements.',
+      image: 'https://www.shahanahmed.com/og-image.jpg',
+      category: 'portfolio',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Portfolio', 'Data Visualization'],
+      liveUrl: 'https://www.shahanahmed.com/',
+      featured: true
     },
     {
       id: 4,
+      title: 'Shantibari - Women\'s Organization',
+      description: 'Comprehensive organization website for Shantibari, a women\'s empowerment organization in Bangladesh, featuring services, team profiles, events, and community support programs.',
+      image: 'https://www.shantibaribd.org/og-image.jpg',
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Organization', 'Community Platform'],
+      liveUrl: 'https://www.shantibaribd.org/',
+      featured: true
+    },
+    {
+      id: 5,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'SEO'],
       liveUrl: 'https://pixelforgebd.com/',
-      featured: true
+      featured: false
     },
     {
-      id: 5,
+      id: 6,
       title: 'MERN E-commerce Platform',
       description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
       category: 'ecommerce',
       technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe'],
-      liveUrl: '#',
-      featured: false
-    },
-    {
-      id: 6,
-      title: 'Next.js Organization Site',
-      description: 'Modern corporate website with dynamic content management, team profiles, and event scheduling features.',
-      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop',
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'CMS'],
       liveUrl: '#',
       featured: false
     }
