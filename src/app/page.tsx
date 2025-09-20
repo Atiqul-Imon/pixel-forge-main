@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight, Code, Palette, BarChart3, Headphones, Star, CheckCircle } from 'lucide-react';
 import InteractiveButton from '@/components/InteractiveButton';
 
@@ -67,16 +66,29 @@ export default function Home() {
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10">
           <div className="text-center">
-            {/* Logo with enhanced styling */}
+            {/* Success Growth Visual */}
             <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 bg-white/10 backdrop-blur-md rounded-3xl mb-6 shadow-2xl p-3 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <Image
-                  src="/logo/pixelforgelogo2.png"
-                  alt="Pixel Forge Logo"
-                  width={160}
-                  height={160}
-                  className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain"
-                />
+              <div className="inline-flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 bg-white/10 backdrop-blur-md rounded-3xl mb-6 shadow-2xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                <div className="relative w-full h-full">
+                  {/* Central Growth Arrow */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white/90 text-4xl sm:text-5xl font-bold group-hover:scale-110 transition-transform duration-300">
+                      📈
+                    </div>
+                  </div>
+                  
+                  {/* Floating Success Elements */}
+                  <div className="absolute top-2 left-2 text-white/80 text-lg animate-bounce">💼</div>
+                  <div className="absolute top-2 right-2 text-white/80 text-lg animate-bounce animation-delay-1000">🌐</div>
+                  <div className="absolute bottom-2 left-2 text-white/80 text-lg animate-bounce animation-delay-2000">💰</div>
+                  <div className="absolute bottom-2 right-2 text-white/80 text-lg animate-bounce animation-delay-3000">🚀</div>
+                  
+                  {/* Corner Success Indicators */}
+                  <div className="absolute top-1 left-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <div className="absolute top-1 right-1 w-2 h-2 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
+                  <div className="absolute bottom-1 left-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
+                  <div className="absolute bottom-1 right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse animation-delay-3000"></div>
+                </div>
               </div>
             </div>
 
