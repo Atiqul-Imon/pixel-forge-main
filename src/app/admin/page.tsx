@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { Eye, Mail, Phone, Calendar, Search, CheckCircle, XCircle, LogOut } from 'lucide-react';
+import useAdminAuth from '@/hooks/useAdminAuth';
+import AdminLayout from '@/components/AdminLayout';
+import { Eye, Mail, Phone, Calendar, Search, CheckCircle, XCircle } from 'lucide-react';
 
 interface ContactMessage {
   _id: string;
@@ -21,42 +24,38 @@ export default function AdminPanel() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { logout } = useAuth();
+  const { user, loading: authLoading } = useAdminAuth();
   const router = useRouter();
 
-  const checkAuth = useCallback(async () => {
-    try {
-      const response = await fetch('/api/admin/check-auth');
-      if (response.ok) {
-        setIsAuthenticated(true);
-        fetchMessages();
-      } else {
-        router.push('/admin/login');
-      }
-    } catch {
-      router.push('/admin/login');
-    }
-  }, [router]);
-
-  const logout = useCallback(async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-      router.push('/admin/login');
-    } catch {
-      router.push('/admin/login');
-    }
-  }, [router]);
-
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Authentication is handled by useAdminAuth hook
+    if (!authLoading) {
+      fetchMessages();
+    }
+  }, [authLoading]);
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('/api/admin/messages');
+      const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
+      const response = await fetch('/api/admin/messages', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
       if (response.ok) {
         const data = await response.json();
         setMessages(data);
+      } else if (response.status === 401) {
+        // Token expired, redirect to login
+        router.push('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -67,9 +66,18 @@ export default function AdminPanel() {
 
   const updateMessageStatus = async (id: string, status: string) => {
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const response = await fetch('/api/admin/messages', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ id, status }),
       });
       
@@ -80,6 +88,10 @@ export default function AdminPanel() {
         if (selectedMessage?._id === id) {
           setSelectedMessage({ ...selectedMessage, status: status as 'new' | 'read' | 'contacted' | 'closed' });
         }
+      } else if (response.status === 401) {
+        // Token expired, redirect to login
+        router.push('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error updating status:', error);
@@ -114,7 +126,7 @@ export default function AdminPanel() {
     }
   };
 
-  if (!isAuthenticated || loading) {
+  if (authLoading || loading || !user) {
     return (
       <div className="min-h-screen pt-16 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -123,22 +135,12 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Lead Management</h1>
-            <p className="text-gray-600">Manage and track your contact form submissions</p>
-          </div>
-          <button
-            onClick={logout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-          >
-            <LogOut className="w-4 h-4" />
-            Logout
-          </button>
-        </div>
+    <AdminLayout>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Lead Management</h1>
+        <p className="text-gray-600">Manage and track your contact form submissions</p>
+      </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -348,7 +350,6 @@ export default function AdminPanel() {
             )}
           </div>
         </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }
