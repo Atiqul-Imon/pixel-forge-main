@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
 import FacebookPixel from "@/components/FacebookPixel";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({
@@ -105,6 +106,7 @@ export default function RootLayout({
           <head>
             <StructuredData />
             <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
+            <GoogleAnalytics />
           </head>
       <body className="font-sans antialiased">
         <AuthProvider>

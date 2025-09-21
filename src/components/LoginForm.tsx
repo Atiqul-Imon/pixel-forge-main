@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 interface LoginFormProps {
   redirectTo?: string;
@@ -73,6 +74,10 @@ export default function LoginForm({ redirectTo = '/', isAdmin = false }: LoginFo
       const response = await login(formData.email, formData.password);
 
       if (response.success) {
+        // Track admin login
+        if (isAdmin) {
+          trackEvent.adminLogin();
+        }
         router.push(redirectTo);
       } else {
         setError(response.message);

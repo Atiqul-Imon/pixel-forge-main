@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Phone, Send, CheckCircle, AlertCircle, Facebook } from 'lucide-react';
+import { trackEvent } from '@/lib/gtag';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -47,6 +48,9 @@ export default function ContactPage() {
 
       if (response.ok) {
         setSubmitStatus('success');
+        
+        // Track Google Analytics event
+        trackEvent.contactFormSubmit();
         
         // Track Facebook Pixel events
         if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackLead) {

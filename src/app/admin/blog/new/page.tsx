@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import useAdminAuth from '@/hooks/useAdminAuth';
 import AdminLayout from '@/components/AdminLayout';
+import { trackEvent } from '@/lib/gtag';
 import { 
   Save, 
   Eye, 
@@ -169,6 +170,8 @@ export default function NewBlogPostPage() {
       if (response.ok) {
         const data = await response.json();
         setSubmitStatus('success');
+        // Track blog post creation
+        trackEvent.blogPostCreate();
         router.push(`/admin/blog/${data.post._id}/edit`);
       } else if (response.status === 401) {
         // Token expired, redirect to login

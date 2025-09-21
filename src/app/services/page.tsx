@@ -1,31 +1,17 @@
+'use client';
+
 import { Code, Palette, BarChart3, Headphones, CheckCircle, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { useEffect } from 'react';
+import { trackEvent } from '@/lib/gtag';
 
-export const metadata: Metadata = {
-  title: 'Web Development Services Bangladesh | Custom Websites & E-commerce',
-  description: 'Professional web development services in Bangladesh. Custom websites, e-commerce solutions, landing pages, and digital marketing. Expert in React, Next.js, MERN stack. Serving Dhaka, Chittagong.',
-  keywords: [
-    'web development services bangladesh',
-    'custom website development dhaka',
-    'e-commerce development bangladesh',
-    'landing page design',
-    'digital marketing services',
-    'react development bangladesh',
-    'next.js development',
-    'mern stack development',
-    'responsive web design',
-    'business website design'
-  ],
-  openGraph: {
-    title: 'Web Development Services Bangladesh | Pixel Forge BD',
-    description: 'Professional web development services in Bangladesh. Custom websites, e-commerce solutions, and digital marketing.',
-    type: 'website',
-    url: 'https://pixelforgebd.com/services',
-  },
-};
 
 export default function ServicesPage() {
+  useEffect(() => {
+    // Track services page view
+    trackEvent.servicePageView('Services');
+  }, []);
+
   const services = [
     {
       icon: <Code className="w-12 h-12" />,
@@ -196,6 +182,7 @@ export default function ServicesPage() {
                       service.color === 'purple' ? 'bg-purple-600 hover:bg-purple-700' :
                       service.color === 'green' ? 'bg-green-600 hover:bg-green-700' : 'bg-orange-600 hover:bg-orange-700'
                     }`}
+                    onClick={() => trackEvent.ctaClick(`Get Quote - ${service.title}`)}
                   >
                     Get Started
                     <ArrowRight className="ml-2 w-4 h-4" />
@@ -257,6 +244,7 @@ export default function ServicesPage() {
               <Link
                 href="/contact"
                 className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center group"
+                onClick={() => trackEvent.ctaClick('Get Free Quote - Services CTA')}
               >
                 Get Free Quote
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />

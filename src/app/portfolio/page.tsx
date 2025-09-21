@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ExternalLink, Filter, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -58,6 +59,16 @@ export default function PortfolioPage() {
     },
     {
       id: 5,
+      title: 'News and Niche - Technology & News Blog',
+      description: 'Comprehensive news and technology blog platform featuring trending topics, AI & automation, web development, and lifestyle content. Multi-category blog with featured posts, recent posts, and popular content sections.',
+      image: 'https://www.newsandniche.com/og-image.jpg',
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Blog Platform', 'Content Management', 'SEO'],
+      liveUrl: 'https://www.newsandniche.com/en',
+      featured: true
+    },
+    {
+      id: 6,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
@@ -67,7 +78,7 @@ export default function PortfolioPage() {
       featured: false
     },
     {
-      id: 6,
+      id: 7,
       title: 'MERN E-commerce Platform',
       description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
@@ -83,6 +94,11 @@ export default function PortfolioPage() {
     : projects.filter(project => project.category === activeFilter);
 
   const featuredProjects = projects.filter(project => project.featured);
+
+  useEffect(() => {
+    // Track portfolio page view
+    trackEvent.servicePageView('Portfolio');
+  }, []);
 
   return (
     <div className="min-h-screen pt-16">
@@ -162,6 +178,7 @@ export default function PortfolioPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-blue-600 transition-colors duration-200"
+                        onClick={() => trackEvent.portfolioProjectClick(project.title)}
                       >
                         {project.title}
                       </a>
@@ -268,6 +285,7 @@ export default function PortfolioPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-blue-600 transition-colors duration-200"
+                        onClick={() => trackEvent.portfolioProjectClick(project.title)}
                       >
                         {project.title}
                       </a>
@@ -314,6 +332,7 @@ export default function PortfolioPage() {
             <Link
               href="/contact"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center group"
+              onClick={() => trackEvent.ctaClick('Start Your Project - Portfolio CTA')}
             >
               Start Your Project
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />

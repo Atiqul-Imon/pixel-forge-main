@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import BlogStructuredData from '@/components/BlogStructuredData';
+import { trackEvent } from '@/lib/gtag';
 
 // Note: Metadata is now handled in layout.tsx since this is a client component
 
@@ -32,6 +33,8 @@ export default function BlogPage() {
 
   useEffect(() => {
     fetchPosts();
+    // Track blog page view
+    trackEvent.servicePageView('Blog');
   }, [currentPage]);
 
   const fetchPosts = async () => {
@@ -82,7 +85,8 @@ export default function BlogPage() {
     );
   }
 
-  // Empty state when no posts
+
+ // Empty state when no posts
   if (!loading && posts.length === 0) {
     return (
       <div className="min-h-screen pt-16">
@@ -117,6 +121,7 @@ export default function BlogPage() {
               <Link
                 href="/contact"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 inline-flex items-center group"
+                onClick={() => trackEvent.ctaClick('Get in Touch - Empty State')}
               >
                 Get in Touch
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -177,6 +182,7 @@ export default function BlogPage() {
                 key={post._id}
                 href={`/blog/${post.slug}`}
                 className="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
+                onClick={() => trackEvent.blogPostView(post.title)}
               >
                 <div className="relative overflow-hidden">
                   <Image
@@ -212,6 +218,7 @@ export default function BlogPage() {
             <Link
               href="/contact"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center group"
+              onClick={() => trackEvent.ctaClick('Start Your Project - Blog CTA')}
             >
               Start Your Project
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
