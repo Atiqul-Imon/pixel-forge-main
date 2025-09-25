@@ -178,7 +178,13 @@ export default function PortfolioPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-blue-600 transition-colors duration-200"
-                        onClick={() => trackEvent.portfolioProjectClick(project.title)}
+                        onClick={() => {
+                          trackEvent.portfolioProjectClick(project.title);
+                          // Track Facebook Pixel + CAPI event
+                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
+                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
+                          }
+                        }}
                       >
                         {project.title}
                       </a>
@@ -285,7 +291,13 @@ export default function PortfolioPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-blue-600 transition-colors duration-200"
-                        onClick={() => trackEvent.portfolioProjectClick(project.title)}
+                        onClick={() => {
+                          trackEvent.portfolioProjectClick(project.title);
+                          // Track Facebook Pixel + CAPI event
+                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
+                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
+                          }
+                        }}
                       >
                         {project.title}
                       </a>

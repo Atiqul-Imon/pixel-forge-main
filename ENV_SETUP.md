@@ -24,7 +24,13 @@ ADMIN_EMAIL=admin@pixelforgebd.com
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Facebook Pixel (Client-side tracking)
 NEXT_PUBLIC_FACEBOOK_PIXEL_ID=your_facebook_pixel_id
+
+# Facebook Conversions API (Server-side tracking)
+FACEBOOK_ACCESS_TOKEN=your_facebook_access_token
+FACEBOOK_TEST_EVENT_CODE=your_test_event_code
 ```
 
 ## 🚀 **ImageKit Setup Steps**

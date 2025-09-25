@@ -52,9 +52,9 @@ export default function ContactPage() {
         // Track Google Analytics event
         trackEvent.contactFormSubmit();
         
-        // Track Facebook Pixel events
+        // Track Facebook Pixel events (both client-side and server-side CAPI)
         if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackLead) {
-          ((window as unknown as Record<string, unknown>).trackLead as (email: string, service: string) => void)(formData.email, formData.service);
+          ((window as unknown as Record<string, unknown>).trackLead as (email: string, service: string, name?: string) => void)(formData.email, formData.service, formData.name);
         }
         if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackContactFormSubmit) {
           ((window as unknown as Record<string, unknown>).trackContactFormSubmit as () => void)();
