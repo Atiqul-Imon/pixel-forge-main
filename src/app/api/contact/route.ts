@@ -3,9 +3,21 @@ import connectDB from '@/lib/mongodb';
 import Contact from '@/lib/models/Contact';
 import { ContactFormData } from '@/types';
 import { sendLeadNotification } from '@/lib/email';
+import { checkRateLimit } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    // Get client IP for rate limiting
+    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    
+    // Rate limiting check - 10 submissions per 15 minutes
+    if (!checkRateLimit(clientIP, 10, 15 * 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many contact form submissions. Please try again later.' },
+        { status: 429 }
+      );
+    }
+    
     const body: ContactFormData = await request.json();
     const { name, email, company, service, message } = body;
 

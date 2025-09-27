@@ -7,8 +7,8 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 // Rate limiting function
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
-  const windowMs = 15 * 60 * 1000; // 15 minutes
-  const maxRequests = 100; // 100 requests per 15 minutes
+  const windowMs = 60 * 60 * 1000; // 1 hour
+  const maxRequests = 50; // 50 uploads per hour
 
   const key = ip;
   const current = rateLimitStore.get(key);

@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import BlogPost from '@/lib/models/BlogPost';
-import { requireAdmin } from '@/lib/auth';
+import { requireAdmin, checkRateLimit } from '@/lib/auth';
 
 // GET - Fetch all blog posts with pagination and filtering
 export async function GET(request: NextRequest) {
   try {
+    // Get client IP for rate limiting
+    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    
+    // Rate limiting check - 150 requests per 15 minutes for admin
+    if (!checkRateLimit(clientIP, 150, 15 * 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+    
     // Require admin authentication
     await requireAdmin(request);
   } catch (error) {

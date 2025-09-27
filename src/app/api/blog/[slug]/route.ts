@@ -3,6 +3,7 @@ import connectDB from '@/lib/mongodb';
 import BlogPost from '@/lib/models/BlogPost';
 import cache, { cacheKeys, CACHE_TTL } from '@/lib/cache';
 import { withPerformanceMonitoring, logApiResponseTime } from '@/lib/performance';
+import { checkRateLimit } from '@/lib/auth';
 
 // GET - Fetch single blog post by slug
 export async function GET(
@@ -12,6 +13,17 @@ export async function GET(
   const startTime = Date.now();
   
   try {
+    // Get client IP for rate limiting
+    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    
+    // Rate limiting check - 200 requests per 15 minutes
+    if (!checkRateLimit(clientIP, 200, 15 * 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+    
     await connectDB();
     const resolvedParams = await params;
 

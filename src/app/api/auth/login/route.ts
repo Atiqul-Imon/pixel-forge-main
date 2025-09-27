@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Rate limiting check
-    if (!checkRateLimit(clientIP, 10, 15 * 60 * 1000)) { // 10 attempts per 15 minutes
+    if (!checkRateLimit(clientIP, 15, 15 * 60 * 1000)) { // 15 attempts per 15 minutes
       await logAuditEvent({
         action: 'login_rate_limit',
         resource: 'auth',

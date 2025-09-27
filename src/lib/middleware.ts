@@ -15,10 +15,22 @@ import {
 
 // Rate limiting configuration for different endpoints
 const RATE_LIMITS = {
-  auth: { maxRequests: 10, windowMs: 15 * 60 * 1000 }, // 10 requests per 15 minutes
-  admin: { maxRequests: 100, windowMs: 15 * 60 * 1000 }, // 100 requests per 15 minutes
-  api: { maxRequests: 1000, windowMs: 15 * 60 * 1000 }, // 1000 requests per 15 minutes
-  upload: { maxRequests: 20, windowMs: 60 * 60 * 1000 }, // 20 uploads per hour
+  // Authentication (security-focused)
+  login: { maxRequests: 15, windowMs: 15 * 60 * 1000 }, // 15 attempts per 15 min
+  register: { maxRequests: 10, windowMs: 15 * 60 * 1000 }, // 10 registrations per 15 min
+  
+  // Content management
+  contact: { maxRequests: 10, windowMs: 15 * 60 * 1000 }, // 10 submissions per 15 min
+  upload: { maxRequests: 50, windowMs: 60 * 60 * 1000 }, // 50 uploads per hour
+  
+  // API endpoints
+  blog: { maxRequests: 200, windowMs: 15 * 60 * 1000 }, // 200 requests per 15 min
+  admin: { maxRequests: 150, windowMs: 15 * 60 * 1000 }, // 150 requests per 15 min
+  public: { maxRequests: 500, windowMs: 15 * 60 * 1000 }, // 500 requests per 15 min
+  
+  // Legacy support
+  auth: { maxRequests: 15, windowMs: 15 * 60 * 1000 }, // 15 requests per 15 min
+  api: { maxRequests: 500, windowMs: 15 * 60 * 1000 }, // 500 requests per 15 min
 };
 
 export interface MiddlewareOptions {
