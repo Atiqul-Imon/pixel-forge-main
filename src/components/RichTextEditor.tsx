@@ -67,6 +67,48 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     setHistoryIndex(prev => Math.min(prev + 1, 49));
   }, [historyIndex]);
 
+  // Clean and sanitize pasted HTML while preserving all formatting
+  const cleanPastedHTML = useCallback((html: string) => {
+    // Create a temporary div to parse the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    
+    // Remove unwanted elements but preserve formatting
+    const unwantedElements = tempDiv.querySelectorAll('script, style, meta, link, title');
+    unwantedElements.forEach(el => el.remove());
+    
+    // Clean up the HTML while preserving formatting
+    let cleaned = tempDiv.innerHTML
+      .replace(/class="[^"]*"/g, '') // Remove classes
+      .replace(/<br\s*\/?>/gi, '<br>') // Normalize br tags
+      .replace(/<div[^>]*>/gi, '<div>') // Remove div attributes but keep divs
+      .replace(/<p><\/p>/gi, '') // Remove empty paragraphs
+      .replace(/<p>\s*<\/p>/gi, '') // Remove whitespace-only paragraphs
+      .replace(/\n\s*\n/g, '\n') // Remove multiple newlines
+      .trim();
+
+    // Preserve all styles for headings and formatting
+    cleaned = cleaned.replace(/style="([^"]*)"/g, (match, styles) => {
+      // Keep all styles that are useful for formatting
+      const usefulStyles = [
+        'font-size', 'font-weight', 'font-style', 'font-family',
+        'color', 'background-color', 'text-align', 'text-decoration',
+        'margin', 'padding', 'line-height', 'letter-spacing',
+        'border', 'border-radius', 'display', 'position'
+      ];
+      
+      // Check if any useful styles are present
+      const hasUsefulStyles = usefulStyles.some(style => styles.includes(style));
+      
+      if (hasUsefulStyles) {
+        return match; // Keep the style
+      }
+      return ''; // Remove other styles
+    });
+
+    return cleaned;
+  }, []);
+
   // Clean and sanitize content
   const cleanContent = useCallback((html: string) => {
     // Remove problematic styles that cause wrapping issues, but preserve heading styles
@@ -108,25 +150,34 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     }
   }, [onChange, addToHistory, cleanContent]);
 
-  // Handle paste events
+  // Handle paste events with full HTML preservation
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     e.preventDefault();
     
     const clipboardData = e.clipboardData;
-    const pastedText = clipboardData.getData('text/plain');
     
-    if (pastedText) {
-      // Clean the pasted text and insert as plain text
-      const cleanText = pastedText
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-      
-      // Insert the clean text
-      document.execCommand('insertText', false, cleanText);
-      handleContentChange();
+    // Try to get HTML content first (preserves formatting)
+    let pastedContent = clipboardData.getData('text/html');
+    
+    if (pastedContent) {
+      // Clean and preserve the HTML content
+      const cleanHTML = cleanPastedHTML(pastedContent);
+      document.execCommand('insertHTML', false, cleanHTML);
+    } else {
+      // Fallback to plain text if no HTML available
+      const pastedText = clipboardData.getData('text/plain');
+      if (pastedText) {
+        const cleanText = pastedText
+          .replace(/\r\n/g, '\n')
+          .replace(/\r/g, '\n')
+          .replace(/\n{3,}/g, '\n\n')
+          .trim();
+        
+        document.execCommand('insertText', false, cleanText);
+      }
     }
+    
+    handleContentChange();
   }, [handleContentChange]);
 
   // Update active formats based on current selection
