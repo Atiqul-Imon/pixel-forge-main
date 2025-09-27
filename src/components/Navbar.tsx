@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Settings } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isAdmin, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,6 +63,19 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
+                  scrolled
+                    ? 'bg-purple-600 text-white hover:bg-purple-700'
+                    : 'bg-purple-500/80 text-white hover:bg-purple-600/90 backdrop-blur-sm border border-purple-400/30'
+                }`}
+              >
+                <Settings className="w-4 h-4" />
+                Admin Panel
+              </Link>
+            )}
             <Link
               href="/contact"
               className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
@@ -110,6 +125,20 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-colors duration-200 ${
+                    scrolled
+                      ? 'bg-purple-600 text-white hover:bg-purple-700'
+                      : 'bg-purple-500/80 text-white hover:bg-purple-600/90 border border-purple-400/30'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Settings className="w-4 h-4" />
+                  Admin Panel
+                </Link>
+              )}
               <Link
                 href="/contact"
                 className={`block px-3 py-2 rounded-md transition-colors duration-200 text-center ${
