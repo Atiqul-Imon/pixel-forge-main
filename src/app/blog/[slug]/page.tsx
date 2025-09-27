@@ -205,7 +205,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Pixel Forge BD",
+      "name": "Pixel Forge",
       "logo": {
         "@type": "ImageObject",
         "url": "https://pixelforgebd.com/logo/pixelforgelogo2.png"

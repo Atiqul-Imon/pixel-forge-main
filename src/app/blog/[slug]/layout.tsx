@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     
     if (!response.ok) {
       return {
-        title: 'Blog Post | Pixel Forge BD',
+        title: 'Blog Post | Pixel Forge',
         description: 'Read our latest web development insights and tutorials.',
       };
     }
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: post.seoTitle || post.title,
         description: post.seoDescription || post.excerpt,
         images: [post.image],
-        creator: '@pixelforgebd',
+        creator: '@pixelforge',
       },
       alternates: {
         canonical: `https://pixelforgebd.com/blog/${post.slug}`,
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   } catch (error) {
     console.error('Error generating metadata:', error);
     return {
-      title: 'Blog Post | Pixel Forge BD',
+      title: 'Blog Post | Pixel Forge',
       description: 'Read our latest web development insights and tutorials.',
     };
   }

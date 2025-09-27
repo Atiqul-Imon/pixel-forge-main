@@ -1,6 +1,6 @@
 # Authentication System Setup
 
-This document explains how to set up the robust authentication system for Pixel Forge BD.
+This document explains how to set up the robust authentication system for Pixel Forge.
 
 ## 🔐 **Features**
 

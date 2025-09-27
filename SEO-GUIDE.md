@@ -1,4 +1,4 @@
-# SEO Optimization Guide for Pixel Forge BD
+# SEO Optimization Guide for Pixel Forge
 
 ## 🎯 **Target Keywords for Bangladesh Market**
 
@@ -60,7 +60,7 @@
 ```
 
 ### **2. Google My Business**
-- Create business listing for "Pixel Forge BD"
+- Create business listing for "Pixel Forge"
 - Add location: Dhaka, Bangladesh
 - Add phone: +8801714918360
 - Add website: https://pixelforgebd.com

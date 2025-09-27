@@ -16,7 +16,7 @@ const BlogStructuredData = ({ posts = [] }: BlogStructuredDataProps) => {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Pixel Forge BD",
+    "name": "Pixel Forge",
     "url": "https://pixelforgebd.com",
     "logo": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
     "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
@@ -28,12 +28,12 @@ const BlogStructuredData = ({ posts = [] }: BlogStructuredDataProps) => {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Pixel Forge BD Blog",
+    "name": "Pixel Forge Blog",
     "url": "https://pixelforgebd.com/blog",
-    "description": "Expert web development insights, tutorials, and industry trends from Pixel Forge BD. Learn about React, Next.js, e-commerce, and digital marketing strategies.",
+    "description": "Expert web development insights, tutorials, and industry trends from Pixel Forge. Learn about React, Next.js, e-commerce, and digital marketing strategies.",
     "publisher": {
       "@type": "Organization",
-      "name": "Pixel Forge BD"
+      "name": "Pixel Forge"
     },
     "potentialAction": {
       "@type": "SearchAction",
@@ -45,12 +45,12 @@ const BlogStructuredData = ({ posts = [] }: BlogStructuredDataProps) => {
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Pixel Forge BD Blog",
+    "name": "Pixel Forge Blog",
     "url": "https://pixelforgebd.com/blog",
-    "description": "Expert web development insights, tutorials, and industry trends from Pixel Forge BD.",
+    "description": "Expert web development insights, tutorials, and industry trends from Pixel Forge.",
     "publisher": {
       "@type": "Organization",
-      "name": "Pixel Forge BD",
+      "name": "Pixel Forge",
       "url": "https://pixelforgebd.com"
     },
     "blogPost": posts.map(post => ({
@@ -65,7 +65,7 @@ const BlogStructuredData = ({ posts = [] }: BlogStructuredDataProps) => {
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Pixel Forge BD"
+        "name": "Pixel Forge"
       },
       "image": post.image,
       "articleSection": post.category

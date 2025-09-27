@@ -93,7 +93,7 @@ export default function NotFound() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="mailto:info@pixelforgebd.com"
+              href="mailto:info@pixelforge.com"
               className="flex items-center justify-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 text-sm font-medium"
             >
               <Mail className="w-4 h-4" />
@@ -111,7 +111,7 @@ export default function NotFound() {
 
         {/* Footer */}
         <div className="pt-6 text-xs text-gray-400">
-          <p>© 2024 Pixel Forge BD. All rights reserved.</p>
+          <p>© 2024 Pixel Forge. All rights reserved.</p>
         </div>
       </div>
     </div>

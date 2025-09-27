@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Web Development Blog | Pixel Forge BD - Expert Tips & Insights',
-  description: 'Expert web development insights, tutorials, and industry trends from Pixel Forge BD. Learn about React, Next.js, e-commerce, and digital marketing strategies.',
+  title: 'Web Development Blog | Pixel Forge - Expert Tips & Insights',
+  description: 'Expert web development insights, tutorials, and industry trends from Pixel Forge. Learn about React, Next.js, e-commerce, and digital marketing strategies.',
   keywords: [
     'web development blog bangladesh',
     'react development tutorials',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     'web development company blog'
   ],
   openGraph: {
-    title: 'Web Development Blog | Pixel Forge BD',
-    description: 'Expert web development insights, tutorials, and industry trends from Pixel Forge BD.',
+    title: 'Web Development Blog | Pixel Forge',
+    description: 'Expert web development insights, tutorials, and industry trends from Pixel Forge.',
     type: 'website',
     url: 'https://pixelforgebd.com/blog',
   },

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Facebook } from 'lucide-react';
+import { Phone, Facebook, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -78,6 +78,17 @@ const Footer = () => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   @pixelforge.official
+                </a>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Linkedin className="w-4 h-4 text-blue-400" />
+                <a
+                  href="https://www.linkedin.com/company/109025907/admin/dashboard/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                >
+                        Pixel Forge
                 </a>
               </div>
             </div>

@@ -68,10 +68,10 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a
-                  href="mailto:support@pixelforgebd.com"
+                  href="mailto:support@pixelforge.com"
                   className="text-blue-600 hover:text-blue-700 transition-colors duration-200 text-sm font-medium"
                 >
-                  support@pixelforgebd.com
+                  support@pixelforge.com
                 </a>
                 <a
                   href="tel:+8801234567890"
@@ -84,7 +84,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
             {/* Footer */}
             <div className="pt-6 text-xs text-gray-400">
-              <p>© 2024 Pixel Forge BD. All rights reserved.</p>
+              <p>© 2024 Pixel Forge. All rights reserved.</p>
             </div>
           </div>
         </div>

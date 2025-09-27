@@ -38,7 +38,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="text"
-                defaultValue="Pixel Forge BD"
+                defaultValue="Pixel Forge"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -60,7 +60,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="email"
-                defaultValue="admin@pixelforgebd.com"
+                defaultValue="admin@pixelforge.com"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>

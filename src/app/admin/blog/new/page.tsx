@@ -97,7 +97,7 @@ export default function NewBlogPostPage() {
     if (formData.title && !formData.seoTitle) {
       setFormData(prev => ({ 
         ...prev, 
-        seoTitle: `${formData.title} | Pixel Forge BD Blog`
+        seoTitle: `${formData.title} | Pixel Forge Blog`
       }));
     }
     if (formData.excerpt && !formData.seoDescription) {

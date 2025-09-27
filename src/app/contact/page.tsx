@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, Send, CheckCircle, AlertCircle, Facebook } from 'lucide-react';
+import { Phone, Send, CheckCircle, AlertCircle, Facebook, Linkedin, Mail, MapPin, Clock, ArrowRight, Code, Palette, BarChart3, Headphones } from 'lucide-react';
 import { trackEvent } from '@/lib/gtag';
 
 export default function ContactPage() {
@@ -80,29 +80,110 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          {/* Animated gradient orbs */}
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+          
+          {/* Geometric patterns */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-20 left-10 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-3 h-3 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
+            <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
+            <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-pink-400 rounded-full animate-pulse animation-delay-3000"></div>
+            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-yellow-400 rounded-full animate-pulse animation-delay-4000"></div>
+          </div>
+
+          {/* Floating contact elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 text-white/20 text-4xl font-mono animate-float"><Mail className="w-12 h-12" /></div>
+            <div className="absolute top-1/3 right-1/4 text-white/20 text-3xl font-mono animate-float animation-delay-2000"><Phone className="w-10 h-10" /></div>
+            <div className="absolute bottom-1/3 left-1/3 text-white/20 text-3xl font-mono animate-float animation-delay-4000"><MapPin className="w-10 h-10" /></div>
+            <div className="absolute bottom-1/4 right-1/3 text-white/20 text-2xl font-mono animate-float animation-delay-6000"><Clock className="w-8 h-8" /></div>
+          </div>
+
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Get In <span className="gradient-text">Touch</span>
+            {/* Contact Visual */}
+            <div className="mb-8">
+              <div className="inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white/10 backdrop-blur-md rounded-2xl mb-6 shadow-2xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                <div className="relative w-full h-full">
+                  {/* Central Contact Icon */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white/90 text-3xl sm:text-4xl font-bold group-hover:scale-110 transition-transform duration-300">
+                      📞
+                    </div>
+                  </div>
+                  
+                  {/* Floating Contact Elements */}
+                  <div className="absolute top-1 left-1 text-white/80 text-sm animate-bounce">📧</div>
+                  <div className="absolute top-1 right-1 text-white/80 text-sm animate-bounce animation-delay-1000">💬</div>
+                  <div className="absolute bottom-1 left-1 text-white/80 text-sm animate-bounce animation-delay-2000">📍</div>
+                  <div className="absolute bottom-1 right-1 text-white/80 text-sm animate-bounce animation-delay-3000">⏰</div>
+                  
+                  {/* Corner Success Indicators */}
+                  <div className="absolute top-0 left-0 w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
+                  <div className="absolute top-0 right-0 w-1 h-1 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
+                  <div className="absolute bottom-0 left-0 w-1 h-1 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
+                  <div className="absolute bottom-0 right-0 w-1 h-1 bg-orange-400 rounded-full animate-pulse animation-delay-3000"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Main heading with enhanced styling */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent animate-gradient">
+                Get In Touch
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            
+            <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
               Ready to start your next project? We&apos;d love to hear from you. 
               Send us a message and we&apos;ll respond within 24 hours.
             </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="tel:+8801714918360"
+                className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center shadow-2xl hover:shadow-blue-500/25"
+                onClick={() => trackEvent.ctaClick('Call Now - Contact Hero')}
+              >
+                Call Now
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </a>
+              <a
+                href="mailto:info@pixelforge.com"
+                className="border-2 border-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+              >
+                Email Us
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-20">
+      <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Send us a message
-              </h2>
+            <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 p-8 relative overflow-hidden">
+              {/* Background Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-5"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                  Send us a <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">message</span>
+                </h2>
               
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
@@ -228,10 +309,14 @@ export default function ContactPage() {
 
             {/* Contact Information */}
             <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Contact Information
-                </h2>
+              <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 p-8 relative overflow-hidden">
+                {/* Background Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-blue-50 opacity-5"></div>
+                
+                <div className="relative z-10">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                    Contact <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">Information</span>
+                  </h2>
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
@@ -285,6 +370,30 @@ export default function ContactPage() {
                       </a>
                     </div>
                   </div>
+
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Linkedin className="w-6 h-6 text-blue-600" />
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        LinkedIn
+                      </h3>
+                      <p className="text-gray-600 mb-2">
+                        Connect with us on LinkedIn
+                      </p>
+                      <a
+                        href="https://www.linkedin.com/company/109025907/admin/dashboard/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-700 font-medium"
+                      >
+                        Pixel Forge
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -310,6 +419,8 @@ export default function ContactPage() {
                     <span>Modern technologies and best practices</span>
                   </li>
                 </ul>
+              </div>
+                </div>
               </div>
             </div>
           </div>

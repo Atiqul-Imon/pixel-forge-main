@@ -16,8 +16,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://pixelforgebd.com'),
   title: {
-    default: "Pixel Forge BD - Web Development Agency Bangladesh | Website Design & Digital Marketing",
-    template: "%s | Pixel Forge BD - Web Development Agency Bangladesh"
+    default: "Pixel Forge - Web Development Agency Bangladesh | Website Design & Digital Marketing",
+    template: "%s | Pixel Forge - Web Development Agency Bangladesh"
   },
   description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online. Expert in React, Next.js, MERN stack. Serving Bangladesh and worldwide.",
   keywords: [
@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     "modern website development",
     "affordable web development"
   ],
-  authors: [{ name: "Pixel Forge BD", url: "https://pixelforgebd.com" }],
-  creator: "Pixel Forge BD",
-  publisher: "Pixel Forge BD",
+  authors: [{ name: "Pixel Forge", url: "https://pixelforgebd.com" }],
+  creator: "Pixel Forge",
+  publisher: "Pixel Forge",
   robots: {
     index: true,
     follow: true,
@@ -69,24 +69,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_BD",
     url: "https://pixelforgebd.com",
-    siteName: "Pixel Forge BD",
-    title: "Pixel Forge BD - Web Development Agency Bangladesh | Website Design & Digital Marketing",
+    siteName: "Pixel Forge",
+    title: "Pixel Forge - Web Development Agency Bangladesh | Website Design & Digital Marketing",
     description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     images: [
       {
         url: "/logo/pixelforgelogo2.png",
         width: 1200,
         height: 630,
-        alt: "Pixel Forge BD - Web Development Agency Bangladesh",
+        alt: "Pixel Forge - Web Development Agency Bangladesh",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pixel Forge BD - Web Development Agency Bangladesh",
+    title: "Pixel Forge - Web Development Agency Bangladesh",
     description: "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     images: ["/logo/pixelforgelogo2.png"],
-    creator: "@pixelforgebd",
+    creator: "@pixelforge",
   },
   alternates: {
     canonical: "https://pixelforgebd.com",

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     switch (testType) {
       case 'lead':
         event = capiEvents.lead(request, {
-          email: 'test@pixelforgebd.com',
+          email: 'test@pixelforge.com',
           name: 'Test User',
           service: 'Web Development'
         });

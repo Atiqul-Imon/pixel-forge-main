@@ -38,7 +38,7 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <span className={`text-xl font-bold transition-colors duration-300 ${
@@ -48,8 +48,8 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center space-x-8 flex-1 justify-center">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -63,6 +63,10 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+          </div>
+
+          {/* Right side buttons */}
+          <div className="hidden md:flex items-center space-x-4">
             {isAdmin && (
               <Link
                 href="/admin"
@@ -76,20 +80,10 @@ const Navbar = () => {
                 Admin Panel
               </Link>
             )}
-            <Link
-              href="/contact"
-              className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
-                scrolled
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30'
-              }`}
-            >
-              Get Started
-            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden ml-auto">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className={`transition-colors duration-200 ${
@@ -139,17 +133,6 @@ const Navbar = () => {
                   Admin Panel
                 </Link>
               )}
-              <Link
-                href="/contact"
-                className={`block px-3 py-2 rounded-md transition-colors duration-200 text-center ${
-                  scrolled
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                Get Started
-              </Link>
             </div>
           </div>
         )}

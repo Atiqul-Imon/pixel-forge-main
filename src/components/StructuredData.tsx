@@ -2,7 +2,7 @@ export default function StructuredData() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Pixel Forge BD",
+    "name": "Pixel Forge",
     "alternateName": "Pixel Forge Bangladesh",
     "url": "https://pixelforgebd.com",
     "logo": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
@@ -70,12 +70,12 @@ export default function StructuredData() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Pixel Forge BD",
+    "name": "Pixel Forge",
     "url": "https://pixelforgebd.com",
     "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     "publisher": {
       "@type": "Organization",
-      "name": "Pixel Forge BD"
+      "name": "Pixel Forge"
     },
     "potentialAction": {
       "@type": "SearchAction",
@@ -88,7 +88,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": "https://pixelforgebd.com/#organization",
-    "name": "Pixel Forge BD",
+    "name": "Pixel Forge",
     "image": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
     "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
     "url": "https://pixelforgebd.com",
