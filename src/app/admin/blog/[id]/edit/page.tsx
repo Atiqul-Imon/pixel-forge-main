@@ -6,15 +6,24 @@ import { useAuth } from '@/contexts/AuthContext';
 import useAdminAuth from '@/hooks/useAdminAuth';
 import AdminLayout from '@/components/AdminLayout';
 import ImageKitUpload from '@/components/ImageKitUpload';
+import RichTextEditor from '@/components/RichTextEditor';
 
 interface BlogPost {
   _id: string;
   title: string;
+  slug: string;
   content: string;
   excerpt: string;
+  author: string;
+  category: string;
   featuredImage: string;
+  image: string;
   tags: string[];
-  status: 'draft' | 'published';
+  status: 'draft' | 'published' | 'archived';
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  featured: boolean;
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;
@@ -34,11 +43,19 @@ export default function EditBlogPostPage() {
   // Form state
   const [formData, setFormData] = useState({
     title: '',
+    slug: '',
     content: '',
     excerpt: '',
+    author: 'Pixel Forge Team',
+    category: 'Web Development',
     featuredImage: '',
+    image: '',
     tags: '',
-    status: 'draft' as 'draft' | 'published'
+    status: 'draft' as 'draft' | 'published' | 'archived',
+    seoTitle: '',
+    seoDescription: '',
+    seoKeywords: '',
+    featured: false
   });
 
   // Fetch blog post data
@@ -61,19 +78,31 @@ export default function EditBlogPostPage() {
             setError('Blog post not found');
             return;
           }
-          throw new Error('Failed to fetch blog post');
+          const errorData = await response.json();
+          console.error('API Error:', errorData);
+          setError(errorData.error || 'Failed to fetch blog post');
+          return;
         }
 
         const data = await response.json();
+        console.log('API Response:', data);
         if (data.success && data.post) {
           setPost(data.post);
           setFormData({
             title: data.post.title || '',
+            slug: data.post.slug || '',
             content: data.post.content || '',
             excerpt: data.post.excerpt || '',
-            featuredImage: data.post.featuredImage || '',
+            author: data.post.author || 'Pixel Forge Team',
+            category: data.post.category || 'Web Development',
+            featuredImage: data.post.featuredImage || data.post.image || '',
+            image: data.post.image || '',
             tags: data.post.tags ? data.post.tags.join(', ') : '',
-            status: data.post.status || 'draft'
+            status: data.post.status || 'draft',
+            seoTitle: data.post.seoTitle || '',
+            seoDescription: data.post.seoDescription || '',
+            seoKeywords: data.post.seoKeywords ? data.post.seoKeywords.join(', ') : '',
+            featured: data.post.featured || false
           });
         } else {
           setError('Failed to load blog post data');
@@ -128,6 +157,8 @@ export default function EditBlogPostPage() {
         body: JSON.stringify({
           ...formData,
           tags,
+          seoKeywords: formData.seoKeywords.split(',').map(keyword => keyword.trim()).filter(keyword => keyword),
+          image: formData.featuredImage,
           publishedAt: formData.status === 'published' && post?.status === 'draft' 
             ? new Date().toISOString() 
             : post?.publishedAt
@@ -240,6 +271,61 @@ export default function EditBlogPostPage() {
             />
           </div>
 
+          {/* Slug */}
+          <div className="mb-6">
+            <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
+              Slug *
+            </label>
+            <input
+              type="text"
+              id="slug"
+              name="slug"
+              value={formData.slug}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="post-url-slug"
+              required
+            />
+          </div>
+
+          {/* Author */}
+          <div className="mb-6">
+            <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+              Author
+            </label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              value={formData.author}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Author name"
+            />
+          </div>
+
+          {/* Category */}
+          <div className="mb-6">
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              Category
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="Web Development">Web Development</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="Technology">Technology</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Performance">Performance</option>
+              <option value="Tutorials">Tutorials</option>
+              <option value="Case Studies">Case Studies</option>
+            </select>
+          </div>
+
           {/* Excerpt */}
           <div className="mb-6">
             <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
@@ -279,7 +365,6 @@ export default function EditBlogPostPage() {
             ) : (
               <ImageKitUpload
                 onUpload={handleImageUpload}
-                folder="blog-featured"
                 className="w-full h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-gray-400 transition-colors"
               />
             )}
@@ -316,7 +401,83 @@ export default function EditBlogPostPage() {
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>
+              <option value="archived">Archived</option>
             </select>
+          </div>
+
+          {/* Featured */}
+          <div className="mb-6">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={formData.featured}
+                onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              />
+              <span className="ml-2 text-sm text-gray-700">Featured Post</span>
+            </label>
+          </div>
+
+          {/* SEO Section */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">SEO Settings</h3>
+            
+            {/* SEO Title */}
+            <div className="mb-4">
+              <label htmlFor="seoTitle" className="block text-sm font-medium text-gray-700 mb-2">
+                SEO Title
+              </label>
+              <input
+                type="text"
+                id="seoTitle"
+                name="seoTitle"
+                value={formData.seoTitle}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="SEO optimized title"
+                maxLength={60}
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                {formData.seoTitle.length}/60 characters
+              </p>
+            </div>
+
+            {/* SEO Description */}
+            <div className="mb-4">
+              <label htmlFor="seoDescription" className="block text-sm font-medium text-gray-700 mb-2">
+                SEO Description
+              </label>
+              <textarea
+                id="seoDescription"
+                name="seoDescription"
+                value={formData.seoDescription}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="SEO optimized description"
+                maxLength={160}
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                {formData.seoDescription.length}/160 characters
+              </p>
+            </div>
+
+            {/* SEO Keywords */}
+            <div className="mb-6">
+              <label htmlFor="seoKeywords" className="block text-sm font-medium text-gray-700 mb-2">
+                SEO Keywords
+              </label>
+              <input
+                type="text"
+                id="seoKeywords"
+                name="seoKeywords"
+                value={formData.seoKeywords}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter keywords separated by commas"
+              />
+              <p className="text-sm text-gray-500 mt-1">Separate multiple keywords with commas</p>
+            </div>
           </div>
 
           {/* Content */}
@@ -324,15 +485,10 @@ export default function EditBlogPostPage() {
             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
               Content *
             </label>
-            <textarea
-              id="content"
-              name="content"
-              value={formData.content}
-              onChange={handleInputChange}
-              rows={15}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            <RichTextEditor
+              content={formData.content}
+              onChange={(content) => setFormData(prev => ({ ...prev, content }))}
               placeholder="Write your blog post content here..."
-              required
             />
           </div>
         </div>

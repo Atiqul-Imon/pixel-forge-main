@@ -103,9 +103,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate slug if not provided
+    let finalSlug = slug;
+    if (!finalSlug && title) {
+      finalSlug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+
     // Check if slug already exists
-    if (slug) {
-      const existingPost = await BlogPost.findOne({ slug });
+    if (finalSlug) {
+      const existingPost = await BlogPost.findOne({ slug: finalSlug });
       if (existingPost) {
         return NextResponse.json(
           { error: 'Slug already exists' },
@@ -116,7 +127,7 @@ export async function POST(request: NextRequest) {
 
     const blogPost = new BlogPost({
       title,
-      slug,
+      slug: finalSlug,
       excerpt,
       content,
       author: author || 'Pixel Forge Team',
@@ -138,8 +149,13 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('Error creating blog post:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      name: error instanceof Error ? error.name : undefined
+    });
     return NextResponse.json(
-      { error: 'Failed to create blog post' },
+      { error: 'Failed to create blog post', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

@@ -27,7 +27,10 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(post);
+    return NextResponse.json({
+      success: true,
+      post: post
+    });
   } catch (error) {
     console.error('Error fetching blog post:', error);
     return NextResponse.json(

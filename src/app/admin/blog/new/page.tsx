@@ -87,7 +87,7 @@ export default function NewBlogPostPage() {
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
-        .trim('-');
+        .replace(/^-+|-+$/g, '');
       setFormData(prev => ({ ...prev, slug }));
     }
   }, [formData.title]);
@@ -158,6 +158,20 @@ export default function NewBlogPostPage() {
         return;
       }
 
+      // Validate SEO title length
+      if (formData.seoTitle && formData.seoTitle.length > 60) {
+        setSubmitStatus('error');
+        console.error('Error: SEO title cannot exceed 60 characters');
+        return;
+      }
+
+      // Validate SEO description length
+      if (formData.seoDescription && formData.seoDescription.length > 160) {
+        setSubmitStatus('error');
+        console.error('Error: SEO description cannot exceed 160 characters');
+        return;
+      }
+
       const response = await fetch('/api/admin/blog', {
         method: 'POST',
         headers: {
@@ -172,7 +186,7 @@ export default function NewBlogPostPage() {
         setSubmitStatus('success');
         // Track blog post creation
         trackEvent.blogPostCreate();
-        router.push(`/admin/blog/${data.post._id}/edit`);
+        router.push('/admin/blog');
       } else if (response.status === 401) {
         // Token expired, redirect to login
         router.push('/admin/login');
@@ -181,6 +195,9 @@ export default function NewBlogPostPage() {
         const errorData = await response.json();
         setSubmitStatus('error');
         console.error('Error:', errorData.error);
+        if (errorData.details) {
+          console.error('Error details:', errorData.details);
+        }
       }
     } catch (error) {
       setSubmitStatus('error');
@@ -334,8 +351,9 @@ export default function NewBlogPostPage() {
                   placeholder="SEO optimized title"
                   maxLength={60}
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className={`text-sm mt-1 ${formData.seoTitle.length > 60 ? 'text-red-500' : 'text-gray-500'}`}>
                   {formData.seoTitle.length}/60 characters
+                  {formData.seoTitle.length > 60 && ' (Too long!)'}
                 </p>
               </div>
 
@@ -351,8 +369,9 @@ export default function NewBlogPostPage() {
                   placeholder="SEO optimized description"
                   maxLength={160}
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className={`text-sm mt-1 ${formData.seoDescription.length > 160 ? 'text-red-500' : 'text-gray-500'}`}>
                   {formData.seoDescription.length}/160 characters
+                  {formData.seoDescription.length > 160 && ' (Too long!)'}
                 </p>
               </div>
 
