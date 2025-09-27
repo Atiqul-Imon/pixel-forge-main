@@ -67,6 +67,53 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     setHistoryIndex(prev => Math.min(prev + 1, 49));
   }, [historyIndex]);
 
+  // Smart formatting for plain text to detect headings, lists, etc.
+  const smartFormatPlainText = useCallback((text: string) => {
+    const lines = text.split('\n');
+    const formattedLines: string[] = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      if (!line) {
+        formattedLines.push('<br>');
+        continue;
+      }
+      
+      // Detect headings based on patterns
+      if (line.match(/^#{1,6}\s+/)) {
+        // Markdown-style headings: # ## ###
+        const level = line.match(/^#+/)?.[0].length || 1;
+        const headingText = line.replace(/^#+\s+/, '');
+        const headingLevel = Math.min(level, 6);
+        formattedLines.push(`<h${headingLevel} style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: ${headingLevel === 1 ? '2rem' : headingLevel === 2 ? '1.5rem' : headingLevel === 3 ? '1.25rem' : '1.1rem'};">${headingText}</h${headingLevel}>`);
+      } else if (line.match(/^[A-Z][A-Z\s]{10,}$/)) {
+        // ALL CAPS lines (likely headings)
+        formattedLines.push(`<h2 style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: 1.5rem;">${line}</h2>`);
+      } else if (line.match(/^[A-Z][a-z\s]{5,}[A-Z]/)) {
+        // Title Case lines (likely headings)
+        formattedLines.push(`<h3 style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: 1.25rem;">${line}</h3>`);
+      } else if (line.match(/^[-*•]\s+/)) {
+        // Bullet points: - * •
+        const bulletText = line.replace(/^[-*•]\s+/, '');
+        formattedLines.push(`<ul style="margin: 0.5rem 0; padding-left: 1.5rem;"><li style="margin: 0.25rem 0;">${bulletText}</li></ul>`);
+      } else if (line.match(/^\d+\.\s+/)) {
+        // Numbered lists: 1. 2. 3.
+        const listText = line.replace(/^\d+\.\s+/, '');
+        formattedLines.push(`<ol style="margin: 0.5rem 0; padding-left: 1.5rem;"><li style="margin: 0.25rem 0;">${listText}</li></ol>`);
+      } else if (line.match(/^>\s+/)) {
+        // Blockquotes: > text
+        const quoteText = line.replace(/^>\s+/, '');
+        formattedLines.push(`<blockquote style="border-left: 4px solid #e5e7eb; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #6b7280;">${quoteText}</blockquote>`);
+      } else {
+        // Regular paragraph
+        formattedLines.push(`<p style="margin: 0.75rem 0;">${line}</p>`);
+      }
+    }
+    
+    return formattedLines.join('');
+  }, []);
+
   // Clean and sanitize pasted HTML while preserving all formatting
   const cleanPastedHTML = useCallback((html: string) => {
     // Create a temporary div to parse the HTML
@@ -150,7 +197,7 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     }
   }, [onChange, addToHistory, cleanContent]);
 
-  // Handle paste events with full HTML preservation
+  // Handle paste events with full HTML preservation and smart formatting
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     e.preventDefault();
     
@@ -159,21 +206,22 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     // Try to get HTML content first (preserves formatting)
     let pastedContent = clipboardData.getData('text/html');
     
-    if (pastedContent) {
+    // Debug: Log what we're getting from clipboard
+    console.log('HTML content:', pastedContent);
+    console.log('Plain text:', clipboardData.getData('text/plain'));
+    
+    if (pastedContent && pastedContent.trim() && pastedContent !== clipboardData.getData('text/plain')) {
       // Clean and preserve the HTML content
       const cleanHTML = cleanPastedHTML(pastedContent);
+      console.log('Cleaned HTML:', cleanHTML);
       document.execCommand('insertHTML', false, cleanHTML);
     } else {
-      // Fallback to plain text if no HTML available
+      // Fallback to plain text with smart formatting
       const pastedText = clipboardData.getData('text/plain');
       if (pastedText) {
-        const cleanText = pastedText
-          .replace(/\r\n/g, '\n')
-          .replace(/\r/g, '\n')
-          .replace(/\n{3,}/g, '\n\n')
-          .trim();
-        
-        document.execCommand('insertText', false, cleanText);
+        const formattedText = smartFormatPlainText(pastedText);
+        console.log('Formatted text:', formattedText);
+        document.execCommand('insertHTML', false, formattedText);
       }
     }
     
@@ -383,8 +431,54 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     }
   };
 
-  // Keyboard shortcuts
+  // Keyboard shortcuts and Enter key handling
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Handle Enter key for proper paragraph creation
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container as Element;
+        
+        // Check if we're in a heading, list item, or blockquote
+        while (element && element !== editorRef.current) {
+          const tagName = element.tagName?.toLowerCase();
+          if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquote'].includes(tagName)) {
+            // Insert a new paragraph after the current element
+            const newParagraph = document.createElement('p');
+            newParagraph.innerHTML = '<br>';
+            newParagraph.style.margin = '0.75rem 0';
+            
+            if (element.nextSibling) {
+              element.parentNode?.insertBefore(newParagraph, element.nextSibling);
+            } else {
+              element.parentNode?.appendChild(newParagraph);
+            }
+            
+            // Move cursor to the new paragraph
+            const newRange = document.createRange();
+            newRange.setStart(newParagraph, 0);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+            
+            handleContentChange();
+            return;
+          }
+          element = element.parentElement;
+        }
+        
+        // Default behavior: insert paragraph break
+        document.execCommand('insertHTML', false, '<p><br></p>');
+        handleContentChange();
+        return;
+      }
+    }
+    
+    // Handle other keyboard shortcuts
     if (e.ctrlKey || e.metaKey) {
       switch (e.key) {
         case 'b':
