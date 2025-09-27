@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, User } from 'lucide-react';
 import Image from 'next/image';
 import BlogStructuredData from '@/components/BlogStructuredData';
 import { trackEvent } from '@/lib/gtag';
@@ -187,16 +187,39 @@ export default function BlogPage() {
                 <div className="relative overflow-hidden">
                   <Image
                     src={post.image}
-                    alt={post.title}
+                    alt={`${post.title} - ${post.excerpt}`}
                     width={400}
                     height={300}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 mb-3">
                     {post.title}
                   </h3>
+                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                      {post.category}
+                    </span>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>{post.readTime}</span>
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))}

@@ -243,18 +243,32 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     if (document.queryCommandState('underline')) formats.add('underline');
     if (document.queryCommandState('strikeThrough')) formats.add('strikeThrough');
     
-    // Check for heading formats
+    // Check for heading formats - improved detection
     const range = selection.getRangeAt(0);
     const container = range.commonAncestorContainer;
     let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container as Element;
     
-    while (element && element !== editorRef.current) {
-      const tagName = element.tagName?.toLowerCase();
-      if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
-        formats.add(tagName);
-        break;
+    // First, check if we're directly in a heading
+    if (element && ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(element.tagName?.toLowerCase())) {
+      formats.add(element.tagName.toLowerCase());
+    } else {
+      // Walk up the DOM tree to find heading
+      while (element && element !== editorRef.current) {
+        const tagName = element.tagName?.toLowerCase();
+        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
+          formats.add(tagName);
+          break;
+        }
+        element = element.parentElement;
       }
-      element = element.parentElement;
+    }
+    
+    // Check for other block formats
+    if (document.queryCommandState('formatBlock')) {
+      const currentBlock = document.queryCommandValue('formatBlock');
+      if (currentBlock && currentBlock !== 'div') {
+        formats.add(currentBlock.toLowerCase());
+      }
     }
     
     setActiveFormats(formats);
@@ -350,8 +364,8 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     handleContentChange();
   };
 
-  // Robust heading handler with proper style preservation
-  const insertHeading = (level: 'h1' | 'h2' | 'h3') => {
+  // Robust heading handler with toggle functionality
+  const toggleHeading = (level: 'h1' | 'h2' | 'h3') => {
     if (!editorRef.current) return;
     
     // Focus the editor
@@ -368,6 +382,51 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     }
     
     const range = selection.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container as Element;
+    
+    // Find the current heading element
+    let currentHeading: Element | null = null;
+    while (element && element !== editorRef.current) {
+      const tagName = element.tagName?.toLowerCase();
+      if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
+        currentHeading = element;
+        break;
+      }
+      element = element.parentElement;
+    }
+    
+    // If we're in a heading, check if it's the same level
+    if (currentHeading) {
+      const currentLevel = currentHeading.tagName.toLowerCase();
+      
+      // If it's the same level, convert to paragraph
+      if (currentLevel === level) {
+        const text = currentHeading.textContent || '';
+        const paragraphHTML = `<p style="margin: 0.75rem 0;">${text}</p>`;
+        
+        // Replace the heading with a paragraph
+        const newElement = document.createElement('div');
+        newElement.innerHTML = paragraphHTML;
+        const paragraph = newElement.firstElementChild;
+        
+        if (paragraph && currentHeading.parentNode) {
+          currentHeading.parentNode.replaceChild(paragraph, currentHeading);
+          
+          // Set cursor position in the new paragraph
+          const newRange = document.createRange();
+          newRange.setStart(paragraph, 0);
+          newRange.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(newRange);
+        }
+        
+        handleContentChange();
+        return;
+      }
+    }
+    
+    // If we're not in a heading or it's a different level, create/change to the specified heading
     const selectedText = range.toString().trim();
     
     if (selectedText) {
@@ -375,8 +434,27 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
       const headingHTML = `<${level} style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: ${level === 'h1' ? '2rem' : level === 'h2' ? '1.5rem' : '1.25rem'};">${selectedText}</${level}>`;
       range.deleteContents();
       document.execCommand('insertHTML', false, headingHTML);
+    } else if (currentHeading) {
+      // We're in a different heading, change it to the new level
+      const text = currentHeading.textContent || '';
+      const newHeadingHTML = `<${level} style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: ${level === 'h1' ? '2rem' : level === 'h2' ? '1.5rem' : '1.25rem'};">${text}</${level}>`;
+      
+      const newElement = document.createElement('div');
+      newElement.innerHTML = newHeadingHTML;
+      const newHeading = newElement.firstElementChild;
+      
+      if (newHeading && currentHeading.parentNode) {
+        currentHeading.parentNode.replaceChild(newHeading, currentHeading);
+        
+        // Set cursor position in the new heading
+        const newRange = document.createRange();
+        newRange.setStart(newHeading, 0);
+        newRange.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+      }
     } else {
-      // No text selected, create empty heading
+      // No text selected and not in a heading, create empty heading
       const headingHTML = `<${level} style="font-weight: bold; margin: 1rem 0 0.5rem 0; line-height: 1.2; display: block; font-size: ${level === 'h1' ? '2rem' : level === 'h2' ? '1.5rem' : '1.25rem'};">&nbsp;</${level}>`;
       document.execCommand('insertHTML', false, headingHTML);
     }
@@ -521,10 +599,10 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
     { icon: Underline, command: 'underline', title: 'Underline (Ctrl+U)', shortcut: 'Ctrl+U', group: 'format' },
     { icon: Strikethrough, command: 'strikeThrough', title: 'Strikethrough', group: 'format' },
     
-    // Headings - using dedicated handlers
-    { icon: Heading1, onClick: () => insertHeading('h1'), title: 'Heading 1', group: 'heading' },
-    { icon: Heading2, onClick: () => insertHeading('h2'), title: 'Heading 2', group: 'heading' },
-    { icon: Heading3, onClick: () => insertHeading('h3'), title: 'Heading 3', group: 'heading' },
+    // Headings - using dedicated handlers with toggle functionality
+    { icon: Heading1, onClick: () => toggleHeading('h1'), title: 'Heading 1 (Toggle)', group: 'heading' },
+    { icon: Heading2, onClick: () => toggleHeading('h2'), title: 'Heading 2 (Toggle)', group: 'heading' },
+    { icon: Heading3, onClick: () => toggleHeading('h3'), title: 'Heading 3 (Toggle)', group: 'heading' },
     { icon: Type, command: 'formatBlock', value: 'p', title: 'Paragraph', group: 'heading' },
     
     // Lists
@@ -572,7 +650,11 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing...", c
                 className={`p-2 hover:bg-gray-200 rounded transition-colors duration-200 ${
                   activeFormats.has(button.command || '') || 
                   activeFormats.has(button.value || '') ||
-                  (button.command === 'formatBlock' && button.value && activeFormats.has(button.value))
+                  (button.command === 'formatBlock' && button.value && activeFormats.has(button.value)) ||
+                  // Check for heading buttons
+                  (button.onClick && button.title.includes('Heading 1') && activeFormats.has('h1')) ||
+                  (button.onClick && button.title.includes('Heading 2') && activeFormats.has('h2')) ||
+                  (button.onClick && button.title.includes('Heading 3') && activeFormats.has('h3'))
                     ? 'bg-blue-100 text-blue-600' 
                     : ''
                 }`}

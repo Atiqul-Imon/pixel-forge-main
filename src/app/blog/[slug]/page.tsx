@@ -22,6 +22,8 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import Image from 'next/image';
+import Script from 'next/script';
+import RelatedPosts from '@/components/RelatedPosts';
 
 interface BlogPost {
   _id: string;
@@ -43,6 +45,8 @@ interface BlogPostPageProps {
     slug: string;
   }>;
 }
+
+// Note: Metadata generation moved to layout.tsx since this is a client component
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = use(params);
@@ -186,8 +190,80 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     );
   }
 
+  // Generate structured data for the article
+  const articleSchema = post ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": post.image,
+    "datePublished": post.publishedAt,
+    "dateModified": post.updatedAt || post.publishedAt,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Pixel Forge BD",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://pixelforgebd.com/logo/pixelforgelogo2.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://pixelforgebd.com/blog/${post.slug}`
+    },
+    "articleSection": post.category,
+    "keywords": post.tags.join(", "),
+    "wordCount": post.content.split(' ').length,
+    "timeRequired": post.readTime
+  } : null;
+
+  const breadcrumbSchema = post ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://pixelforgebd.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://pixelforgebd.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": `https://pixelforgebd.com/blog/${post.slug}`
+      }
+    ]
+  } : null;
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Structured Data */}
+      {articleSchema && (
+        <Script
+          id="article-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <Script
+          id="breadcrumb-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
+
       {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div 
@@ -212,15 +288,31 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <nav className="mb-8">
-            <Link
-              href="/blog"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group transition-all duration-200"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
-              Back to Blog
-            </Link>
+          {/* Breadcrumb Navigation */}
+          <nav className="mb-8" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm">
+              <li>
+                <Link
+                  href="/"
+                  className="text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                >
+                  Home
+                </Link>
+              </li>
+              <li className="text-gray-400">/</li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li className="text-gray-400">/</li>
+              <li className="text-gray-900 font-medium truncate max-w-xs">
+                {post.title}
+              </li>
+            </ol>
           </nav>
 
           {/* Article Meta */}
@@ -270,11 +362,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="relative w-full" style={{ aspectRatio: '1230/660' }}>
                 <Image
                   src={post.image}
-                  alt={post.title}
+                  alt={`${post.title} - ${post.excerpt}`}
                   fill
                   className="object-contain"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1230px"
                   priority
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
               </div>
             </div>
@@ -364,6 +458,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </div>
           </div>
+
+          {/* Related Posts */}
+          <RelatedPosts 
+            currentPostId={post._id}
+            category={post.category}
+            tags={post.tags}
+          />
         </div>
       </article>
 
