@@ -28,17 +28,20 @@ export async function GET(request: NextRequest) {
     const filter: any = {};
     if (status !== 'all') filter.status = status;
     if (category !== 'all') filter.category = category;
+    // Remove regex search - will use text search instead
+
+    // Use text search if search query exists, otherwise use regex
+    let query;
     if (search) {
-      filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { excerpt: { $regex: search, $options: 'i' } },
-        { content: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search, 'i')] } }
-      ];
+      query = BlogPost.find(
+        { ...filter, $text: { $search: search } },
+        { score: { $meta: 'textScore' } }
+      ).sort({ score: { $meta: 'textScore' }, createdAt: -1 });
+    } else {
+      query = BlogPost.find(filter).sort({ createdAt: -1 });
     }
 
-    const posts = await BlogPost.find(filter)
-      .sort({ createdAt: -1 })
+    const posts = await query
       .skip(skip)
       .limit(limit)
       .lean();
@@ -116,7 +119,7 @@ export async function POST(request: NextRequest) {
 
     // Check if slug already exists
     if (finalSlug) {
-      const existingPost = await BlogPost.findOne({ slug: finalSlug });
+      const existingPost = await BlogPost.findOne({ slug: finalSlug }).lean();
       if (existingPost) {
         return NextResponse.json(
           { error: 'Slug already exists' },

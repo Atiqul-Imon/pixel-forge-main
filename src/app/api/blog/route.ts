@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import BlogPost from '@/lib/models/BlogPost';
+import cache, { cacheKeys, CACHE_TTL } from '@/lib/cache';
+import { withPerformanceMonitoring, logApiResponseTime } from '@/lib/performance';
 
 // GET - Fetch published blog posts for public consumption
 export async function GET(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
     await connectDB();
 
@@ -21,26 +25,43 @@ export async function GET(request: NextRequest) {
     
     if (category !== 'all') filter.category = category;
     if (featured) filter.featured = true;
-    if (search) {
-      filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { excerpt: { $regex: search, $options: 'i' } },
-        { content: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search, 'i')] } }
-      ];
+    // Remove regex search - will use text search instead
+
+    // Check cache first
+    const cacheKey = cacheKeys.blogPosts(filter, page, limit);
+    const cachedResult = cache.get(cacheKey);
+    
+    if (cachedResult) {
+      return NextResponse.json(cachedResult);
     }
 
-    const posts = await BlogPost.find(filter)
-      .sort({ publishedAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .select('-content') // Exclude full content for list view
-      .lean();
+    // Use text search if search query exists, otherwise use regex
+    let query;
+    if (search) {
+      query = BlogPost.find(
+        { ...filter, $text: { $search: search } },
+        { score: { $meta: 'textScore' } }
+      ).sort({ score: { $meta: 'textScore' }, publishedAt: -1 });
+    } else {
+      query = BlogPost.find(filter).sort({ publishedAt: -1 });
+    }
 
-    const total = await BlogPost.countDocuments(filter);
+    const posts = await withPerformanceMonitoring(
+      'blog_posts_query',
+      () => query
+        .skip(skip)
+        .limit(limit)
+        .select('title slug excerpt author publishedAt readTime category tags image featured seoTitle seoDescription')
+        .lean()
+    );
+
+    const total = await withPerformanceMonitoring(
+      'blog_posts_count',
+      () => BlogPost.countDocuments(filter)
+    );
     const totalPages = Math.ceil(total / limit);
 
-    return NextResponse.json({
+    const result = {
       posts,
       pagination: {
         page,
@@ -50,7 +71,15 @@ export async function GET(request: NextRequest) {
         hasNext: page < totalPages,
         hasPrev: page > 1,
       },
-    });
+    };
+
+    // Cache the result
+    cache.set(cacheKey, result, CACHE_TTL.BLOG_POSTS);
+
+    const duration = Date.now() - startTime;
+    logApiResponseTime('/api/blog', duration);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json(

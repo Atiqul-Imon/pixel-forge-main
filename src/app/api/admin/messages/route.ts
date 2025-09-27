@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Contact from '@/lib/models/Contact';
 import { requireAdmin } from '@/lib/auth';
+import cache, { cacheKeys, CACHE_TTL } from '@/lib/cache';
 
 // GET - Fetch all messages
 export async function GET(request: NextRequest) {
@@ -11,9 +12,21 @@ export async function GET(request: NextRequest) {
     
     await connectDB();
     
+    // Check cache first
+    const cacheKey = cacheKeys.messages();
+    const cachedMessages = cache.get(cacheKey);
+    
+    if (cachedMessages) {
+      return NextResponse.json(cachedMessages);
+    }
+    
     const messages = await Contact.find({})
       .sort({ createdAt: -1 })
+      .select('name email company service message status createdAt')
       .lean();
+    
+    // Cache the result
+    cache.set(cacheKey, messages, CACHE_TTL.MESSAGES);
     
     return NextResponse.json(messages);
   } catch (error) {
@@ -60,8 +73,8 @@ export async function PATCH(request: NextRequest) {
     const updatedMessage = await Contact.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
-    );
+      { new: true, select: 'name email company service message status createdAt' }
+    ).lean();
 
     if (!updatedMessage) {
       return NextResponse.json(
@@ -69,6 +82,9 @@ export async function PATCH(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Clear messages cache since data has changed
+    cache.delete(cacheKeys.messages());
 
     return NextResponse.json(updatedMessage);
   } catch (error) {

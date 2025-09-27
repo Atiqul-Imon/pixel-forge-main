@@ -19,7 +19,7 @@ export async function GET(
     await connectDB();
     const resolvedParams = await params;
 
-    const post = await BlogPost.findById(resolvedParams.id);
+    const post = await BlogPost.findById(resolvedParams.id).lean();
     if (!post) {
       return NextResponse.json(
         { error: 'Blog post not found' },
@@ -79,7 +79,7 @@ export async function PUT(
       const existingPost = await BlogPost.findOne({ 
         slug, 
         _id: { $ne: resolvedParams.id } 
-      });
+      }).lean();
       if (existingPost) {
         return NextResponse.json(
           { error: 'Slug already exists' },
@@ -114,7 +114,7 @@ export async function PUT(
       resolvedParams.id,
       updateData,
       { new: true, runValidators: true }
-    );
+    ).lean();
 
     if (!post) {
       return NextResponse.json(
@@ -152,7 +152,7 @@ export async function DELETE(
     await connectDB();
     const resolvedParams = await params;
 
-    const post = await BlogPost.findByIdAndDelete(resolvedParams.id);
+    const post = await BlogPost.findByIdAndDelete(resolvedParams.id).lean();
     if (!post) {
       return NextResponse.json(
         { error: 'Blog post not found' },

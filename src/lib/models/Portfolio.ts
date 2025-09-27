@@ -53,6 +53,14 @@ const PortfolioSchema: Schema = new Schema({
     type: Date,
     default: Date.now,
   },
+}, {
+  timestamps: true
 });
+
+// Indexes for better query performance
+PortfolioSchema.index({ category: 1, featured: 1 });
+PortfolioSchema.index({ featured: 1, createdAt: -1 });
+PortfolioSchema.index({ category: 1, createdAt: -1 });
+PortfolioSchema.index({ technologies: 1 });
 
 export default mongoose.models.Portfolio || mongoose.model<IPortfolio>('Portfolio', PortfolioSchema);

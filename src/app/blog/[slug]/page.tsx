@@ -196,40 +196,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         />
       </div>
 
-      {/* Floating Action Buttons */}
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 space-y-3">
-        <button
-          onClick={handleLike}
-          className={`p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 ${
-            isLiked 
-              ? 'bg-red-500 text-white' 
-              : 'bg-white text-gray-600 hover:bg-red-50 hover:text-red-500'
-          }`}
-          title="Like this article"
-        >
-          <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
-        </button>
-        
-        <button
-          onClick={handleBookmark}
-          className={`p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 ${
-            isBookmarked 
-              ? 'bg-yellow-500 text-white' 
-              : 'bg-white text-gray-600 hover:bg-yellow-50 hover:text-yellow-500'
-          }`}
-          title="Bookmark this article"
-        >
-          <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`} />
-        </button>
-        
-        <button
-          onClick={handleCopyLink}
-          className="p-3 rounded-full shadow-lg bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 transition-all duration-200 hover:scale-110"
-          title="Copy link"
-        >
-          {isCopied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-        </button>
-      </div>
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
@@ -299,15 +265,19 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
 
           {/* Featured Image */}
-          <div className="relative overflow-hidden rounded-3xl shadow-2xl mb-12 group">
-            <Image
-              src={post.image}
-              alt={post.title}
-              width={1200}
-              height={600}
-              className="w-full h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative w-full mb-12 shadow-2xl">
+            <div className="w-full max-w-[1230px] mx-auto">
+              <div className="relative w-full" style={{ aspectRatio: '1230/660' }}>
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1230px"
+                  priority
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

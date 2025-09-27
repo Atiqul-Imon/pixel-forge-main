@@ -70,15 +70,13 @@ const UserSchema: Schema = new Schema({
     default: false
   },
   emailVerificationToken: {
-    type: String,
-    sparse: true
+    type: String
   },
   emailVerificationExpires: {
     type: Date
   },
   passwordResetToken: {
-    type: String,
-    sparse: true
+    type: String
   },
   passwordResetExpires: {
     type: Date
@@ -128,6 +126,12 @@ const UserSchema: Schema = new Schema({
 // Indexes for performance and security (email index is already created by unique: true)
 UserSchema.index({ 'sessions.sessionId': 1 });
 UserSchema.index({ lockUntil: 1 });
+UserSchema.index({ role: 1, isActive: 1 });
+UserSchema.index({ emailVerified: 1, isActive: 1 });
+UserSchema.index({ lastLogin: -1 });
+UserSchema.index({ createdAt: -1 });
+UserSchema.index({ emailVerificationToken: 1 }, { sparse: true });
+UserSchema.index({ passwordResetToken: 1 }, { sparse: true });
 
 // Virtual for checking if account is locked
 UserSchema.virtual('isLocked').get(function(this: IUser) {

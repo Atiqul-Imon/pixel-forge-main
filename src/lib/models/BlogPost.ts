@@ -30,7 +30,6 @@ const BlogPostSchema: Schema = new Schema({
   slug: {
     type: String,
     required: [true, 'Slug is required'],
-    unique: true,
     trim: true,
     lowercase: true,
     match: [/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'],
@@ -100,12 +99,35 @@ const BlogPostSchema: Schema = new Schema({
   timestamps: true,
 });
 
-// Index for better query performance
-BlogPostSchema.index({ slug: 1 });
+// Indexes for better query performance
+BlogPostSchema.index({ slug: 1 }, { unique: true });
 BlogPostSchema.index({ status: 1, publishedAt: -1 });
 BlogPostSchema.index({ category: 1, status: 1 });
 BlogPostSchema.index({ featured: 1, status: 1 });
 BlogPostSchema.index({ tags: 1 });
+BlogPostSchema.index({ author: 1, status: 1 });
+BlogPostSchema.index({ createdAt: -1 });
+BlogPostSchema.index({ updatedAt: -1 });
+
+// Text index for search functionality
+BlogPostSchema.index({ 
+  title: 'text', 
+  content: 'text', 
+  excerpt: 'text',
+  tags: 'text'
+}, {
+  weights: {
+    title: 10,
+    excerpt: 5,
+    tags: 3,
+    content: 1
+  },
+  name: 'blog_search_index'
+});
+
+// Compound indexes for common query patterns
+BlogPostSchema.index({ status: 1, category: 1, publishedAt: -1 });
+BlogPostSchema.index({ status: 1, featured: 1, publishedAt: -1 });
 
 // Virtual for reading time calculation
 BlogPostSchema.virtual('calculatedReadTime').get(function() {

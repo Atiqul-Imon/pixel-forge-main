@@ -1,20 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import BlogPost from '@/lib/models/BlogPost';
+import cache, { cacheKeys, CACHE_TTL } from '@/lib/cache';
+import { withPerformanceMonitoring, logApiResponseTime } from '@/lib/performance';
 
 // GET - Fetch single blog post by slug
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const startTime = Date.now();
+  
   try {
     await connectDB();
     const resolvedParams = await params;
 
-    const post = await BlogPost.findOne({ 
-      slug: resolvedParams.slug,
-      status: 'published' // Only published posts
-    });
+    // Check cache first
+    const cacheKey = cacheKeys.blogPost(resolvedParams.slug);
+    const cachedPost = cache.get(cacheKey);
+    
+    if (cachedPost) {
+      return NextResponse.json(cachedPost);
+    }
+
+    const post = await withPerformanceMonitoring(
+      'blog_post_query',
+      () => BlogPost.findOne({ 
+        slug: resolvedParams.slug,
+        status: 'published' // Only published posts
+      }).lean()
+    );
 
     if (!post) {
       return NextResponse.json(
@@ -22,6 +37,12 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    // Cache the result
+    cache.set(cacheKey, post, CACHE_TTL.BLOG_POST);
+
+    const duration = Date.now() - startTime;
+    logApiResponseTime(`/api/blog/${resolvedParams.slug}`, duration);
 
     return NextResponse.json(post);
   } catch (error) {

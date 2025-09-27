@@ -19,10 +19,30 @@ async function connectDB() {
 
   try {
     const opts = {
-      bufferCommands: false,
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      bufferMaxEntries: 0, // Disable mongoose buffering
+      bufferCommands: false, // Disable mongoose buffering
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     };
 
     cached = await mongoose.connect(MONGODB_URI, opts);
+    
+    // Connection event listeners for monitoring
+    cached.connection.on('connected', () => {
+      console.log('MongoDB connected successfully');
+    });
+    
+    cached.connection.on('error', (err) => {
+      console.error('MongoDB connection error:', err);
+    });
+    
+    cached.connection.on('disconnected', () => {
+      console.log('MongoDB disconnected');
+    });
+    
     return cached;
   } catch (e) {
     console.error('MongoDB connection error:', e);

@@ -45,7 +45,15 @@ const ContactSchema: Schema = new Schema({
     type: Date,
     default: Date.now,
   },
+}, {
+  timestamps: true
 });
+
+// Indexes for better query performance
+ContactSchema.index({ status: 1, createdAt: -1 });
+ContactSchema.index({ email: 1 });
+ContactSchema.index({ service: 1, status: 1 });
+ContactSchema.index({ createdAt: -1 });
 
 export default mongoose.models.Contact || mongoose.model<IContact>('Contact', ContactSchema);
 
