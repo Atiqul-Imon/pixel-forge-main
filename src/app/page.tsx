@@ -150,7 +150,7 @@ export default function Home() {
 
 
       {/* Services Section with Glassmorphism */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-20 overflow-hidden glassmorphism-section">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
           {/* Animated gradient orbs */}
@@ -260,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section with Glassmorphism */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="relative py-24 overflow-hidden glassmorphism-section">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
           {/* Animated gradient orbs */}

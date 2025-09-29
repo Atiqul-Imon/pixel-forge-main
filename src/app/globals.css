@@ -28,6 +28,34 @@
 
 html {
   scroll-behavior: smooth;
+  /* Mobile scroll optimization */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile-specific scroll optimizations */
+@media (max-width: 768px) {
+  html {
+    /* Reduce scroll-behavior on mobile for better performance */
+    scroll-behavior: auto;
+  }
+  
+  body {
+    /* Enable hardware acceleration for mobile scrolling */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+  }
+  
+  /* Optimize sections with glassmorphism for mobile */
+  section {
+    /* Enable hardware acceleration */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+  }
 }
 
 body {
@@ -70,9 +98,77 @@ body {
   background: #1d4ed8;
 }
 
-/* Smooth animations */
+/* Smooth animations - Mobile optimized */
 * {
   transition: all 0.2s ease-in-out;
+}
+
+/* Mobile scroll optimization */
+@media (max-width: 768px) {
+  * {
+    /* Reduce transitions on mobile for better performance */
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  }
+  
+  /* Disable expensive animations on mobile */
+  .animate-blob,
+  .animate-float,
+  .animate-gradient,
+  .animate-glassmorphism-glow,
+  .animate-card-float {
+    animation: none;
+  }
+  
+  /* Reduce backdrop blur intensity on mobile */
+  .backdrop-blur-lg {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  .backdrop-blur-md {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  
+  .backdrop-blur-sm {
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  
+  /* Optimize animated background elements for mobile */
+  .absolute {
+    /* Enable hardware acceleration for positioned elements */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Reduce blur effects on mobile for better performance */
+  .filter {
+    filter: none;
+  }
+  
+  .blur-xl,
+  .blur-3xl {
+    filter: blur(8px);
+  }
+  
+  .blur-2xl {
+    filter: blur(4px);
+  }
+  
+  /* Optimize mix-blend-multiply for mobile */
+  .mix-blend-multiply {
+    mix-blend-mode: normal;
+  }
+  
+  /* Reduce opacity of background elements on mobile */
+  .opacity-70 {
+    opacity: 0.3;
+  }
+  
+  .opacity-20 {
+    opacity: 0.1;
+  }
 }
 
 /* Focus styles */
@@ -200,6 +296,15 @@ select:focus {
   animation: shimmer 2s infinite;
 }
 
+/* Mobile optimization for shimmer effect */
+@media (max-width: 768px) {
+  .animate-shimmer {
+    /* Disable shimmer animation on mobile for better performance */
+    animation: none;
+    background: none;
+  }
+}
+
 .animate-card-float {
   animation: card-float 6s ease-in-out infinite;
 }
@@ -208,12 +313,15 @@ select:focus {
   animation: icon-pulse 3s ease-in-out infinite;
 }
 
-/* Glassmorphism backdrop blur utilities */
+/* Glassmorphism backdrop blur utilities - Mobile optimized */
 .glassmorphism {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Hardware acceleration for mobile */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .glassmorphism-strong {
@@ -221,6 +329,22 @@ select:focus {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  /* Hardware acceleration for mobile */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .glassmorphism {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  
+  .glassmorphism-strong {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
 /* Custom gradient text for glassmorphism */
@@ -246,12 +370,40 @@ select:focus {
 .animate-card-entrance {
   animation: card-entrance 0.6s ease-out forwards;
   opacity: 0;
+  /* Hardware acceleration for mobile */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
 
-/* Enhanced glassmorphism hover effects */
+/* Mobile optimization for card entrance */
+@media (max-width: 768px) {
+  .animate-card-entrance {
+    /* Simplify animation on mobile for better performance */
+    animation: card-entrance 0.3s ease-out forwards;
+    /* Reduce transform complexity */
+    transform: translateY(15px) scale(0.95);
+  }
+  
+  @keyframes card-entrance {
+    0% {
+      opacity: 0;
+      transform: translateY(15px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* Enhanced glassmorphism hover effects - Mobile optimized */
 .glassmorphism-card {
   position: relative;
   overflow: hidden;
+  /* Hardware acceleration for mobile */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .glassmorphism-card::before {
@@ -263,8 +415,58 @@ select:focus {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   transition: left 0.5s;
+  /* Hardware acceleration for mobile */
+  transform: translateZ(0);
 }
 
 .glassmorphism-card:hover::before {
   left: 100%;
+}
+
+/* Mobile-specific optimizations for glassmorphism cards */
+@media (max-width: 768px) {
+  .glassmorphism-card::before {
+    display: none;
+  }
+  
+  /* Reduce hover effects on mobile */
+  .glassmorphism-card:hover {
+    transform: none;
+  }
+  
+  /* Simplify glassmorphism effects on mobile */
+  .glassmorphism-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+/* Mobile-optimized glassmorphism sections */
+@media (max-width: 768px) {
+  /* Reduce complexity of glassmorphism sections on mobile */
+  .glassmorphism-section {
+    /* Enable hardware acceleration */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Optimize overflow handling on mobile */
+  .overflow-hidden {
+    /* Ensure smooth scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Reduce animation complexity in sections */
+  section .animate-pulse {
+    animation-duration: 2s;
+  }
+  
+  /* Optimize grid layouts for mobile */
+  .grid {
+    /* Enable hardware acceleration for grid items */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
