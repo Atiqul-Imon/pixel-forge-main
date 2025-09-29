@@ -79,6 +79,26 @@ export default function PortfolioPage() {
     },
     {
       id: 7,
+      title: 'Jhatika Safar - Bangladesh Travel',
+      description: 'Comprehensive travel website for Bangladesh tourism featuring tour packages, destination guides, customer testimonials, and booking system. Modern design with responsive layout and user-friendly interface.',
+      image: 'https://www.jhatikasafar.com/og-image.jpg',
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Travel Platform', 'Tourism', 'Responsive Design'],
+      liveUrl: 'https://www.jhatikasafar.com/',
+      featured: true
+    },
+    {
+      id: 8,
+      title: 'Maisha Printing - Professional Printing Services',
+      description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
+      image: 'https://maisha-printing.vercel.app/og-image.jpg',
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Printing Services', 'Business Website', 'Service Platform'],
+      liveUrl: 'https://maisha-printing.vercel.app/',
+      featured: true
+    },
+    {
+      id: 9,
       title: 'MERN E-commerce Platform',
       description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
@@ -192,135 +212,227 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* All Projects with Filter */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* All Projects with Filter - Glassmorphism */}
+      <section className="relative py-24 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+          {/* Animated gradient orbs */}
+          <div className="absolute top-10 left-10 w-96 h-96 bg-blue-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-10 right-10 w-96 h-96 bg-purple-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-10 left-1/2 w-96 h-96 bg-pink-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+          
+          {/* Floating particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-20 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-32 w-3 h-3 bg-blue-300/40 rounded-full animate-pulse animation-delay-1000"></div>
+            <div className="absolute bottom-40 left-1/3 w-2 h-2 bg-purple-300/40 rounded-full animate-pulse animation-delay-2000"></div>
+            <div className="absolute bottom-20 right-1/4 w-3 h-3 bg-pink-300/40 rounded-full animate-pulse animation-delay-3000"></div>
+            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-300/40 rounded-full animate-pulse animation-delay-4000"></div>
+          </div>
+
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:50px_50px] opacity-30"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              All <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Projects</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 animate-card-float">
+              All <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">Projects</span>
             </h2>
             
-            {/* Filter Buttons */}
+            {/* Filter Buttons with Glassmorphism */}
             <div className="flex flex-wrap justify-center gap-3">
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <button
                   key={category.id}
                   onClick={() => setActiveFilter(category.id)}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center ${
+                  className={`group relative px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center backdrop-blur-sm border ${
                     activeFilter === category.id
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                  }`}
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border-blue-400/30 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
+                      : 'bg-white/10 text-gray-300 border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30 hover:shadow-lg'
+                  } animate-card-entrance`}
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Filter className="w-4 h-4 mr-2" />
+                  <Filter className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                   {category.name}
+                  
+                  {/* Hover effect overlay */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
               ))}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <div
                 key={project.id}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-blue-200"
+                className="group relative animate-card-entrance"
+                style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="relative overflow-hidden">
-                  <div className="w-full h-56 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
-                    {project.image && project.image.startsWith('http') ? (
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                          if (nextElement) {
-                            nextElement.style.display = 'flex';
+                {/* Glassmorphism Project Card */}
+                <div className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden">
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 rounded-3xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Gradient border effect */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
+                  
+                  {/* Animated background glow */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-400/10 to-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Floating particles inside card */}
+                  <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                    <div className="absolute top-4 left-4 w-1 h-1 bg-white/40 rounded-full animate-pulse animation-delay-1000"></div>
+                    <div className="absolute top-8 right-6 w-1.5 h-1.5 bg-blue-300/40 rounded-full animate-pulse animation-delay-2000"></div>
+                    <div className="absolute bottom-6 left-6 w-1 h-1 bg-purple-300/40 rounded-full animate-pulse animation-delay-3000"></div>
+                    <div className="absolute bottom-4 right-4 w-1.5 h-1.5 bg-pink-300/40 rounded-full animate-pulse animation-delay-4000"></div>
+                  </div>
+
+                  {/* Project Image - Clickable */}
+                  <div className="relative overflow-hidden">
+                    {project.liveUrl && project.liveUrl !== '#' ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full h-56 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm cursor-pointer group/image"
+                        onClick={() => {
+                          trackEvent.portfolioProjectClick(project.title);
+                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
+                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
                           }
                         }}
-                      />
-                    ) : null}
-                    <div className={`text-6xl font-bold text-gray-300 ${project.image && project.image.startsWith('http') ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
-                      {project.title.charAt(0)}
-                    </div>
+                      >
+                        {project.image && project.image.startsWith('http') ? (
+                          <img 
+                            src={project.image} 
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 group-hover/image:scale-110 transition-transform duration-500 rounded-t-3xl"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (nextElement) {
+                                nextElement.style.display = 'flex';
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <div className={`text-6xl font-bold text-white/60 group-hover/image:text-white/80 transition-colors duration-300 ${project.image && project.image.startsWith('http') ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
+                          {project.title.charAt(0)}
+                        </div>
+                        
+                        {/* Hover overlay for image */}
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                          <div className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2">
+                            <ExternalLink className="w-4 h-4" />
+                            View Project
+                          </div>
+                        </div>
+                      </a>
+                    ) : (
+                      <div className="w-full h-56 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm">
+                        {project.image && project.image.startsWith('http') ? (
+                          <img 
+                            src={project.image} 
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-3xl"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (nextElement) {
+                                nextElement.style.display = 'flex';
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <div className={`text-6xl font-bold text-white/60 ${project.image && project.image.startsWith('http') ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
+                          {project.title.charAt(0)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Category Badge with glassmorphism */}
+                  <div className="absolute top-3 left-3 z-20">
+                    <span className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs font-medium capitalize border border-white/30">
+                      {project.category.replace('-', ' ')}
+                    </span>
                   </div>
                   
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-4">
-                    <div className="flex gap-2">
+                  {/* Project Content */}
+                  <div className="p-6 relative z-10">
+                    {project.liveUrl && project.liveUrl !== '#' ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block cursor-pointer group/title"
+                        onClick={() => {
+                          trackEvent.portfolioProjectClick(project.title);
+                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
+                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
+                          }
+                        }}
+                      >
+                        <h3 className="text-xl font-bold glassmorphism-text mb-3 group-hover:text-blue-100 group-hover/title:text-blue-200 transition-colors duration-300 hover:underline">
+                          {project.title}
+                        </h3>
+                      </a>
+                    ) : (
+                      <h3 className="text-xl font-bold glassmorphism-text mb-3 group-hover:text-blue-100 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                    )}
+                    
+                    <p className="text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-200 transition-colors duration-300">
+                      {project.description}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="px-2 py-1 bg-white/10 backdrop-blur-sm text-gray-300 rounded-lg text-xs font-medium border border-white/20 hover:bg-white/20 hover:text-white transition-all duration-300 group-hover:scale-105"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className="px-2 py-1 bg-white/10 backdrop-blur-sm text-gray-400 rounded-lg text-xs font-medium border border-white/20">
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Project Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-white/20">
+                      <div className="flex items-center gap-1 text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                        <div className="w-4 h-4 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-green-400/30">
+                          <CheckCircle className="w-2 h-2 text-green-400" />
+                        </div>
+                        Completed
+                      </div>
                       {project.liveUrl && project.liveUrl !== '#' && (
                         <a
                           href={project.liveUrl}
-                          className="bg-white text-gray-900 px-3 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 flex items-center gap-1 text-sm"
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={() => {
-                            trackEvent.portfolioProjectClick(project.title);
-                            if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
-                              ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
-                            }
-                          }}
+                          className="text-blue-400 hover:text-blue-300 font-medium text-sm flex items-center gap-1 transition-colors duration-300 group-hover:translate-x-1"
+                          onClick={() => trackEvent.portfolioProjectClick(project.title)}
                         >
-                          <ExternalLink className="w-3 h-3" />
-                          Live
+                          Visit
+                          <ArrowRight className="w-3 h-3" />
                         </a>
                       )}
                     </div>
                   </div>
 
-                  {/* Category Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-white/90 backdrop-blur-sm text-gray-700 px-2 py-1 rounded-lg text-xs font-medium capitalize">
-                      {project.category.replace('-', ' ')}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200">
-                    {project.title}
-                  </h3>
+                  {/* Hover effect overlay with gradient */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 rounded-lg text-xs font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Project Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                    <div className="flex items-center gap-1 text-xs text-gray-500">
-                      <CheckCircle className="w-3 h-3 text-green-500" />
-                      Completed
-                    </div>
-                    {project.liveUrl && project.liveUrl !== '#' && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1"
-                        onClick={() => trackEvent.portfolioProjectClick(project.title)}
-                      >
-                        Visit
-                        <ArrowRight className="w-3 h-3" />
-                      </a>
-                    )}
-                  </div>
+                  {/* Corner accent */}
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
               </div>
             ))}
