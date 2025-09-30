@@ -31,10 +31,10 @@ export default function PortfolioPage() {
       id: 2,
       title: 'Scarlet - Beauty & Skincare',
       description: 'Premium beauty and skincare e-commerce platform featuring K-beauty products, international brands, and comprehensive product catalog with modern design.',
-      image: 'https://scarlet-frontend.vercel.app/og-image.jpg',
+      image: 'https://www.scarletunlimited.net/og-image.jpg',
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Beauty Platform'],
-      liveUrl: 'https://scarlet-frontend.vercel.app/',
+      liveUrl: 'https://www.scarletunlimited.net/',
       featured: true
     },
     {
