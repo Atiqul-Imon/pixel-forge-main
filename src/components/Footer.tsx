@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Facebook, Linkedin } from 'lucide-react';
+import { Phone, Facebook, Linkedin, Settings } from 'lucide-react';
+import { useConsent } from '@/contexts/ConsentContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { openPreferences } = useConsent();
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -100,13 +104,20 @@ const Footer = () => {
             <p className="text-gray-400 text-sm">
               © {currentYear} Pixel Forge. All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-4 md:mt-0">
+              <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
-                Terms of Service
+              <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
+                Cookie Policy
               </Link>
+              <button
+                onClick={openPreferences}
+                className="text-gray-400 hover:text-white text-sm transition-colors duration-200 flex items-center"
+              >
+                <Settings className="w-3 h-3 mr-1" />
+                Cookie Settings
+              </button>
             </div>
           </div>
         </div>

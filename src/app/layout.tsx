@@ -6,7 +6,9 @@ import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
 import FacebookPixel from "@/components/FacebookPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CookieConsent from "@/components/CookieConsent";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ConsentProvider } from "@/contexts/ConsentContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -105,17 +107,20 @@ export default function RootLayout({
         <html lang="en" className={inter.variable}>
           <head>
             <StructuredData />
-            <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
-            <GoogleAnalytics />
           </head>
       <body className="font-sans antialiased">
-        <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-        </AuthProvider>
+        <ConsentProvider>
+          <AuthProvider>
+            <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
+            <GoogleAnalytics />
+            <Navbar />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <CookieConsent />
+          </AuthProvider>
+        </ConsentProvider>
       </body>
     </html>
   );

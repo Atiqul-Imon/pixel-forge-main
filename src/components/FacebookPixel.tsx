@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Script from 'next/script';
+import { useConsent } from '@/contexts/ConsentContext';
 
 declare global {
   interface Window {
@@ -45,13 +46,43 @@ const sendCAPIEvent = async (eventType: string, userInfo?: any, customData?: any
 };
 
 const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
+  const { hasConsent } = useConsent();
+  const [shouldLoad, setShouldLoad] = useState(false);
+
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.fbq) {
-      // Track page view on both Pixel and CAPI
+    // Check if marketing consent is granted
+    const checkConsent = () => {
+      setShouldLoad(hasConsent('marketing'));
+    };
+
+    checkConsent();
+
+    // Listen for consent updates
+    const handleConsentUpdate = (event: CustomEvent) => {
+      setShouldLoad(event.detail.marketing === true);
+      
+      // If consent is granted and pixel is loaded, track page view
+      if (event.detail.marketing && typeof window !== 'undefined' && window.fbq) {
+        window.fbq('consent', 'grant');
+        window.fbq('track', 'PageView');
+        sendCAPIEvent('pageView', null, { pageName: window.location.pathname });
+      }
+    };
+
+    window.addEventListener('consentUpdated', handleConsentUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('consentUpdated', handleConsentUpdate as EventListener);
+    };
+  }, [hasConsent]);
+
+  useEffect(() => {
+    if (shouldLoad && typeof window !== 'undefined' && window.fbq) {
+      // Track page view on both Pixel and CAPI when consent is granted
       window.fbq('track', 'PageView');
       sendCAPIEvent('pageView', null, { pageName: window.location.pathname });
     }
-  }, []);
+  }, [shouldLoad]);
 
   const trackLead = (email: string, service: string, name?: string) => {
     const eventId = generateEventId();
@@ -148,6 +179,10 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
     }
   }, []);
 
+  if (!shouldLoad) {
+    return null;
+  }
+
   return (
     <>
       <Script
@@ -163,7 +198,9 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('consent', 'revoke');
             fbq('init', '${pixelId}');
+            fbq('consent', 'grant');
             fbq('track', 'PageView');
           `,
         }}
