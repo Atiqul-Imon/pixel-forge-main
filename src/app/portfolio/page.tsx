@@ -99,6 +99,16 @@ export default function PortfolioPage() {
     },
     {
       id: 9,
+      title: 'Dr. Sarah Johnson - Medical Practice',
+      description: 'Professional medical practice website for Dr. Sarah Johnson, a Family Medicine Specialist. Features patient testimonials, service information, appointment booking, and comprehensive healthcare information with modern, trustworthy design.',
+      image: 'https://doctor-website-cp9k.vercel.app/og-image.jpg',
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
+      liveUrl: 'https://doctor-website-cp9k.vercel.app/',
+      featured: true
+    },
+    {
+      id: 10,
       title: 'MERN E-commerce Platform',
       description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
