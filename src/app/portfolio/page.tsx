@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ExternalLink, Filter, ArrowRight, Code, Palette, BarChart3, Headphones, CheckCircle, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Globe, Zap, Shield } from 'lucide-react';
+import { ExternalLink, Filter, ArrowRight, Code, Palette, BarChart3, Headphones, CheckCircle, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Globe, Zap, Shield, X, Maximize2 } from 'lucide-react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
-import { getPortfolioScreenshot } from '@/utils/screenshotApi';
+// Manual images for portfolio projects
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageTitle, setSelectedImageTitle] = useState<string>('');
 
   const categories = [
     { id: 'all', name: 'All Projects' },
@@ -22,7 +24,7 @@ export default function PortfolioPage() {
       id: 1,
       title: 'Arizaan - Premium Modest Fashion',
       description: 'A beautiful e-commerce website for premium modest fashion brand featuring elegant kurtis and modern design. Built with Next.js and integrated with payment systems.',
-      image: getPortfolioScreenshot('https://www.arizaan.com/'),
+      image: '/portfolioimage/arizannscreenshot.webp',
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration'],
       liveUrl: 'https://www.arizaan.com/',
@@ -32,7 +34,7 @@ export default function PortfolioPage() {
       id: 2,
       title: 'Scarlet - Beauty & Skincare',
       description: 'Premium beauty and skincare e-commerce platform featuring K-beauty products, international brands, and comprehensive product catalog with modern design.',
-      image: getPortfolioScreenshot('https://www.scarletunlimited.net/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Scarlet+Beauty+%26+Skincare',
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Beauty Platform'],
       liveUrl: 'https://www.scarletunlimited.net/',
@@ -42,7 +44,7 @@ export default function PortfolioPage() {
       id: 3,
       title: 'Shahan Ahmed - Data Analyst Portfolio',
       description: 'Professional portfolio website for a data analyst showcasing expertise in research, data analysis, BI, and market research with modern design and interactive elements.',
-      image: getPortfolioScreenshot('https://www.shahanahmed.com/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Shahan+Ahmed+Portfolio',
       category: 'portfolio',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Portfolio', 'Data Visualization'],
       liveUrl: 'https://www.shahanahmed.com/',
@@ -52,7 +54,7 @@ export default function PortfolioPage() {
       id: 4,
       title: 'Shantibari - Women\'s Organization',
       description: 'Comprehensive organization website for Shantibari, a women\'s empowerment organization in Bangladesh, featuring services, team profiles, events, and community support programs.',
-      image: getPortfolioScreenshot('https://www.shantibaribd.org/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Shantibari+Organization',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Organization', 'Community Platform'],
       liveUrl: 'https://www.shantibaribd.org/',
@@ -62,7 +64,7 @@ export default function PortfolioPage() {
       id: 5,
       title: 'News and Niche - Technology & News Blog',
       description: 'Comprehensive news and technology blog platform featuring trending topics, AI & automation, web development, and lifestyle content. Multi-category blog with featured posts, recent posts, and popular content sections.',
-      image: getPortfolioScreenshot('https://www.newsandniche.com/en'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=News+and+Niche+Blog',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Blog Platform', 'Content Management', 'SEO'],
       liveUrl: 'https://www.newsandniche.com/en',
@@ -72,7 +74,7 @@ export default function PortfolioPage() {
       id: 6,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
-      image: getPortfolioScreenshot('https://pixelforgebd.com/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Pixel+Forge+Website',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'SEO'],
       liveUrl: 'https://pixelforgebd.com/',
@@ -82,7 +84,7 @@ export default function PortfolioPage() {
       id: 7,
       title: 'Jhatika Safar - Bangladesh Travel',
       description: 'Comprehensive travel website for Bangladesh tourism featuring tour packages, destination guides, customer testimonials, and booking system. Modern design with responsive layout and user-friendly interface.',
-      image: getPortfolioScreenshot('https://www.jhatikasafar.com/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Jhatika+Safar+Travel',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Travel Platform', 'Tourism', 'Responsive Design'],
       liveUrl: 'https://www.jhatikasafar.com/',
@@ -92,7 +94,7 @@ export default function PortfolioPage() {
       id: 8,
       title: 'Maisha Printing - Professional Printing Services',
       description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
-      image: getPortfolioScreenshot('https://maisha-printing.vercel.app/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Maisha+Printing+Services',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Printing Services', 'Business Website', 'Service Platform'],
       liveUrl: 'https://maisha-printing.vercel.app/',
@@ -102,7 +104,7 @@ export default function PortfolioPage() {
       id: 9,
       title: 'Dr. Sarah Johnson - Medical Practice',
       description: 'Professional medical practice website for Dr. Sarah Johnson, a Family Medicine Specialist. Features patient testimonials, service information, appointment booking, and comprehensive healthcare information with modern, trustworthy design.',
-      image: getPortfolioScreenshot('https://doctor-website-cp9k.vercel.app/'),
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Dr.+Sarah+Johnson+Medical',
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
       liveUrl: 'https://doctor-website-cp9k.vercel.app/',
@@ -112,7 +114,7 @@ export default function PortfolioPage() {
       id: 10,
       title: 'MERN E-commerce Platform',
       description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
+      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=MERN+E-commerce+Platform',
       category: 'ecommerce',
       technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe'],
       liveUrl: '#',
@@ -128,6 +130,16 @@ export default function PortfolioPage() {
     // Track portfolio page view
     trackEvent.servicePageView('Portfolio');
   }, []);
+
+  const openImageModal = (imageUrl: string, title: string) => {
+    setSelectedImage(imageUrl);
+    setSelectedImageTitle(title);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+    setSelectedImageTitle('');
+  };
 
   return (
     <div className="min-h-screen pt-16">
@@ -274,7 +286,16 @@ export default function PortfolioPage() {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 {/* Glassmorphism Project Card */}
-                <div className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden">
+                <div 
+                  className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (project.image) {
+                      openImageModal(project.image, project.title);
+                    }
+                  }}
+                >
                   {/* Shimmer effect */}
                   <div className="absolute inset-0 rounded-3xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
@@ -292,66 +313,55 @@ export default function PortfolioPage() {
                     <div className="absolute bottom-4 right-4 w-1.5 h-1.5 bg-pink-300/40 rounded-full animate-pulse animation-delay-4000"></div>
                   </div>
 
-                  {/* Project Image - Clickable */}
+                  {/* Project Image - Clickable and Bigger */}
                   <div className="relative overflow-hidden">
-                    {project.liveUrl && project.liveUrl !== '#' ? (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full h-56 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm cursor-pointer group/image"
-                        onClick={() => {
-                          trackEvent.portfolioProjectClick(project.title);
-                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
-                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
-                          }
-                        }}
-                      >
-                        {project.image && project.image.startsWith('http') ? (
-                          <img 
-                            src={project.image} 
-                            alt={project.title}
-                            className="w-full h-full object-cover group-hover:scale-105 group-hover/image:scale-110 transition-transform duration-500 rounded-t-3xl"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                              if (nextElement) {
-                                nextElement.style.display = 'flex';
-                              }
-                            }}
-                          />
-                        ) : null}
-                        <div className={`text-6xl font-bold text-white/60 group-hover/image:text-white/80 transition-colors duration-300 ${project.image && project.image.startsWith('http') ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
-                          {project.title.charAt(0)}
+                    <div className="w-full h-72 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm group/image relative">
+                      {project.image ? (
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-t-3xl pointer-events-none"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (nextElement) {
+                              nextElement.style.display = 'flex';
+                            }
+                          }}
+                        />
+                      ) : null}
+                      <div className={`text-6xl font-bold text-white/60 group-hover/image:text-white/80 transition-colors duration-300 ${project.image ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
+                        {project.title.charAt(0)}
+                      </div>
+                      
+                      {/* Hover overlay for image */}
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                        <div className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2 pointer-events-none">
+                          <Maximize2 className="w-4 h-4" />
+                          Click to View Full Image
                         </div>
-                        
-                        {/* Hover overlay for image */}
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <div className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2">
-                            <ExternalLink className="w-4 h-4" />
-                            View Project
-                          </div>
-                        </div>
-                      </a>
-                    ) : (
-                      <div className="w-full h-56 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm">
-                        {project.image && project.image.startsWith('http') ? (
-                          <img 
-                            src={project.image} 
-                            alt={project.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-3xl"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                              if (nextElement) {
-                                nextElement.style.display = 'flex';
-                              }
-                            }}
-                          />
-                        ) : null}
-                        <div className={`text-6xl font-bold text-white/60 ${project.image && project.image.startsWith('http') ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
-                          {project.title.charAt(0)}
-                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Live URL Button */}
+                    {project.liveUrl && project.liveUrl !== '#' && (
+                      <div className="absolute top-3 right-3 z-10">
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2 hover:bg-white/30 transition-all duration-300"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            trackEvent.portfolioProjectClick(project.title);
+                            if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
+                              ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
+                            }
+                          }}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Visit Site
+                        </a>
                       </div>
                     )}
                   </div>
@@ -493,6 +503,50 @@ export default function PortfolioPage() {
           </div>
         </div>
       </section>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn"
+          style={{ zIndex: 9999 }}
+        >
+          <div className="relative max-w-6xl max-h-[90vh] w-full glassmorphism-card bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/20">
+              <h3 className="text-2xl font-bold text-white glassmorphism-text">{selectedImageTitle}</h3>
+              <button
+                onClick={closeImageModal}
+                className="glassmorphism bg-white/10 backdrop-blur-sm text-white/70 hover:text-white hover:bg-white/20 px-3 py-2 rounded-xl font-medium border border-white/20 hover:border-white/40 transition-all duration-300 flex items-center gap-2"
+              >
+                <X className="w-5 h-5" />
+                Close
+              </button>
+            </div>
+            
+            {/* Modal Image */}
+            <div className="flex items-center justify-center bg-white/5 p-6">
+              <img
+                src={selectedImage}
+                alt={selectedImageTitle}
+                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl"
+              />
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-6 border-t border-white/20">
+              <div className="flex justify-center">
+                <button
+                  onClick={closeImageModal}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center gap-2"
+                >
+                  <X className="w-5 h-5" />
+                  Close Modal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
