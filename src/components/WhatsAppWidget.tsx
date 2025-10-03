@@ -22,13 +22,9 @@ export default function WhatsAppWidget({
   const [isVisible, setIsVisible] = useState(false);
   const [customMessage, setCustomMessage] = useState(message);
 
-  // Show widget after a delay for better UX
+  // Show widget immediately for better visibility
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 3000); // Show after 3 seconds
-
-    return () => clearTimeout(timer);
+    setIsVisible(true);
   }, []);
 
   // Format phone number for WhatsApp (remove spaces, dashes, etc.)

@@ -111,10 +111,10 @@ export default function Home() {
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </InteractiveButton>
               <Link
-                href="/portfolio"
+                href="/landing-pages"
                 className="border-2 border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 hover:border-white/50 transition-all duration-300 shadow-2xl hover:shadow-white/10 hover:scale-105 transform backdrop-blur-sm"
               >
-                View Our Work
+                Landing Pages from ৳2,000
               </Link>
             </div>
 
