@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { ExternalLink, Filter, ArrowRight, Code, Palette, BarChart3, Headphones, CheckCircle, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Globe, Zap, Shield, X, Maximize2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { trackEvent } from '@/lib/gtag';
-// Manual images for portfolio projects
+import { getResponsivePortfolioImage, PORTFOLIO_IMAGES } from '@/utils/cloudinary';
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -24,7 +25,11 @@ export default function PortfolioPage() {
       id: 1,
       title: 'Arizaan - Premium Modest Fashion',
       description: 'A beautiful e-commerce website for premium modest fashion brand featuring elegant kurtis and modern design. Built with Next.js and integrated with payment systems.',
-      image: '/portfolioimage/arizannscreenshot.webp',
+      image: (() => {
+        const url = 'https://res.cloudinary.com/db5yniogx/image/upload/v1759491239/arizannscreenshot_fzh4jv.webp';
+        console.log('Arizaan image URL:', url);
+        return url;
+      })(),
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration'],
       liveUrl: 'https://www.arizaan.com/',
@@ -34,7 +39,7 @@ export default function PortfolioPage() {
       id: 2,
       title: 'Scarlet - Beauty & Skincare',
       description: 'Premium beauty and skincare e-commerce platform featuring K-beauty products, international brands, and comprehensive product catalog with modern design.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Scarlet+Beauty+%26+Skincare',
+      image: getResponsivePortfolioImage('scarlet', 'card'),
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Beauty Platform'],
       liveUrl: 'https://www.scarletunlimited.net/',
@@ -44,7 +49,7 @@ export default function PortfolioPage() {
       id: 3,
       title: 'Shahan Ahmed - Data Analyst Portfolio',
       description: 'Professional portfolio website for a data analyst showcasing expertise in research, data analysis, BI, and market research with modern design and interactive elements.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Shahan+Ahmed+Portfolio',
+      image: getResponsivePortfolioImage('shahan', 'card'),
       category: 'portfolio',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Portfolio', 'Data Visualization'],
       liveUrl: 'https://www.shahanahmed.com/',
@@ -54,7 +59,7 @@ export default function PortfolioPage() {
       id: 4,
       title: 'Shantibari - Women\'s Organization',
       description: 'Comprehensive organization website for Shantibari, a women\'s empowerment organization in Bangladesh, featuring services, team profiles, events, and community support programs.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Shantibari+Organization',
+      image: getResponsivePortfolioImage('shantibari', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Organization', 'Community Platform'],
       liveUrl: 'https://www.shantibaribd.org/',
@@ -64,7 +69,7 @@ export default function PortfolioPage() {
       id: 5,
       title: 'News and Niche - Technology & News Blog',
       description: 'Comprehensive news and technology blog platform featuring trending topics, AI & automation, web development, and lifestyle content. Multi-category blog with featured posts, recent posts, and popular content sections.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=News+and+Niche+Blog',
+      image: getResponsivePortfolioImage('newsandniche', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Blog Platform', 'Content Management', 'SEO'],
       liveUrl: 'https://www.newsandniche.com/en',
@@ -74,7 +79,7 @@ export default function PortfolioPage() {
       id: 6,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Pixel+Forge+Website',
+      image: getResponsivePortfolioImage('pixelforge', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'SEO'],
       liveUrl: 'https://pixelforgebd.com/',
@@ -84,7 +89,7 @@ export default function PortfolioPage() {
       id: 7,
       title: 'Jhatika Safar - Bangladesh Travel',
       description: 'Comprehensive travel website for Bangladesh tourism featuring tour packages, destination guides, customer testimonials, and booking system. Modern design with responsive layout and user-friendly interface.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Jhatika+Safar+Travel',
+      image: getResponsivePortfolioImage('jhatikasafar', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Travel Platform', 'Tourism', 'Responsive Design'],
       liveUrl: 'https://www.jhatikasafar.com/',
@@ -94,7 +99,7 @@ export default function PortfolioPage() {
       id: 8,
       title: 'Maisha Printing - Professional Printing Services',
       description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Maisha+Printing+Services',
+      image: getResponsivePortfolioImage('maishaprinting', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Printing Services', 'Business Website', 'Service Platform'],
       liveUrl: 'https://maisha-printing.vercel.app/',
@@ -104,21 +109,11 @@ export default function PortfolioPage() {
       id: 9,
       title: 'Dr. Sarah Johnson - Medical Practice',
       description: 'Professional medical practice website for Dr. Sarah Johnson, a Family Medicine Specialist. Features patient testimonials, service information, appointment booking, and comprehensive healthcare information with modern, trustworthy design.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=Dr.+Sarah+Johnson+Medical',
+      image: getResponsivePortfolioImage('drsarah', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
       liveUrl: 'https://doctor-website-cp9k.vercel.app/',
       featured: true
-    },
-    {
-      id: 10,
-      title: 'MERN E-commerce Platform',
-      description: 'Full-stack e-commerce solution with user authentication, product management, shopping cart, and payment integration.',
-      image: 'https://via.placeholder.com/1200x800/4f46e5/ffffff?text=MERN+E-commerce+Platform',
-      category: 'ecommerce',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe'],
-      liveUrl: '#',
-      featured: false
     }
   ];
 
@@ -132,6 +127,7 @@ export default function PortfolioPage() {
   }, []);
 
   const openImageModal = (imageUrl: string, title: string) => {
+    console.log('Opening modal with image URL:', imageUrl);
     setSelectedImage(imageUrl);
     setSelectedImageTitle(title);
   };
@@ -317,11 +313,15 @@ export default function PortfolioPage() {
                   <div className="relative overflow-hidden">
                     <div className="w-full h-72 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm group/image relative">
                       {project.image ? (
-                        <img 
+                        <Image 
                           src={project.image} 
                           alt={project.title}
+                          width={1200}
+                          height={800}
                           className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-t-3xl pointer-events-none"
+                          onLoad={() => console.log('Image loaded successfully:', project.title)}
                           onError={(e) => {
+                            console.error('Image failed to load:', project.title, project.image);
                             e.currentTarget.style.display = 'none';
                             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
                             if (nextElement) {
@@ -525,9 +525,11 @@ export default function PortfolioPage() {
             
             {/* Modal Image */}
             <div className="flex items-center justify-center bg-white/5 p-6">
-              <img
+              <Image
                 src={selectedImage}
                 alt={selectedImageTitle}
+                width={1920}
+                height={1080}
                 className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl"
               />
             </div>
