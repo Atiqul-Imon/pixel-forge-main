@@ -114,6 +114,16 @@ export default function PortfolioPage() {
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
       liveUrl: 'https://doctor-website-cp9k.vercel.app/',
       featured: true
+    },
+    {
+      id: 10,
+      title: 'FitLife Pro - Premium Fitness Center',
+      description: 'Modern fitness center landing page featuring premium gym services, membership plans, personal training, group classes, and wellness programs. Professional design with comprehensive service showcase and member testimonials.',
+      image: getResponsivePortfolioImage('fitnesspro', 'card'),
+      category: 'landing-page',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Fitness Website', 'Landing Page', 'Membership System'],
+      liveUrl: 'https://fitnesspro-two.vercel.app/',
+      featured: true
     }
   ];
 

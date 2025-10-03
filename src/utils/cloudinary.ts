@@ -39,6 +39,7 @@ export const PORTFOLIO_IMAGES = {
   jhatikasafar: 'jhatikasafarfullpage_u2klnc',
   maishaprinting: 'maishaprintingfullpage_w6eo2u',
   drsarah: 'doctorwebsitefullpage_n8bx3k',
+  fitnesspro: 'fitnesspro_landing_page', // Placeholder - upload actual image to Cloudinary
   
   // Add new projects here as you upload them to Cloudinary
   // mern_ecommerce: 'mern_ecommerce_platform_screenshot',
