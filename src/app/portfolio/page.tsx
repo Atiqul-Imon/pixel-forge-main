@@ -283,11 +283,12 @@ export default function PortfolioPage() {
               >
                 {/* Glassmorphism Project Card */}
                 <div 
-                  className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden cursor-pointer"
+                  className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden cursor-default sm:cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (project.image) {
+                    // Only open modal on desktop (sm and up)
+                    if (project.image && window.innerWidth >= 640) {
                       openImageModal(project.image, project.title);
                     }
                   }}
@@ -334,8 +335,8 @@ export default function PortfolioPage() {
                         {project.title.charAt(0)}
                       </div>
                       
-                      {/* Hover overlay for image */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                      {/* Hover overlay for image - Hidden on mobile */}
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none hidden sm:flex">
                         <div className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2 pointer-events-none">
                           <Maximize2 className="w-4 h-4" />
                           Click to View Full Image
@@ -507,44 +508,64 @@ export default function PortfolioPage() {
       {/* Image Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn"
-          style={{ zIndex: 9999 }}
+          className="fixed inset-0 bg-black z-[9999] overflow-hidden"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 9999
+          }}
+          onClick={closeImageModal}
         >
-          <div className="relative max-w-6xl max-h-[90vh] w-full glassmorphism-card bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/20">
-              <h3 className="text-2xl font-bold text-white glassmorphism-text">{selectedImageTitle}</h3>
-              <button
-                onClick={closeImageModal}
-                className="glassmorphism bg-white/10 backdrop-blur-sm text-white/70 hover:text-white hover:bg-white/20 px-3 py-2 rounded-xl font-medium border border-white/20 hover:border-white/40 transition-all duration-300 flex items-center gap-2"
-              >
-                <X className="w-5 h-5" />
-                Close
-              </button>
-            </div>
-            
-            {/* Modal Image */}
-            <div className="flex items-center justify-center bg-white/5 p-6">
+          {/* Modal Header */}
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 bg-black/80 backdrop-blur-sm z-10">
+            <h3 className="text-sm font-bold text-white truncate pr-2 flex-1">{selectedImageTitle}</h3>
+            <button
+              onClick={closeImageModal}
+              className="bg-white/20 text-white px-2 py-1 rounded text-sm flex items-center gap-1 flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+              <span className="hidden sm:inline">Close</span>
+            </button>
+          </div>
+          
+          {/* Modal Image */}
+          <div 
+            className="absolute inset-0 flex items-center justify-center pt-12 pb-16 px-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-full h-full flex items-center justify-center">
               <Image
                 src={selectedImage}
                 alt={selectedImageTitle}
                 width={1920}
                 height={1080}
-                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl"
+                className="max-w-full max-h-full object-contain"
+                priority
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  width: 'auto',
+                  height: 'auto'
+                }}
               />
             </div>
-            
-            {/* Modal Footer */}
-            <div className="p-6 border-t border-white/20">
-              <div className="flex justify-center">
-                <button
-                  onClick={closeImageModal}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center gap-2"
-                >
-                  <X className="w-5 h-5" />
-                  Close Modal
-                </button>
-              </div>
+          </div>
+          
+          {/* Modal Footer */}
+          <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/80 backdrop-blur-sm z-10">
+            <div className="flex justify-center">
+              <button
+                onClick={closeImageModal}
+                className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2"
+              >
+                <X className="w-4 h-4" />
+                Close
+              </button>
             </div>
           </div>
         </div>
