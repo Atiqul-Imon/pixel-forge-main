@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ExternalLink, Filter, ArrowRight, Code, Palette, BarChart3, Headphones, CheckCircle, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Globe, Zap, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
+import { getPortfolioScreenshot } from '@/utils/screenshotApi';
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -21,7 +22,7 @@ export default function PortfolioPage() {
       id: 1,
       title: 'Arizaan - Premium Modest Fashion',
       description: 'A beautiful e-commerce website for premium modest fashion brand featuring elegant kurtis and modern design. Built with Next.js and integrated with payment systems.',
-      image: 'https://www.arizaan.com/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.arizaan.com/'),
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration'],
       liveUrl: 'https://www.arizaan.com/',
@@ -31,7 +32,7 @@ export default function PortfolioPage() {
       id: 2,
       title: 'Scarlet - Beauty & Skincare',
       description: 'Premium beauty and skincare e-commerce platform featuring K-beauty products, international brands, and comprehensive product catalog with modern design.',
-      image: 'https://www.scarletunlimited.net/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.scarletunlimited.net/'),
       category: 'ecommerce',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Beauty Platform'],
       liveUrl: 'https://www.scarletunlimited.net/',
@@ -41,7 +42,7 @@ export default function PortfolioPage() {
       id: 3,
       title: 'Shahan Ahmed - Data Analyst Portfolio',
       description: 'Professional portfolio website for a data analyst showcasing expertise in research, data analysis, BI, and market research with modern design and interactive elements.',
-      image: 'https://www.shahanahmed.com/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.shahanahmed.com/'),
       category: 'portfolio',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Portfolio', 'Data Visualization'],
       liveUrl: 'https://www.shahanahmed.com/',
@@ -51,7 +52,7 @@ export default function PortfolioPage() {
       id: 4,
       title: 'Shantibari - Women\'s Organization',
       description: 'Comprehensive organization website for Shantibari, a women\'s empowerment organization in Bangladesh, featuring services, team profiles, events, and community support programs.',
-      image: 'https://www.shantibaribd.org/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.shantibaribd.org/'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Organization', 'Community Platform'],
       liveUrl: 'https://www.shantibaribd.org/',
@@ -61,7 +62,7 @@ export default function PortfolioPage() {
       id: 5,
       title: 'News and Niche - Technology & News Blog',
       description: 'Comprehensive news and technology blog platform featuring trending topics, AI & automation, web development, and lifestyle content. Multi-category blog with featured posts, recent posts, and popular content sections.',
-      image: 'https://www.newsandniche.com/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.newsandniche.com/en'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Blog Platform', 'Content Management', 'SEO'],
       liveUrl: 'https://www.newsandniche.com/en',
@@ -71,7 +72,7 @@ export default function PortfolioPage() {
       id: 6,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
+      image: getPortfolioScreenshot('https://pixelforgebd.com/'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'SEO'],
       liveUrl: 'https://pixelforgebd.com/',
@@ -81,7 +82,7 @@ export default function PortfolioPage() {
       id: 7,
       title: 'Jhatika Safar - Bangladesh Travel',
       description: 'Comprehensive travel website for Bangladesh tourism featuring tour packages, destination guides, customer testimonials, and booking system. Modern design with responsive layout and user-friendly interface.',
-      image: 'https://www.jhatikasafar.com/og-image.jpg',
+      image: getPortfolioScreenshot('https://www.jhatikasafar.com/'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Travel Platform', 'Tourism', 'Responsive Design'],
       liveUrl: 'https://www.jhatikasafar.com/',
@@ -91,7 +92,7 @@ export default function PortfolioPage() {
       id: 8,
       title: 'Maisha Printing - Professional Printing Services',
       description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
-      image: 'https://maisha-printing.vercel.app/og-image.jpg',
+      image: getPortfolioScreenshot('https://maisha-printing.vercel.app/'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Printing Services', 'Business Website', 'Service Platform'],
       liveUrl: 'https://maisha-printing.vercel.app/',
@@ -101,7 +102,7 @@ export default function PortfolioPage() {
       id: 9,
       title: 'Dr. Sarah Johnson - Medical Practice',
       description: 'Professional medical practice website for Dr. Sarah Johnson, a Family Medicine Specialist. Features patient testimonials, service information, appointment booking, and comprehensive healthcare information with modern, trustworthy design.',
-      image: 'https://doctor-website-cp9k.vercel.app/og-image.jpg',
+      image: getPortfolioScreenshot('https://doctor-website-cp9k.vercel.app/'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
       liveUrl: 'https://doctor-website-cp9k.vercel.app/',
