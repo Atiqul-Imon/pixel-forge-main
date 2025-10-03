@@ -7,6 +7,7 @@ import StructuredData from "@/components/StructuredData";
 import FacebookPixel from "@/components/FacebookPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ConsentProvider } from "@/contexts/ConsentContext";
 
@@ -119,6 +120,13 @@ export default function RootLayout({
             </main>
             <Footer />
             <CookieConsent />
+            <WhatsAppWidget 
+              phoneNumber="+8801714918360"
+              message="Hello! I'm interested in your web development services. Can you help me with my project?"
+              position="bottom-right"
+              showOnMobile={true}
+              showOnDesktop={true}
+            />
           </AuthProvider>
         </ConsentProvider>
       </body>
