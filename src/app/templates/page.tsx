@@ -190,7 +190,7 @@ export default function TemplatesPage() {
                 <div className="relative h-64 overflow-hidden">
                   <Image
                     src={template.image}
-                    alt={template.name}
+                    alt={`${template.name} - Professional website template for ${template.category} businesses`}
                     width={400}
                     height={256}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -427,7 +427,7 @@ export default function TemplatesPage() {
               <div className="mb-6 max-h-[500px] overflow-auto border border-white/20 rounded-lg">
                 <Image
                   src={selectedTemplate.image}
-                  alt={selectedTemplate.name}
+                  alt={`${selectedTemplate.name} - Full preview of professional website template`}
                   width={1200}
                   height={800}
                   className="w-full object-contain rounded-lg"

@@ -96,9 +96,9 @@ export default function Home() {
             </h1>
 
             {/* Subtitle with better contrast */}
-            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
+            <h2 className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
               We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.
-            </p>
+            </h2>
 
             {/* CTA Button with enhanced styling */}
             <div className="flex justify-center mb-12">

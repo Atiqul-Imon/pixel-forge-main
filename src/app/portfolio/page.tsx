@@ -108,11 +108,11 @@ export default function PortfolioPage() {
     {
       id: 9,
       title: 'Dr. Sarah Johnson - Medical Practice',
-      description: 'Professional medical practice website for Dr. Sarah Johnson, a Family Medicine Specialist. Features patient testimonials, service information, appointment booking, and comprehensive healthcare information with modern, trustworthy design.',
+      description: 'Professional medical practice website for Dr. Sarah Johnson, an Internal Medicine specialist. Features comprehensive contact information, appointment booking, office hours, emergency contact details, and patient-centered healthcare services with modern, trustworthy design.',
       image: getResponsivePortfolioImage('drsarah', 'card'),
       category: 'website',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
-      liveUrl: 'https://doctor-website-cp9k.vercel.app/',
+      liveUrl: 'https://doctor-website-template.netlify.app/',
       featured: true
     },
     {
@@ -326,7 +326,7 @@ export default function PortfolioPage() {
                       {project.image ? (
                         <Image 
                           src={project.image} 
-                          alt={project.title}
+                          alt={`${project.title} - ${project.description.substring(0, 100)}...`}
                           width={1200}
                           height={800}
                           className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-t-3xl pointer-events-none"
@@ -518,64 +518,35 @@ export default function PortfolioPage() {
       {/* Image Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 bg-black z-[9999] overflow-hidden"
-          style={{ 
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 9999
-          }}
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
           onClick={closeImageModal}
         >
-          {/* Modal Header */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 bg-black/80 backdrop-blur-sm z-10">
-            <h3 className="text-sm font-bold text-white truncate pr-2 flex-1">{selectedImageTitle}</h3>
-            <button
-              onClick={closeImageModal}
-              className="bg-white/20 text-white px-2 py-1 rounded text-sm flex items-center gap-1 flex-shrink-0"
-            >
-              <X className="w-4 h-4" />
-              <span className="hidden sm:inline">Close</span>
-            </button>
-          </div>
-          
-          {/* Modal Image */}
           <div 
-            className="absolute inset-0 flex items-center justify-center pt-12 pb-16 px-2"
+            className="bg-gray-900 rounded-2xl shadow-2xl max-w-7xl max-h-[95vh] w-full flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full h-full flex items-center justify-center">
-              <Image
-                src={selectedImage}
-                alt={selectedImageTitle}
-                width={1920}
-                height={1080}
-                className="max-w-full max-h-full object-contain"
-                priority
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  width: 'auto',
-                  height: 'auto'
-                }}
-              />
-            </div>
-          </div>
-          
-          {/* Modal Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/80 backdrop-blur-sm z-10">
-            <div className="flex justify-center">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
+              <h3 className="text-xl font-bold text-white">{selectedImageTitle} - Preview</h3>
               <button
                 onClick={closeImageModal}
-                className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2"
+                className="text-white/70 hover:text-white transition-colors p-2"
               >
-                <X className="w-4 h-4" />
-                Close
+                <X className="w-6 h-6" />
               </button>
+            </div>
+            
+            {/* Modal Image - Scrollable */}
+            <div className="p-6">
+              <div className="mb-6 max-h-[500px] overflow-auto border border-white/20 rounded-lg">
+                <Image
+                  src={selectedImage}
+                  alt={`${selectedImageTitle} - Full preview of web development project`}
+                  width={1200}
+                  height={800}
+                  className="w-full object-contain rounded-lg"
+                />
+              </div>
             </div>
           </div>
         </div>

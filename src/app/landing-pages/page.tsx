@@ -27,84 +27,6 @@ export default function LandingPagesPage() {
       deliveryTime: '2 days',
       demoUrl: 'https://fitnesspro-two.vercel.app/',
       popular: true
-    },
-    {
-      id: 1,
-      title: 'Restaurant Landing Page',
-      description: 'Perfect for restaurants, cafes, and food businesses. Features menu showcase, online ordering, and location details.',
-      image: '/api/placeholder/400/300',
-      price: '৳25,000',
-      originalPrice: '৳35,000',
-      features: ['Menu Display', 'Online Ordering', 'Location Map', 'Customer Reviews', 'Mobile Responsive'],
-      category: 'Food & Beverage',
-      deliveryTime: '3-5 days',
-      demoUrl: '#',
-      popular: false
-    },
-    {
-      id: 2,
-      title: 'E-commerce Landing Page',
-      description: 'High-converting e-commerce landing page with product showcase, shopping cart, and payment integration.',
-      image: '/api/placeholder/400/300',
-      price: '৳35,000',
-      originalPrice: '৳45,000',
-      features: ['Product Gallery', 'Shopping Cart', 'Payment Gateway', 'Inventory Management', 'Order Tracking'],
-      category: 'E-commerce',
-      deliveryTime: '5-7 days',
-      demoUrl: '#',
-      popular: false
-    },
-    {
-      id: 3,
-      title: 'Service Business Landing Page',
-      description: 'Professional landing page for service-based businesses like consulting, agencies, and freelancers.',
-      image: '/api/placeholder/400/300',
-      price: '৳20,000',
-      originalPrice: '৳30,000',
-      features: ['Service Showcase', 'Contact Forms', 'Testimonials', 'About Section', 'Blog Integration'],
-      category: 'Services',
-      deliveryTime: '3-4 days',
-      demoUrl: '#',
-      popular: false
-    },
-    {
-      id: 4,
-      title: 'Real Estate Landing Page',
-      description: 'Stunning landing page for real estate agents and property developers with property listings and virtual tours.',
-      image: '/api/placeholder/400/300',
-      price: '৳30,000',
-      originalPrice: '৳40,000',
-      features: ['Property Listings', 'Virtual Tours', 'Contact Forms', 'Location Maps', 'Agent Profiles'],
-      category: 'Real Estate',
-      deliveryTime: '4-6 days',
-      demoUrl: '#',
-      popular: true
-    },
-    {
-      id: 5,
-      title: 'Fitness & Gym Landing Page',
-      description: 'Dynamic landing page for fitness centers, gyms, and personal trainers with class schedules and membership info.',
-      image: '/api/placeholder/400/300',
-      price: '৳22,000',
-      originalPrice: '৳32,000',
-      features: ['Class Schedules', 'Membership Plans', 'Trainer Profiles', 'Booking System', 'Success Stories'],
-      category: 'Fitness',
-      deliveryTime: '3-5 days',
-      demoUrl: '#',
-      popular: false
-    },
-    {
-      id: 6,
-      title: 'Medical & Healthcare Landing Page',
-      description: 'Professional medical landing page for clinics, hospitals, and healthcare providers with appointment booking.',
-      image: '/api/placeholder/400/300',
-      price: '৳28,000',
-      originalPrice: '৳38,000',
-      features: ['Appointment Booking', 'Doctor Profiles', 'Services List', 'Patient Portal', 'Emergency Contact'],
-      category: 'Healthcare',
-      deliveryTime: '4-6 days',
-      demoUrl: '#',
-      popular: false
     }
   ];
 
@@ -194,10 +116,7 @@ export default function LandingPagesPage() {
           
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-4xl mx-auto leading-relaxed">
             Get your business online fast with our high-converting landing pages. 
-            Perfect for restaurants, e-commerce, services, and more. 
-            <span className="text-yellow-300 font-semibold">Ready in 3-7 days!</span>
-            <br />
-            <span className="text-blue-300 font-semibold">🌐 Available in both Bangla & English!</span>
+            Perfect for restaurants, e-commerce, services, and more.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -241,7 +160,7 @@ export default function LandingPagesPage() {
                 <div className="relative">
                   <Image
                     src={demo.image}
-                    alt={demo.title}
+                    alt={`${demo.title} - High converting landing page design for ${demo.category} businesses`}
                     width={400}
                     height={300}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
