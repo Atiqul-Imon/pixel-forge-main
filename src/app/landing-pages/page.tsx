@@ -122,7 +122,7 @@ export default function LandingPagesPage() {
         'Basic SEO Setup',
         'Meta Pixel Setup',
         '2 Revisions',
-        '3 Days Delivery',
+        '2-3 Days Delivery',
         '1 Month Support'
       ],
       popular: false
@@ -140,7 +140,7 @@ export default function LandingPagesPage() {
         'Advanced SEO Optimization',
         'Meta Pixel & CAPI Setup',
         '5 Revisions Included',
-        '3-5 Days Fast Delivery',
+        '2-3 Days Delivery',
         '3 Months Free Support',
         'Google Analytics Integration',
         'Speed Optimization',
@@ -162,7 +162,7 @@ export default function LandingPagesPage() {
         'Complete SEO Setup & Optimization',
         'Meta Pixel & CAPI Setup',
         'Unlimited Revisions',
-        '5-7 Days Delivery',
+        '2-3 Days Delivery',
         '6 Months Free Support',
         'Advanced Analytics & Tracking',
         'Speed Optimization',
@@ -319,6 +319,37 @@ export default function LandingPagesPage() {
               Select the package that best fits your business needs. 
               All packages include mobile responsiveness and basic SEO.
             </p>
+          </div>
+
+          {/* Marketing Call-to-Action */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
+            <div className="text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                Ready to Get Your Custom Landing Page Built?
+              </h3>
+              <p className="text-lg text-gray-700 mb-6">
+                Choose one of our packages and get your business landing page exactly how you want it. 
+                From concept to launch, we'll bring your vision to life with professional design and functionality.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Custom Design
+                </span>
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Mobile Responsive
+                </span>
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Fast Delivery
+                </span>
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  SEO Optimized
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

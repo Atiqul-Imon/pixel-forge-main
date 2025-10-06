@@ -57,17 +57,17 @@ export default function WhatsAppWidget({
     setIsOpen(false);
   };
 
-  // Position classes
+  // Position classes with mobile optimization
   const getPositionClasses = () => {
     switch (position) {
       case 'bottom-left':
-        return 'bottom-6 left-6';
+        return 'bottom-6 left-4 sm:bottom-6 sm:left-6';
       case 'top-right':
-        return 'top-6 right-6';
+        return 'top-4 right-4 sm:top-6 sm:right-6';
       case 'top-left':
-        return 'top-6 left-6';
+        return 'top-4 left-4 sm:top-6 sm:left-6';
       default:
-        return 'bottom-6 right-6';
+        return 'bottom-6 right-4 sm:bottom-6 sm:right-6';
     }
   };
 
@@ -75,11 +75,11 @@ export default function WhatsAppWidget({
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed ${getPositionClasses()} z-50`}>
+    <div className={`fixed ${getPositionClasses()} z-[9999]`} style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       {/* Chat Options Panel */}
       {isOpen && (
         <div className="mb-4 animate-slideUp">
-          <div className="glassmorphism-card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-6 w-80 max-w-[calc(100vw-2rem)]">
+          <div className="glassmorphism-card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-4 sm:p-6 w-72 sm:w-80 max-w-[calc(100vw-2rem)]">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Get in Touch</h3>
@@ -148,19 +148,19 @@ export default function WhatsAppWidget({
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-110 animate-pulse hover:animate-none"
+        className="group relative bg-green-600 hover:bg-green-700 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-110 animate-pulse hover:animate-none w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center"
         aria-label="Open WhatsApp chat"
       >
         {/* WhatsApp Icon */}
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
         
         {/* Notification Badge */}
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
           <span className="text-xs font-bold text-white">!</span>
         </div>
 
-        {/* Hover Tooltip */}
-        <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+        {/* Hover Tooltip - Hidden on mobile */}
+        <div className="hidden sm:block absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
           Chat with us on WhatsApp
         </div>
       </button>

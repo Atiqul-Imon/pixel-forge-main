@@ -5,7 +5,24 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import useAdminAuth from '@/hooks/useAdminAuth';
 import AdminLayout from '@/components/AdminLayout';
-import { Eye, Mail, Phone, Calendar, Search, CheckCircle, XCircle } from 'lucide-react';
+import { 
+  Eye, 
+  Mail, 
+  Phone, 
+  Calendar, 
+  Search, 
+  CheckCircle, 
+  XCircle, 
+  ShoppingCart, 
+  DollarSign, 
+  Users, 
+  TrendingUp, 
+  FileText, 
+  Download,
+  Star,
+  Globe,
+  BarChart3
+} from 'lucide-react';
 
 interface ContactMessage {
   _id: string;
@@ -18,12 +35,48 @@ interface ContactMessage {
   status?: 'new' | 'read' | 'contacted' | 'closed';
 }
 
+interface TemplateInquiry {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  template: string;
+  customization: string;
+  budget: string;
+  message: string;
+  status: 'new' | 'quoted' | 'negotiating' | 'sold' | 'closed';
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface TemplateStats {
+  totalInquiries: number;
+  newInquiries: number;
+  quotedInquiries: number;
+  soldInquiries: number;
+  totalRevenue: number;
+  conversionRate: number;
+  avgDealSize: number;
+}
+
 export default function AdminPanel() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [templateInquiries, setTemplateInquiries] = useState<TemplateInquiry[]>([]);
+  const [templateStats, setTemplateStats] = useState<TemplateStats>({
+    totalInquiries: 0,
+    newInquiries: 0,
+    quotedInquiries: 0,
+    soldInquiries: 0,
+    totalRevenue: 0,
+    conversionRate: 0,
+    avgDealSize: 0
+  });
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+  const [selectedInquiry, setSelectedInquiry] = useState<TemplateInquiry | null>(null);
+  const [activeTab, setActiveTab] = useState<'leads' | 'templates'>('leads');
   const { logout } = useAuth();
   const { user, loading: authLoading } = useAdminAuth();
   const router = useRouter();
@@ -32,6 +85,7 @@ export default function AdminPanel() {
     // Authentication is handled by useAdminAuth hook
     if (!authLoading) {
       fetchMessages();
+      fetchTemplateInquiries();
     }
   }, [authLoading]);
 
@@ -61,6 +115,76 @@ export default function AdminPanel() {
       console.error('Error fetching messages:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTemplateInquiries = async () => {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
+      // For now, we'll create mock data. In a real app, this would fetch from an API
+      const mockInquiries: TemplateInquiry[] = [
+        {
+          _id: '1',
+          name: 'Dr. Ahmed Rahman',
+          email: 'ahmed@clinic.com',
+          phone: '+8801712345678',
+          template: 'Medical Practice Pro',
+          customization: 'Basic Customization',
+          budget: '৳10,000',
+          message: 'I need the Medical Practice Pro template customized for my clinic. Please quote for basic customization.',
+          status: 'new',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '2',
+          name: 'Sarah Khan',
+          email: 'sarah@dental.com',
+          phone: '+8801712345679',
+          template: 'Medical Practice Pro',
+          customization: 'Advanced Customization',
+          budget: '৳15,000',
+          message: 'Interested in the medical template for my dental practice. Need advanced customization.',
+          status: 'quoted',
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '3',
+          name: 'Dr. Fatima Ali',
+          email: 'fatima@hospital.com',
+          phone: '+8801712345680',
+          template: 'Medical Practice Pro',
+          customization: 'Premium Customization',
+          budget: '৳25,000',
+          message: 'Need premium customization for our hospital website. Please provide detailed quote.',
+          status: 'sold',
+          createdAt: new Date(Date.now() - 172800000).toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ];
+
+      setTemplateInquiries(mockInquiries);
+      
+      // Calculate stats
+      const stats: TemplateStats = {
+        totalInquiries: mockInquiries.length,
+        newInquiries: mockInquiries.filter(i => i.status === 'new').length,
+        quotedInquiries: mockInquiries.filter(i => i.status === 'quoted').length,
+        soldInquiries: mockInquiries.filter(i => i.status === 'sold').length,
+        totalRevenue: 25000, // Mock revenue
+        conversionRate: 33.3, // Mock conversion rate
+        avgDealSize: 16667 // Mock average deal size
+      };
+      
+      setTemplateStats(stats);
+    } catch (error) {
+      console.error('Error fetching template inquiries:', error);
     }
   };
 
@@ -138,12 +262,45 @@ export default function AdminPanel() {
     <AdminLayout>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Lead Management</h1>
-        <p className="text-gray-600">Manage and track your contact form submissions</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+        <p className="text-gray-600">Manage leads and track template sales</p>
       </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {/* Tabs */}
+      <div className="mb-8">
+        <div className="border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveTab('leads')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'leads'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <Mail className="w-4 h-4 inline mr-2" />
+              Lead Management
+            </button>
+            <button
+              onClick={() => setActiveTab('templates')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'templates'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <FileText className="w-4 h-4 inline mr-2" />
+              Template Sales
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      {/* Content based on active tab */}
+      {activeTab === 'leads' ? (
+        <>
+          {/* Lead Management Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg">
@@ -350,6 +507,220 @@ export default function AdminPanel() {
             )}
           </div>
         </div>
+        </>
+      ) : (
+        <>
+          {/* Template Sales Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <FileText className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Inquiries</p>
+                  <p className="text-2xl font-bold text-gray-900">{templateStats.totalInquiries}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">New Inquiries</p>
+                  <p className="text-2xl font-bold text-gray-900">{templateStats.newInquiries}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-yellow-100 rounded-lg">
+                  <DollarSign className="w-6 h-6 text-yellow-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Quoted</p>
+                  <p className="text-2xl font-bold text-gray-900">{templateStats.quotedInquiries}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Sold</p>
+                  <p className="text-2xl font-bold text-gray-900">{templateStats.soldInquiries}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Revenue Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <DollarSign className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+                  <p className="text-2xl font-bold text-gray-900">৳{templateStats.totalRevenue.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <BarChart3 className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Conversion Rate</p>
+                  <p className="text-2xl font-bold text-gray-900">{templateStats.conversionRate}%</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <TrendingUp className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Avg Deal Size</p>
+                  <p className="text-2xl font-bold text-gray-900">৳{templateStats.avgDealSize.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Template Inquiries List */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow">
+                <div className="p-6 border-b border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900">Template Inquiries</h3>
+                </div>
+                <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
+                  {templateInquiries.map((inquiry) => (
+                    <div
+                      key={inquiry._id}
+                      onClick={() => setSelectedInquiry(inquiry)}
+                      className={`p-6 cursor-pointer hover:bg-gray-50 transition-colors ${
+                        selectedInquiry?._id === inquiry._id ? 'bg-blue-50 border-r-4 border-blue-500' : ''
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-gray-900">{inquiry.name}</h3>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              inquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
+                              inquiry.status === 'quoted' ? 'bg-yellow-100 text-yellow-800' :
+                              inquiry.status === 'sold' ? 'bg-green-100 text-green-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {inquiry.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-1">{inquiry.email}</p>
+                          <p className="text-sm text-gray-500 mb-2">{inquiry.template} - {inquiry.customization}</p>
+                          <p className="text-sm text-gray-700 line-clamp-2">{inquiry.message}</p>
+                          <p className="text-xs text-gray-400 mt-2">
+                            {new Date(inquiry.createdAt).toLocaleDateString()} at {new Date(inquiry.createdAt).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Inquiry Details */}
+            <div className="lg:col-span-1">
+              {selectedInquiry ? (
+                <div className="bg-white rounded-lg shadow p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Inquiry Details</h3>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      selectedInquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
+                      selectedInquiry.status === 'quoted' ? 'bg-yellow-100 text-yellow-800' :
+                      selectedInquiry.status === 'sold' ? 'bg-green-100 text-green-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {selectedInquiry.status}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Name</label>
+                      <p className="text-gray-900">{selectedInquiry.name}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Email</label>
+                      <p className="text-gray-900">{selectedInquiry.email}</p>
+                    </div>
+                    {selectedInquiry.phone && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Phone</label>
+                        <p className="text-gray-900">{selectedInquiry.phone}</p>
+                      </div>
+                    )}
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Template</label>
+                      <p className="text-gray-900">{selectedInquiry.template}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Customization</label>
+                      <p className="text-gray-900">{selectedInquiry.customization}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Budget</label>
+                      <p className="text-gray-900">{selectedInquiry.budget}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Message</label>
+                      <p className="text-gray-900 whitespace-pre-wrap">{selectedInquiry.message}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Submitted</label>
+                      <p className="text-gray-900">
+                        {new Date(selectedInquiry.createdAt).toLocaleDateString()} at {new Date(selectedInquiry.createdAt).toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="mt-6 space-y-3">
+                    <a
+                      href={`https://wa.me/8801714918360?text=Hello ${selectedInquiry.name}! Thank you for your interest in the ${selectedInquiry.template} template. I'm following up on your inquiry about ${selectedInquiry.customization}.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors text-center"
+                    >
+                      Contact via WhatsApp
+                    </a>
+                    <a
+                      href={`mailto:${selectedInquiry.email}?subject=Re: Your ${selectedInquiry.template} Template Inquiry`}
+                      className="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors text-center"
+                    >
+                      Reply via Email
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-lg shadow p-6 text-center">
+                  <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500">Select an inquiry to view details</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </AdminLayout>
   );
 }
