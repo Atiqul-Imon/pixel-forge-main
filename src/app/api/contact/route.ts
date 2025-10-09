@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Contact from '@/lib/models/Contact';
 import { ContactFormData } from '@/types';
-import { sendLeadNotification } from '@/lib/email';
+import { sendLeadNotification, sendAutoReply } from '@/lib/email';
 import { checkRateLimit } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
@@ -50,9 +50,19 @@ export async function POST(request: NextRequest) {
 
     await contact.save();
 
-    // Send email notification
+    // Send email notifications
     try {
+      // Send notification to admin (you)
       await sendLeadNotification({
+        name,
+        email,
+        company,
+        service,
+        message,
+      });
+
+      // Send auto-reply to customer
+      await sendAutoReply({
         name,
         email,
         company,
