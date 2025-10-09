@@ -399,8 +399,8 @@ export default function CookiePolicy() {
           </p>
           <div className="space-y-2 text-purple-100">
             <p><strong className="text-white">Email:</strong>{' '}
-              <a href="mailto:privacy@pixelforgebd.com" className="text-white hover:underline">
-                privacy@pixelforgebd.com
+              <a href="mailto:hello@pixelforgebd.com" className="text-white hover:underline">
+                hello@pixelforgebd.com
               </a>
             </p>
             <p><strong className="text-white">Privacy Policy:</strong>{' '}

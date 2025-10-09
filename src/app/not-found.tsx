@@ -93,7 +93,7 @@ export default function NotFound() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="mailto:info@pixelforge.com"
+              href="mailto:hello@pixelforgebd.com"
               className="flex items-center justify-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 text-sm font-medium"
             >
               <Mail className="w-4 h-4" />

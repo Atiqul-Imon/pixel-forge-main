@@ -53,7 +53,7 @@ export default function WhatsAppWidget({
 
   // Handle email
   const handleEmailClick = () => {
-    window.open(`mailto:hello@pixelforge.com?subject=Web Development Inquiry`, '_self');
+    window.open(`mailto:hello@pixelforgebd.com?subject=Web Development Inquiry`, '_self');
     setIsOpen(false);
   };
 

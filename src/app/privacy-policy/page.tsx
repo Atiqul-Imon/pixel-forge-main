@@ -239,8 +239,8 @@ export default function PrivacyPolicy() {
           </div>
           <p className="text-gray-700 mt-4">
             To exercise these rights, please contact us at{' '}
-            <a href="mailto:privacy@pixelforgebd.com" className="text-blue-600 hover:underline">
-              privacy@pixelforgebd.com
+            <a href="mailto:hello@pixelforgebd.com" className="text-blue-600 hover:underline">
+              hello@pixelforgebd.com
             </a>
           </p>
         </section>
@@ -303,8 +303,8 @@ export default function PrivacyPolicy() {
           <div className="space-y-3 text-blue-100">
             <p><strong className="text-white">Company:</strong> Pixel Forge</p>
             <p><strong className="text-white">Email:</strong>{' '}
-              <a href="mailto:privacy@pixelforgebd.com" className="text-white hover:underline">
-                privacy@pixelforgebd.com
+              <a href="mailto:hello@pixelforgebd.com" className="text-white hover:underline">
+                hello@pixelforgebd.com
               </a>
             </p>
             <p><strong className="text-white">Website:</strong>{' '}

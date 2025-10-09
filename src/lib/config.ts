@@ -16,7 +16,7 @@ export const config = {
     
   // Contact form settings
   contact: {
-    email: 'hello@pixelforge.com',
+    email: 'hello@pixelforgebd.com',
     phone: '+1 (234) 567-890',
     address: 'Remote Worldwide',
   },

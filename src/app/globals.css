@@ -478,9 +478,6 @@ select:focus {
   transform: translateZ(0);
 }
 
-.glassmorphism-card:hover::before {
-  left: 100%;
-}
 
 /* Mobile-specific optimizations for glassmorphism cards */
 @media (max-width: 768px) {
@@ -488,10 +485,6 @@ select:focus {
     display: none;
   }
   
-  /* Reduce hover effects on mobile */
-  .glassmorphism-card:hover {
-    transform: none;
-  }
   
   /* Simplify glassmorphism effects on mobile */
   .glassmorphism-card {

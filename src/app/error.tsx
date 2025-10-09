@@ -82,11 +82,11 @@ export default function Error({ error, reset }: ErrorProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="mailto:support@pixelforge.com"
+              href="mailto:hello@pixelforgebd.com"
               className="flex items-center justify-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 text-sm font-medium"
             >
               <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-              support@pixelforge.com
+              hello@pixelforgebd.com
             </a>
             <a
               href="tel:+8801234567890"
