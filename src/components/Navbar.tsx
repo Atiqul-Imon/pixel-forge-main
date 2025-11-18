@@ -25,7 +25,6 @@ const Navbar = () => {
     { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
     { name: 'Templates', href: '/templates' },
-    { name: 'POS System', href: '/pos' },
     { name: 'Landing Pages', href: '/landing-pages' },
     { name: 'Portfolio', href: '/portfolio' },
     { name: 'Contact', href: '/contact' },
