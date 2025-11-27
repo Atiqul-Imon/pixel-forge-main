@@ -11,12 +11,22 @@ const Navbar = () => {
   const { isAdmin, isAuthenticated } = useAuth();
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     
     if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      // Set initial state
+      handleScroll();
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, []);
@@ -32,10 +42,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300 ease-in-out border-b ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
-          : 'bg-black/20 backdrop-blur-sm'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-gray-200/100'
+          : 'bg-black/20 backdrop-blur-sm border-gray-200/0'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
