@@ -23,16 +23,12 @@ export default function PortfolioPage() {
   const projects = [
     {
       id: 1,
-      title: 'Arizaan - Premium Modest Fashion',
-      description: 'A beautiful e-commerce website for premium modest fashion brand featuring elegant kurtis and modern design. Built with Next.js and integrated with payment systems.',
-      image: (() => {
-        const url = 'https://res.cloudinary.com/db5yniogx/image/upload/v1759491239/arizannscreenshot_fzh4jv.webp';
-        console.log('Arizaan image URL:', url);
-        return url;
-      })(),
+      title: 'Prokrishi Hub - Organic Food E-commerce',
+      description: 'Premium organic food e-commerce platform featuring fresh organic produce, natural products, and healthy food options. Modern e-commerce design with seamless shopping experience, product catalog, and secure payment integration.',
+      image: getResponsivePortfolioImage('prokrishihub', 'card'),
       category: 'ecommerce',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration'],
-      liveUrl: 'https://www.arizaan.com/',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration', 'Organic Products'],
+      liveUrl: 'https://prokrishihub.com/',
       featured: true
     },
     {
@@ -67,16 +63,6 @@ export default function PortfolioPage() {
     },
     {
       id: 5,
-      title: 'News and Niche - Technology & News Blog',
-      description: 'Comprehensive news and technology blog platform featuring trending topics, AI & automation, web development, and lifestyle content. Multi-category blog with featured posts, recent posts, and popular content sections.',
-      image: getResponsivePortfolioImage('newsandniche', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Blog Platform', 'Content Management', 'SEO'],
-      liveUrl: 'https://www.newsandniche.com/en',
-      featured: true
-    },
-    {
-      id: 6,
       title: 'Pixel Forge Website',
       description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
       image: getResponsivePortfolioImage('pixelforge', 'card'),
@@ -86,17 +72,7 @@ export default function PortfolioPage() {
       featured: false
     },
     {
-      id: 7,
-      title: 'Jhatika Safar - Bangladesh Travel',
-      description: 'Comprehensive travel website for Bangladesh tourism featuring tour packages, destination guides, customer testimonials, and booking system. Modern design with responsive layout and user-friendly interface.',
-      image: getResponsivePortfolioImage('jhatikasafar', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Travel Platform', 'Tourism', 'Responsive Design'],
-      liveUrl: 'https://www.jhatikasafar.com/',
-      featured: true
-    },
-    {
-      id: 8,
+      id: 6,
       title: 'Maisha Printing - Professional Printing Services',
       description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
       image: getResponsivePortfolioImage('maishaprinting', 'card'),
@@ -106,7 +82,7 @@ export default function PortfolioPage() {
       featured: true
     },
     {
-      id: 9,
+      id: 7,
       title: 'Dr. Sarah Johnson - Medical Practice',
       description: 'Professional medical practice website for Dr. Sarah Johnson, an Internal Medicine specialist. Features comprehensive contact information, appointment booking, office hours, emergency contact details, and patient-centered healthcare services with modern, trustworthy design.',
       image: getResponsivePortfolioImage('drsarah', 'card'),
@@ -116,13 +92,23 @@ export default function PortfolioPage() {
       featured: true
     },
     {
-      id: 10,
+      id: 8,
       title: 'FitLife Pro - Premium Fitness Center',
       description: 'Modern fitness center landing page featuring premium gym services, membership plans, personal training, group classes, and wellness programs. Professional design with comprehensive service showcase and member testimonials.',
       image: getResponsivePortfolioImage('fitnesspro', 'card'),
       category: 'landing-page',
       technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Fitness Website', 'Landing Page', 'Membership System'],
       liveUrl: 'https://fitnesspro-two.vercel.app/',
+      featured: true
+    },
+    {
+      id: 9,
+      title: 'Doctor\'s Tech Solutions - Complete Healthcare Platform',
+      description: 'Comprehensive doctor\'s tech solutions platform built with Next.js, featuring healthcare management tools, patient management systems, appointment scheduling, and medical practice solutions. Modern, secure, and user-friendly healthcare technology platform.',
+      image: getResponsivePortfolioImage('doctorstech', 'card'),
+      category: 'website',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Healthcare Technology', 'Medical Platform', 'Patient Management'],
+      liveUrl: 'https://doctors-solutions.vercel.app/',
       featured: true
     }
   ];
