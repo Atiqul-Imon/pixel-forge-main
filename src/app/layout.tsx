@@ -91,12 +91,8 @@ export const metadata: Metadata = {
     images: ["/logo/pixelforgelogo2.png"],
     creator: "@pixelforge",
   },
-  alternates: {
-    canonical: "https://pixelforgebd.com",
-  },
-  verification: {
-    google: "your-google-verification-code", // Replace with actual code
-  },
+  // Removed canonical from root layout - each page should define its own canonical URL
+  // This prevents all pages from being treated as alternate pages of the homepage
 };
 
 export default function RootLayout({

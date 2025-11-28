@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import { ArrowRight, Code, Palette, BarChart3, Headphones, Star, CheckCircle, Store, ShoppingCart, Building2, Zap } from 'lucide-react';
 import InteractiveButton from '@/components/InteractiveButton';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://pixelforgebd.com',
+  },
+};
 
 export default function Home() {
   const services = [

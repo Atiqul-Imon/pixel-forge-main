@@ -76,12 +76,8 @@ export default function StructuredData() {
     "publisher": {
       "@type": "Organization",
       "name": "Pixel Forge"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://pixelforgebd.com/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
     }
+    // Removed SearchAction - no search functionality implemented
   };
 
   const localBusinessSchema = {
