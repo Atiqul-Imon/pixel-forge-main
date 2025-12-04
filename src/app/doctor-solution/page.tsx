@@ -18,6 +18,13 @@ import {
   HeartPulse,
   Cloud
 } from 'lucide-react';
+import { useEffect } from 'react';
+
+declare global {
+  interface Window {
+    fbq: (action: string, event: string, data?: Record<string, unknown>) => void;
+  }
+}
 
 const whatsappNumber = '8801714918360';
 
@@ -108,7 +115,29 @@ const nextJsBenefits = [
 ];
 
 export default function DoctorSolutionPage() {
+  // Track page view when component mounts
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'ViewContent', {
+        content_name: 'Doctor Solution Page',
+        content_category: 'Product Page',
+        content_type: 'service',
+        value: 0,
+        currency: 'BDT'
+      });
+    }
+  }, []);
+
   const handleWhatsapp = () => {
+    // Track WhatsApp click event
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Contact', {
+        content_name: 'Doctor Solution - WhatsApp',
+        content_category: 'Lead Generation',
+        method: 'WhatsApp'
+      });
+    }
+
     const message = encodeURIComponent(
       `Hello! I'm interested in the Doctor Website Solution powered by Next.js. Please share the onboarding process and customization details.`
     );
@@ -116,6 +145,15 @@ export default function DoctorSolutionPage() {
   };
 
   const handleEmail = () => {
+    // Track Email click event
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Contact', {
+        content_name: 'Doctor Solution - Email',
+        content_category: 'Lead Generation',
+        method: 'Email'
+      });
+    }
+
     window.location.href = 'mailto:hello@pixelforgebd.com?subject=Doctor%20Website%20Solution%20Inquiry';
   };
 
