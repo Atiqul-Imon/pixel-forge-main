@@ -46,15 +46,17 @@ export async function GET(request: NextRequest) {
     const sort: any = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
-    // Fetch leads
-    const leads = await Lead.find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    // OPTIMIZATION: Run query and count in parallel, and select only needed fields
+    const [leads, total] = await Promise.all([
+      Lead.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .select('name email phone company service status source leadScore estimatedValue tags pixelId pixelSource pixelCampaign createdAt lastContactedAt')
+        .lean(),
+      Lead.countDocuments(query),
+    ]);
 
-    // Get total count
-    const total = await Lead.countDocuments(query);
     const totalPages = Math.ceil(total / limit);
 
     return NextResponse.json({

@@ -70,8 +70,9 @@ export async function sendCAPIEvents(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        data: JSON.stringify(batch),
+        data: batch.data, // Send array directly, not stringified
         access_token: accessToken,
+        ...(testEventCode && { test_event_code: testEventCode }),
       }),
     });
 

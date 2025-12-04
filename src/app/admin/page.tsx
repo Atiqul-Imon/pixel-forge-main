@@ -84,8 +84,10 @@ export default function AdminPanel() {
   useEffect(() => {
     // Authentication is handled by useAdminAuth hook
     if (!authLoading) {
-      fetchMessages();
-      fetchTemplateInquiries();
+      // OPTIMIZATION: Fetch messages and template inquiries in parallel
+      Promise.all([fetchMessages(), fetchTemplateInquiries()]).catch((error) => {
+        console.error('Error fetching admin data:', error);
+      });
     }
   }, [authLoading]);
 

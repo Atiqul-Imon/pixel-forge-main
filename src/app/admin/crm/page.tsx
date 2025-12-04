@@ -96,8 +96,10 @@ export default function CRMPage() {
 
   useEffect(() => {
     if (!authLoading) {
-      fetchStats();
-      fetchLeads();
+      // OPTIMIZATION: Fetch stats and leads in parallel instead of sequentially
+      Promise.all([fetchStats(), fetchLeads()]).catch((error) => {
+        console.error('Error fetching CRM data:', error);
+      });
     }
   }, [authLoading]);
 

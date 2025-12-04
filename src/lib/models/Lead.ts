@@ -53,7 +53,7 @@ const LeadSchema: Schema = new Schema({
     required: [true, 'Email is required'],
     trim: true,
     lowercase: true,
-    index: true,
+    // Index defined separately below to avoid duplicate
   },
   phone: {
     type: String,
@@ -170,12 +170,18 @@ const LeadSchema: Schema = new Schema({
 // Indexes for better query performance
 LeadSchema.index({ status: 1, createdAt: -1 });
 LeadSchema.index({ source: 1, status: 1 });
-LeadSchema.index({ email: 1 });
+LeadSchema.index({ email: 1 }); // Email index (removed duplicate from field definition)
 LeadSchema.index({ assignedTo: 1, status: 1 });
 LeadSchema.index({ tags: 1 });
 LeadSchema.index({ leadScore: -1 });
 LeadSchema.index({ createdAt: -1 });
 LeadSchema.index({ pixelId: 1, pixelEventId: 1 });
+// Individual field indexes for search queries (regex searches)
+LeadSchema.index({ name: 1 });
+LeadSchema.index({ company: 1 });
+LeadSchema.index({ phone: 1 });
+// Text index for full-text search (optional, for $text queries)
+LeadSchema.index({ name: 'text', email: 'text', company: 'text', phone: 'text', message: 'text' });
 
 export default mongoose.models.Lead || mongoose.model<ILead>('Lead', LeadSchema);
 

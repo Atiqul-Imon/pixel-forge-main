@@ -86,6 +86,9 @@ export const cacheKeys = {
   
   contact: (id: string) => 
     `contact_${id}`,
+  
+  crmStats: (days?: number) => 
+    `crm_stats_${days || 30}`,
 };
 
 // Cache TTL constants (in seconds)
@@ -95,4 +98,5 @@ export const CACHE_TTL = {
   USER: 1800, // 30 minutes
   MESSAGES: 60, // 1 minute
   CONTACT: 300, // 5 minutes
+  CRM_STATS: 120, // 2 minutes - stats change frequently but don't need real-time
 };
