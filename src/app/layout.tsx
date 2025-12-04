@@ -8,6 +8,7 @@ import FacebookPixel from "@/components/FacebookPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import PixelInitializer from "@/components/PixelInitializer";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ConsentProvider } from "@/contexts/ConsentContext";
 
@@ -108,6 +109,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <ConsentProvider>
           <AuthProvider>
+            <PixelInitializer />
             <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
             <GoogleAnalytics />
             <Navbar />

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Contact from '@/lib/models/Contact';
+import Lead from '@/lib/models/Lead';
 import { ContactFormData } from '@/types';
 import { sendLeadNotification, sendAutoReply } from '@/lib/email';
 import { checkRateLimit } from '@/lib/auth';
@@ -18,8 +19,15 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const body: ContactFormData = await request.json();
-    const { name, email, company, service, message } = body;
+    const body: ContactFormData & {
+      phone?: string;
+      pixelId?: string;
+      pixelEventId?: string;
+      pixelEventType?: string;
+      pixelSource?: string;
+      pixelCampaign?: string;
+    } = await request.json();
+    const { name, email, company, service, message, phone, pixelId, pixelEventId, pixelEventType, pixelSource, pixelCampaign } = body;
 
     // Validate required fields
     if (!name || !email || !service || !message) {
@@ -49,6 +57,41 @@ export async function POST(request: NextRequest) {
     });
 
     await contact.save();
+
+    // Also create a Lead in CRM with Facebook Pixel tracking
+    try {
+      // Calculate lead score
+      let leadScore = 0;
+      if (company) leadScore += 10;
+      if (phone) leadScore += 10;
+      if (pixelId) leadScore += 15; // Facebook Pixel leads are higher quality
+      if (pixelSource === 'facebook' || pixelSource === 'google') leadScore += 15;
+
+      const lead = new Lead({
+        name,
+        email,
+        phone,
+        company,
+        service,
+        message,
+        source: pixelSource === 'facebook' ? 'facebook' : pixelSource === 'google' ? 'google' : 'website',
+        pixelId,
+        pixelEventId,
+        pixelEventType,
+        pixelSource,
+        pixelCampaign,
+        status: 'new',
+        leadScore,
+        estimatedValue: 0,
+        currency: 'BDT',
+        tags: [],
+      });
+
+      await lead.save();
+    } catch (leadError) {
+      console.error('Error creating lead in CRM:', leadError);
+      // Don't fail the request if lead creation fails
+    }
 
     // Send email notifications
     try {

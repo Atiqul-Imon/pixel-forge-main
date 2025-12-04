@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { useConsent } from '@/contexts/ConsentContext';
+import { initializePixelTracking, trackPixelEvent, savePixelData, getPixelData } from '@/lib/pixelTracker';
 
 declare global {
   interface Window {
@@ -50,6 +51,11 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
+    // Initialize pixel tracking on mount
+    if (typeof window !== 'undefined' && pixelId && pixelId !== 'YOUR_PIXEL_ID') {
+      initializePixelTracking(pixelId);
+    }
+
     // Check if marketing consent is granted
     const checkConsent = () => {
       setShouldLoad(hasConsent('marketing'));
@@ -65,6 +71,11 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
       if (event.detail.marketing && typeof window !== 'undefined' && window.fbq) {
         window.fbq('consent', 'grant');
         window.fbq('track', 'PageView');
+        
+        // Track pixel event and store data
+        const eventId = generateEventId();
+        trackPixelEvent('PageView', eventId);
+        
         sendCAPIEvent('pageView', null, { pageName: window.location.pathname });
       }
     };
@@ -74,12 +85,17 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
     return () => {
       window.removeEventListener('consentUpdated', handleConsentUpdate as EventListener);
     };
-  }, [hasConsent]);
+  }, [hasConsent, pixelId]);
 
   useEffect(() => {
     if (shouldLoad && typeof window !== 'undefined' && window.fbq) {
       // Track page view on both Pixel and CAPI when consent is granted
-      window.fbq('track', 'PageView');
+      const eventId = generateEventId();
+      window.fbq('track', 'PageView', { eventID: eventId });
+      
+      // Store pixel event data
+      trackPixelEvent('PageView', eventId);
+      
       sendCAPIEvent('pageView', null, { pageName: window.location.pathname });
     }
   }, [shouldLoad]);
@@ -87,13 +103,20 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
   const trackLead = (email: string, service: string, name?: string) => {
     const eventId = generateEventId();
     
+    // Store pixel event data
+    trackPixelEvent('Lead', eventId, {
+      email,
+      service,
+      name,
+    });
+    
     // Client-side Pixel tracking
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'Lead', {
         content_name: service,
         content_category: 'Web Development',
         value: 0,
-        currency: 'USD',
+        currency: 'BDT',
         email: email,
         eventID: eventId
       });
@@ -105,6 +128,11 @@ const FacebookPixel = ({ pixelId }: FacebookPixelProps) => {
 
   const trackContactFormSubmit = () => {
     const eventId = generateEventId();
+    
+    // Store pixel event data
+    trackPixelEvent('CompleteRegistration', eventId, {
+      contactMethod: 'Contact Form',
+    });
     
     // Client-side Pixel tracking
     if (typeof window !== 'undefined' && window.fbq) {

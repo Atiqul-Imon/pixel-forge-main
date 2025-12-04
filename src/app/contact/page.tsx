@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Phone, Send, CheckCircle, AlertCircle, Facebook, Linkedin, Mail, MapPin, Clock, ArrowRight, Code, Palette, BarChart3, Headphones } from 'lucide-react';
 import { trackEvent } from '@/lib/gtag';
+import { getPixelDataForAPI } from '@/lib/pixelTracker';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -37,13 +38,32 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
+    // Capture Facebook Pixel data if available
+    let pixelData: any = {};
+    if (typeof window !== 'undefined') {
+      try {
+        const pixelInfo = getPixelDataForAPI();
+        pixelData = { ...pixelInfo };
+      } catch (error) {
+        console.warn('Error getting pixel data:', error);
+        // Fallback: try to get pixel ID from environment
+        const pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
+        if (pixelId) {
+          pixelData.pixelId = pixelId;
+        }
+      }
+    }
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          ...pixelData,
+        }),
       });
 
       if (response.ok) {

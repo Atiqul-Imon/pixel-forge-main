@@ -12,7 +12,7 @@ import {
   Mail,
   LogOut,
   Menu,
-  X
+  X,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -26,6 +26,12 @@ const navigationItems = [
     name: 'Dashboard',
     href: '/admin',
     icon: LayoutDashboard,
+    current: false,
+  },
+  {
+    name: 'CRM',
+    href: '/admin/crm',
+    icon: Users,
     current: false,
   },
   {
