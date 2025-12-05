@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
 import FacebookPixel from "@/components/FacebookPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import CookieConsent from "@/components/CookieConsent";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
 import PixelInitializer from "@/components/PixelInitializer";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ConsentProvider } from "@/contexts/ConsentContext";
 
@@ -112,19 +109,9 @@ export default function RootLayout({
             <PixelInitializer />
             <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || 'YOUR_PIXEL_ID'} />
             <GoogleAnalytics />
-            <Navbar />
-            <main className="min-h-screen">
+            <ConditionalLayout>
               {children}
-            </main>
-            <Footer />
-            <CookieConsent />
-            <WhatsAppWidget 
-              phoneNumber="+8801714918360"
-              message="Hello! I'm interested in your web development services. Can you help me with my project?"
-              position="bottom-right"
-              showOnMobile={true}
-              showOnDesktop={true}
-            />
+            </ConditionalLayout>
           </AuthProvider>
         </ConsentProvider>
       </body>

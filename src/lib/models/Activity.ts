@@ -3,8 +3,9 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IActivity extends Document {
   leadId?: mongoose.Types.ObjectId;
   dealId?: mongoose.Types.ObjectId;
+  clientId?: mongoose.Types.ObjectId;
   
-  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'whatsapp' | 'other';
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'whatsapp' | 'proposal' | 'document' | 'quote' | 'invoice' | 'payment' | 'other';
   title: string;
   description: string;
   
@@ -16,6 +17,11 @@ export interface IActivity extends Document {
   // Communication Details
   direction?: 'inbound' | 'outbound';
   contactMethod?: string;
+  
+  // File/Document References
+  attachments?: string[]; // URLs or file paths
+  relatedInvoiceId?: mongoose.Types.ObjectId;
+  relatedReceiptId?: mongoose.Types.ObjectId;
   
   // Assignment
   assignedTo?: string;
@@ -37,9 +43,14 @@ const ActivitySchema: Schema = new Schema({
     ref: 'Deal',
     index: true,
   },
+  clientId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Client',
+    index: true,
+  },
   type: {
     type: String,
-    enum: ['call', 'email', 'meeting', 'note', 'task', 'whatsapp', 'other'],
+    enum: ['call', 'email', 'meeting', 'note', 'task', 'whatsapp', 'proposal', 'document', 'quote', 'invoice', 'payment', 'other'],
     required: true,
     index: true,
   },
@@ -75,6 +86,20 @@ const ActivitySchema: Schema = new Schema({
     type: String,
     trim: true,
   },
+  attachments: [{
+    type: String,
+    trim: true,
+  }],
+  relatedInvoiceId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Invoice',
+    index: true,
+  },
+  relatedReceiptId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Receipt',
+    index: true,
+  },
   assignedTo: {
     type: String,
     trim: true,
@@ -91,6 +116,7 @@ const ActivitySchema: Schema = new Schema({
 // Indexes
 ActivitySchema.index({ leadId: 1, date: -1 });
 ActivitySchema.index({ dealId: 1, date: -1 });
+ActivitySchema.index({ clientId: 1, date: -1 });
 ActivitySchema.index({ type: 1, date: -1 });
 ActivitySchema.index({ createdBy: 1, date: -1 });
 ActivitySchema.index({ date: -1 });

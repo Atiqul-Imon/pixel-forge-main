@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Activity from '@/lib/models/Activity';
 import Lead from '@/lib/models/Lead';
+import Client from '@/lib/models/Client';
 import { verifyToken } from '@/lib/auth';
 
 // GET - Fetch activities
@@ -17,6 +18,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const leadId = searchParams.get('leadId');
     const dealId = searchParams.get('dealId');
+    const clientId = searchParams.get('clientId');
     const type = searchParams.get('type');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -24,6 +26,7 @@ export async function GET(request: NextRequest) {
     const query: any = {};
     if (leadId) query.leadId = leadId;
     if (dealId) query.dealId = dealId;
+    if (clientId) query.clientId = clientId;
     if (type && type !== 'all') query.type = type;
 
     const skip = (page - 1) * limit;
@@ -32,6 +35,8 @@ export async function GET(request: NextRequest) {
       .sort({ date: -1 })
       .skip(skip)
       .limit(limit)
+      .populate('clientId', 'companyName primaryEmail')
+      .populate('leadId', 'name email company')
       .lean();
 
     const total = await Activity.countDocuments(query);
@@ -73,6 +78,7 @@ export async function POST(request: NextRequest) {
     const {
       leadId,
       dealId,
+      clientId,
       type,
       title,
       description,
@@ -81,6 +87,9 @@ export async function POST(request: NextRequest) {
       outcome,
       direction,
       contactMethod,
+      attachments,
+      relatedInvoiceId,
+      relatedReceiptId,
       assignedTo,
     } = body;
 
@@ -94,6 +103,7 @@ export async function POST(request: NextRequest) {
     const activity = new Activity({
       leadId,
       dealId,
+      clientId,
       type,
       title,
       description,
@@ -102,6 +112,9 @@ export async function POST(request: NextRequest) {
       outcome,
       direction,
       contactMethod,
+      attachments,
+      relatedInvoiceId,
+      relatedReceiptId,
       assignedTo,
       createdBy: decoded.email || 'admin',
     });
@@ -111,6 +124,13 @@ export async function POST(request: NextRequest) {
     // Update lead's lastContactedAt if it's a contact activity
     if (leadId && (type === 'call' || type === 'email' || type === 'meeting' || type === 'whatsapp')) {
       await Lead.findByIdAndUpdate(leadId, {
+        lastContactedAt: new Date(),
+      });
+    }
+
+    // Update client's lastContactedAt if it's a contact activity
+    if (clientId && (type === 'call' || type === 'email' || type === 'meeting' || type === 'whatsapp' || type === 'proposal' || type === 'quote')) {
+      await Client.findByIdAndUpdate(clientId, {
         lastContactedAt: new Date(),
       });
     }

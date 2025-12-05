@@ -536,3 +536,89 @@ select:focus {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
+
+/* Print Styles for Invoices and Receipts */
+@media print {
+  /* Hide sidebar, navigation, and admin UI elements */
+  aside,
+  nav,
+  header,
+  [class*="sidebar"],
+  [class*="Sidebar"],
+  button,
+  a,
+  .print\\:hidden {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Reset body and layout for printing */
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Hide the entire admin layout wrapper */
+  body > div:first-child {
+    display: block !important;
+  }
+  
+  /* Main content should be full width */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+  }
+  
+  /* Container for invoice/receipt content */
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-7xl {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Remove shadows and backgrounds for cleaner print */
+  .shadow,
+  .bg-gray-100,
+  .bg-gray-50,
+  .bg-blue-50,
+  .bg-green-50,
+  .bg-red-50,
+  .bg-yellow-50 {
+    background: white !important;
+    box-shadow: none !important;
+  }
+  
+  /* Ensure proper borders for print */
+  .border {
+    border-color: #000 !important;
+  }
+  
+  /* Prevent page breaks inside important sections */
+  .invoice-content,
+  .receipt-content {
+    page-break-inside: avoid;
+  }
+  
+  /* Ensure tables print properly */
+  table {
+    page-break-inside: auto;
+  }
+  
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  
+  /* Show only invoice/receipt content */
+  .invoice-content,
+  .receipt-content {
+    display: block !important;
+    visibility: visible !important;
+  }
+}

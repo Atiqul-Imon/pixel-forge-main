@@ -10,7 +10,8 @@
     "deploy": "vercel --prod",
     "deploy:preview": "vercel",
     "postbuild": "next-sitemap",
-    "create-admin": "node scripts/create-admin.js"
+    "create-admin": "node scripts/create-admin.js",
+    "reset-admin-password": "node scripts/reset-admin-password.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",

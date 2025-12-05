@@ -6,68 +6,218 @@ import {
   LayoutDashboard, 
   FileText, 
   Plus, 
-  Edit, 
   Settings, 
   Users, 
   Mail,
   LogOut,
   Menu,
   X,
+  Building2,
+  Send,
+  CheckSquare,
+  ChevronDown,
+  ChevronRight,
+  List,
+  Receipt,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminSidebarProps {
   onLogout: () => void;
 }
 
-const navigationItems = [
+interface NavigationItem {
+  name: string;
+  href?: string;
+  icon: any;
+  children?: NavigationItem[];
+}
+
+const navigationItems: NavigationItem[] = [
   {
     name: 'Dashboard',
     href: '/admin',
     icon: LayoutDashboard,
-    current: false,
   },
   {
-    name: 'CRM',
+    name: 'CRM Dashboard',
     href: '/admin/crm',
     icon: Users,
-    current: false,
+  },
+  {
+    name: 'Clients',
+    icon: Building2,
+    children: [
+      {
+        name: 'All Clients',
+        href: '/admin/crm/clients',
+        icon: List,
+      },
+      {
+        name: 'Add New Client',
+        href: '/admin/crm/clients/new',
+        icon: Plus,
+      },
+      {
+        name: 'Follow-ups',
+        href: '/admin/crm/followups',
+        icon: CheckSquare,
+      },
+      {
+        name: 'Compose Email',
+        href: '/admin/crm/emails/compose',
+        icon: Send,
+      },
+    ],
+  },
+  {
+    name: 'Invoices',
+    icon: Receipt,
+    children: [
+      {
+        name: 'All Invoices',
+        href: '/admin/invoices',
+        icon: List,
+      },
+      {
+        name: 'Create Invoice',
+        href: '/admin/invoices/new',
+        icon: Plus,
+      },
+      {
+        name: 'All Receipts',
+        href: '/admin/receipts',
+        icon: Receipt,
+      },
+      {
+        name: 'Create Receipt',
+        href: '/admin/receipts/new',
+        icon: Plus,
+      },
+    ],
   },
   {
     name: 'Blog Posts',
     href: '/admin/blog',
     icon: FileText,
-    current: false,
   },
   {
     name: 'Create Post',
     href: '/admin/blog/new',
     icon: Plus,
-    current: false,
   },
   {
     name: 'Messages',
     href: '/admin/messages',
     icon: Mail,
-    current: false,
   },
   {
     name: 'Settings',
     href: '/admin/settings',
     icon: Settings,
-    current: false,
   },
 ];
 
 export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  const navigation = navigationItems.map((item) => ({
-    ...item,
-    current: pathname === item.href,
-  }));
+  // Check if item or any child is active
+  const isItemActive = (item: NavigationItem): boolean => {
+    if (item.href && pathname === item.href) return true;
+    if (item.children) {
+      return item.children.some(child => isItemActive(child));
+    }
+    return false;
+  };
+
+  // Check if any child is active
+  const hasActiveChild = (item: NavigationItem): boolean => {
+    if (!item.children) return false;
+    return item.children.some(child => isItemActive(child));
+  };
+
+  // Auto-expand items with active children on mount
+  useEffect(() => {
+    const newExpanded = new Set<string>();
+    navigationItems.forEach(item => {
+      if (item.children && hasActiveChild(item)) {
+        newExpanded.add(item.name);
+      }
+    });
+    setExpandedItems(newExpanded);
+  }, [pathname]);
+
+  const toggleExpand = (itemName: string) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemName)) {
+        newSet.delete(itemName);
+      } else {
+        newSet.add(itemName);
+      }
+      return newSet;
+    });
+  };
+
+  const isExpanded = (itemName: string) => expandedItems.has(itemName);
+
+  const renderNavItem = (item: NavigationItem, isChild: boolean = false) => {
+    const Icon = item.icon;
+    const isActive = isItemActive(item);
+    const hasChildren = item.children && item.children.length > 0;
+    const expanded = isExpanded(item.name);
+
+    if (hasChildren) {
+      return (
+        <div key={item.name} className={isChild ? 'ml-4' : ''}>
+          <button
+            onClick={() => toggleExpand(item.name)}
+            className={`group w-full flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md mb-1 ${
+              isActive
+                ? 'bg-gray-800 text-white'
+                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center">
+              <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
+              {item.name}
+            </div>
+            {expanded ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </button>
+          {expanded && (
+            <div className="ml-4 mt-1 space-y-1">
+              {item.children!.map((child) => renderNavItem(child, true))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        key={item.name}
+        href={item.href!}
+        className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md mb-1 ${
+          isChild ? 'ml-4' : ''
+        } ${
+          isActive
+            ? 'bg-gray-800 text-white'
+            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+        }`}
+        onClick={() => sidebarOpen && setSidebarOpen(false)}
+      >
+        <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
+        {item.name}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -92,27 +242,10 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
             <X className="w-6 h-6" />
           </button>
         </div>
-        <nav className="mt-5 px-2">
-          {navigation.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md mb-1 ${
-                  item.current
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                }`}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                {item.name}
-              </Link>
-            );
-          })}
+        <nav className="mt-5 px-2 overflow-y-auto max-h-[calc(100vh-8rem)]">
+          {navigationItems.map((item) => renderNavItem(item))}
         </nav>
-        <div className="absolute bottom-0 w-full p-4">
+        <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
           <button
             onClick={onLogout}
             className="flex items-center w-full px-2 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
@@ -131,25 +264,9 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
               <h2 className="text-xl font-bold text-white">Admin Panel</h2>
             </div>
             <nav className="mt-5 flex-1 px-2 space-y-1">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                      item.current
-                        ? 'bg-gray-800 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                    }`}
-                  >
-                    <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                    {item.name}
-                  </Link>
-                );
-              })}
+              {navigationItems.map((item) => renderNavItem(item))}
             </nav>
-            <div className="flex-shrink-0 px-2 py-4">
+            <div className="flex-shrink-0 px-2 py-4 border-t border-gray-700">
               <button
                 onClick={onLogout}
                 className="flex items-center w-full px-2 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
