@@ -34,8 +34,6 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
-    { name: 'Templates', href: '/templates' },
-    { name: 'Landing Pages', href: '/landing-pages' },
     { name: 'Contact', href: '/contact' },
   ];
 

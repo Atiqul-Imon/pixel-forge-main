@@ -1,21 +1,21 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Get Your Web Development Quote | Pixel Forge Bangladesh',
-  description: 'Contact Pixel Forge for web development services in Bangladesh. Get free quotes for custom websites, e-commerce development, and digital marketing. Call +8801714918360.',
+  title: 'Contact Us - Discuss Your Digital Platform Project | Pixel Forge',
+  description: 'Start a technical conversation about your platform or product. Contact Pixel Forge for engineering-driven digital platform development, system architecture, and long-term technical partnerships. Call +8801714918360 or email hello@pixelforgebd.com.',
   keywords: [
-    'contact web development bangladesh',
-    'web development quote dhaka',
-    'custom website consultation',
-    'e-commerce development inquiry',
-    'digital marketing consultation',
-    'web design consultation bangladesh',
-    'get website quote',
-    'web development contact'
+    'contact engineering studio',
+    'technical partnership inquiry',
+    'digital platform consultation',
+    'system architecture discussion',
+    'engineering capabilities inquiry',
+    'technical assessment',
+    'platform engineering contact',
+    'long-term technical partnership'
   ],
   openGraph: {
-    title: 'Contact Us - Get Your Web Development Quote | Pixel Forge Bangladesh',
-    description: 'Contact Pixel Forge for web development services in Bangladesh. Get free quotes for custom websites, e-commerce development, and digital marketing.',
+    title: 'Contact Us - Discuss Your Digital Platform Project | Pixel Forge',
+    description: 'Start a technical conversation about your platform or product. Contact Pixel Forge for engineering-driven digital platform development and long-term technical partnerships.',
     images: ['/logo/pixelforgelogo2.png'],
   },
   alternates: {

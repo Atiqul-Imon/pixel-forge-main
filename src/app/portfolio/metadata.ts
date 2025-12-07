@@ -1,21 +1,23 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Portfolio - Web Development Projects | Pixel Forge Bangladesh',
-  description: 'Explore our portfolio of web development projects including e-commerce websites, landing pages, and custom web applications. See our work for businesses in Bangladesh and worldwide.',
+  title: 'Portfolio - Digital Platform Engineering Projects | Pixel Forge',
+  description: 'Explore our portfolio of engineered digital platforms and web infrastructure projects. See production-grade systems built for scalability, performance, and long-term reliability. Engineering-driven solutions for businesses worldwide.',
   keywords: [
-    'web development portfolio bangladesh',
-    'website design projects dhaka',
-    'e-commerce development portfolio',
-    'landing page design examples',
-    'react next.js projects',
-    'mern stack portfolio',
-    'web design case studies',
-    'custom website development projects'
+    'digital platform portfolio',
+    'engineering projects',
+    'scalable web infrastructure',
+    'production-grade platforms',
+    'system architecture projects',
+    'performance-optimized websites',
+    'engineering case studies',
+    'technical platform examples',
+    'reliable digital systems',
+    'scalable architecture portfolio'
   ],
   openGraph: {
-    title: 'Portfolio - Web Development Projects | Pixel Forge Bangladesh',
-    description: 'Explore our portfolio of web development projects including e-commerce websites, landing pages, and custom web applications.',
+    title: 'Portfolio - Digital Platform Engineering Projects | Pixel Forge',
+    description: 'Explore our portfolio of engineered digital platforms and web infrastructure projects. See production-grade systems built for scalability, performance, and long-term reliability.',
     images: ['/logo/pixelforgelogo2.png'],
   },
   alternates: {

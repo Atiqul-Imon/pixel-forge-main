@@ -1,21 +1,28 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Web Development Services - Custom Websites & Digital Solutions | Pixel Forge Bangladesh',
-  description: 'Professional web development services in Bangladesh. Custom websites, e-commerce development, landing pages, and digital marketing. Expert in React, Next.js, and MERN stack.',
+  title: 'Engineering Capabilities - Digital Platform Engineering & Infrastructure | Pixel Forge',
+  description: 'Core engineering capabilities for building reliable, scalable digital platforms. Web platforms & digital infrastructure, MVP engineering, performance optimization, and ongoing technical stewardship. Long-term technical partnerships.',
   keywords: [
-    'web development services bangladesh',
-    'custom website development dhaka',
-    'e-commerce development services',
-    'digital marketing bangladesh',
-    'react development services',
-    'next.js development company',
-    'mern stack development',
-    'responsive web design services'
+    'engineering capabilities',
+    'digital platform engineering',
+    'web platform infrastructure',
+    'scalable system architecture',
+    'mvp engineering services',
+    'performance optimization',
+    'technical seo optimization',
+    'engineering stewardship',
+    'long-term technical partnership',
+    'system reliability engineering',
+    'production-grade platforms',
+    'technical infrastructure',
+    'scalable web architecture',
+    'engineering-driven development',
+    'system performance optimization'
   ],
   openGraph: {
-    title: 'Web Development Services - Custom Websites & Digital Solutions | Pixel Forge Bangladesh',
-    description: 'Professional web development services in Bangladesh. Custom websites, e-commerce development, landing pages, and digital marketing.',
+    title: 'Engineering Capabilities - Digital Platform Engineering & Infrastructure | Pixel Forge',
+    description: 'Core engineering capabilities for building reliable, scalable digital platforms. Web platforms & digital infrastructure, MVP engineering, performance optimization, and ongoing technical stewardship.',
     images: ['/logo/pixelforgelogo2.png'],
   },
   alternates: {

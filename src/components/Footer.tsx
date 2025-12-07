@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Facebook, Linkedin, Settings } from 'lucide-react';
+import { Phone, Mail, Linkedin, Settings } from 'lucide-react';
 import { useConsent } from '@/contexts/ConsentContext';
 
 const Footer = () => {
@@ -12,9 +12,9 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
-          <div className="col-span-1 md:col-span-2">
+          <div>
             <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image
                 src="/logo/pixelforgelogo2.png"
@@ -25,35 +25,29 @@ const Footer = () => {
               />
               <span className="text-xl font-bold">Pixel Forge</span>
             </Link>
-            <p className="text-gray-300 mb-6 max-w-md">
-              We build exceptional websites and digital experiences that drive business growth. 
-              From custom web development to digital marketing, we help businesses thrive online.
+            <p className="text-gray-300 mb-2 max-w-md leading-relaxed">
+              An engineering-driven technology studio focused on building reliable, scalable digital platforms and long-term technical partnerships.
+            </p>
+            <p className="text-gray-300 max-w-md leading-relaxed">
+              Digital systems are treated as infrastructure — designed to perform, evolve, and endure.
             </p>
           </div>
 
-          {/* Services */}
+          {/* Capabilities */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
+            <h3 className="text-lg font-semibold mb-4">Capabilities</h3>
             <ul className="space-y-2">
-              <li>
-                <Link href="/services" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Web Development
-                </Link>
+              <li className="text-gray-300">
+                Web Platforms & Digital Infrastructure
               </li>
-              <li>
-                <Link href="/services" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Landing Pages
-                </Link>
+              <li className="text-gray-300">
+                Digital Products & MVP Engineering
               </li>
-              <li>
-                <Link href="/services" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Digital Marketing
-                </Link>
+              <li className="text-gray-300">
+                Performance, Search & Optimization
               </li>
-              <li>
-                <Link href="/services" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Support & Maintenance
-                </Link>
+              <li className="text-gray-300">
+                Ongoing Engineering Stewardship
               </li>
             </ul>
           </div>
@@ -65,23 +59,19 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-green-400" />
                 <a
-                  href="https://wa.me/8801714918360"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="tel:+8801714918360"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                  +880 1714 918360
+                  +8801714918360
                 </a>
               </div>
               <div className="flex items-center space-x-3">
-                <Facebook className="w-4 h-4 text-blue-400" />
+                <Mail className="w-4 h-4 text-blue-400" />
                 <a
-                  href="https://www.facebook.com/pixelforge.official"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:hello@pixelforgebd.com"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                  @pixelforge.official
+                  hello@pixelforgebd.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -92,7 +82,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                        Pixel Forge
+                  LinkedIn
                 </a>
               </div>
             </div>
@@ -108,6 +98,7 @@ const Footer = () => {
               <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
                 Privacy Policy
               </Link>
+              <span className="text-gray-400">·</span>
               <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
                 Cookie Policy
               </Link>

@@ -6,8 +6,18 @@ export default function StructuredData() {
     "alternateName": "Pixel Forge Bangladesh",
     "url": "https://pixelforgebd.com",
     "logo": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
-    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
+    "description": "An engineering-driven technology studio focused on building reliable, scalable digital platforms and long-term technical partnerships. Digital systems are treated as infrastructure — designed to perform, evolve, and endure.",
     "foundingDate": "2024",
+    "knowsAbout": [
+      "Web Platform Engineering",
+      "System Architecture",
+      "Performance Optimization",
+      "Scalable Infrastructure",
+      "React Server Components",
+      "Next.js Development",
+      "Technical SEO",
+      "Digital Platform Engineering"
+    ],
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "BD",
@@ -17,11 +27,13 @@ export default function StructuredData() {
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+880-1714-918360",
+      "email": "hello@pixelforgebd.com",
       "contactType": "customer service",
       "availableLanguage": ["English", "Bengali"]
     },
     "sameAs": [
-      "https://www.facebook.com/pixelforge.official"
+      "https://www.facebook.com/pixelforge.official",
+      "https://www.linkedin.com/company/109025907"
     ],
     "serviceArea": {
       "@type": "Country",
@@ -29,38 +41,38 @@ export default function StructuredData() {
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Web Development Services",
+      "name": "Engineering Capabilities",
       "itemListElement": [
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Web Development",
-            "description": "Custom websites and web applications built with modern technologies"
+            "name": "Web Platforms & Digital Infrastructure",
+            "description": "Business-critical web platforms engineered to support operations, growth, and long-term evolution. Architecture decisions prioritize stability, performance, and maintainability."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "E-commerce Development",
-            "description": "Online stores and e-commerce solutions for businesses"
+            "name": "Digital Products & MVP Engineering",
+            "description": "Digital products engineered from concept to production with a focus on technical soundness and scalability. Foundations are structured to evolve beyond MVP phase without costly rewrites."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Digital Marketing",
-            "description": "SEO, social media marketing, and online advertising services"
+            "name": "Performance, Search & Optimization",
+            "description": "Technical optimization applied at the system level to ensure speed, discoverability, and usability. Platforms are tuned to meet modern performance benchmarks and search engine standards."
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Landing Page Design",
-            "description": "High-converting landing pages for marketing campaigns"
+            "name": "Ongoing Engineering Stewardship",
+            "description": "Long-term technical responsibility for platform stability, security, and evolution. Systems remain reliable and adaptable as business requirements change."
           }
         }
       ]
@@ -72,27 +84,32 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "Pixel Forge",
     "url": "https://pixelforgebd.com",
-    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
+    "description": "An engineering-driven technology studio focused on building reliable, scalable digital platforms and long-term technical partnerships.",
     "publisher": {
       "@type": "Organization",
       "name": "Pixel Forge"
+    },
+    "potentialAction": {
+      "@type": "ReadAction",
+      "target": "https://pixelforgebd.com"
     }
-    // Removed SearchAction - no search functionality implemented
   };
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "ProfessionalService",
     "@id": "https://pixelforgebd.com/#organization",
     "name": "Pixel Forge",
     "image": "https://pixelforgebd.com/logo/pixelforgelogo2.png",
-    "description": "We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.",
+    "description": "An engineering-driven technology studio focused on building reliable, scalable digital platforms and long-term technical partnerships. Digital systems are treated as infrastructure — designed to perform, evolve, and endure.",
     "url": "https://pixelforgebd.com",
-    "telephone": "+880-1714-918360",
+    "telephone": "+8801714918360",
+    "email": "hello@pixelforgebd.com",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "BD",
-      "addressRegion": "Dhaka"
+      "addressRegion": "Dhaka",
+      "addressLocality": "Dhaka"
     },
     "geo": {
       "@type": "GeoCoordinates",
@@ -105,8 +122,12 @@ export default function StructuredData() {
       "opens": "09:00",
       "closes": "18:00"
     },
-    "priceRange": "$$",
+    "priceRange": "$$$",
     "serviceArea": {
+      "@type": "Country",
+      "name": "Bangladesh"
+    },
+    "areaServed": {
       "@type": "Country",
       "name": "Bangladesh"
     }

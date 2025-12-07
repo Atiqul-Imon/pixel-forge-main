@@ -450,7 +450,7 @@ export default function ContactPage() {
                         <div className="w-5 h-5 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center mr-3 flex-shrink-0 border border-green-400/30">
                           <CheckCircle className="w-3 h-3 text-green-400" />
                         </div>
-                        <span className="text-gray-300">Free consultation and project planning</span>
+                        <span className="text-gray-300">Technical assessment and project planning</span>
                       </li>
                       <li className="flex items-center">
                         <div className="w-5 h-5 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center mr-3 flex-shrink-0 border border-green-400/30">
