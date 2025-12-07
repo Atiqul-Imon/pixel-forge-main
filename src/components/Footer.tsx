@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Phone, Mail, Linkedin, Settings } from 'lucide-react';
 import { useConsent } from '@/contexts/ConsentContext';
 
@@ -15,14 +14,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div>
-            <Link href="/" className="flex items-center space-x-3 mb-4">
-              <Image
-                src="/logo/pixelforgelogo2.png"
-                alt="Pixel Forge Logo"
-                width={48}
-                height={48}
-                className="w-12 h-12 object-contain"
-              />
+            <Link href="/" className="block mb-4">
               <span className="text-xl font-bold">Pixel Forge</span>
             </Link>
             <p className="text-gray-300 mb-2 max-w-md leading-relaxed">
