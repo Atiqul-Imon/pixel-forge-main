@@ -6,7 +6,9 @@ Create a `.env.local` file in your project root with these variables:
 
 ```env
 # MongoDB Configuration
-MONGODB_URI=mongodb+srv://atiqulimondev_db_user:A35TFXREqNvwvs82@cluster0.xawbviz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# ⚠️ SECURITY: Never commit actual MongoDB URI to version control
+# Get your connection string from MongoDB Atlas Dashboard → Connect → Connect your application
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 # Admin Panel
 ADMIN_PASSWORD=your_secure_admin_password
@@ -14,7 +16,7 @@ ADMIN_PASSWORD=your_secure_admin_password
 # ImageKit Configuration
 IMAGEKIT_PUBLIC_KEY=your_public_key_here
 IMAGEKIT_PRIVATE_KEY=your_private_key_here
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/yhlwdvbf5/PixelForge/
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your-imagekit-id/YourFolder/
 IMAGEKIT_AUTH_ENDPOINT=/api/admin/imagekit/auth
 
 # Email Configuration (Optional)
@@ -49,7 +51,7 @@ Replace the ImageKit placeholders with your actual credentials:
 # ImageKit Configuration (Replace with your actual keys)
 IMAGEKIT_PUBLIC_KEY=public_xxxxxxxxxxxxxxxx
 IMAGEKIT_PRIVATE_KEY=private_xxxxxxxxxxxxxxxx
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/yhlwdvbf5/PixelForge/
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your-imagekit-id/YourFolder/
 IMAGEKIT_AUTH_ENDPOINT=/api/admin/imagekit/auth
 ```
 

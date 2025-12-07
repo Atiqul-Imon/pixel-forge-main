@@ -30,7 +30,9 @@ NEXT_PUBLIC_DOCTOR_SOLUTION_PIXEL_ID=874258995040277
 
 ```bash
 # Database
-MONGODB_URI=mongodb+srv://atiqulimondev_db_user:A35TFXREqNvwvs82@cluster0.xawbviz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# ⚠️ SECURITY: Never commit actual MongoDB URI to version control
+# Get your connection string from MongoDB Atlas Dashboard
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 # Site URL
 NEXT_PUBLIC_SITE_URL=https://pixelforgebd.com
@@ -75,7 +77,7 @@ SMTP_PASS=your-app-password
 |------|-------|-------------|
 | `NEXT_PUBLIC_FACEBOOK_PIXEL_ID` | `682771494258551` | ✅ Production<br>✅ Preview<br>✅ Development |
 | `NEXT_PUBLIC_DOCTOR_SOLUTION_PIXEL_ID` | `874258995040277` | ✅ Production<br>✅ Preview<br>✅ Development |
-| `MONGODB_URI` | `mongodb+srv://...` | ✅ Production<br>✅ Preview<br>✅ Development |
+| `MONGODB_URI` | `mongodb+srv://username:password@cluster.mongodb.net/...` | ✅ Production<br>✅ Preview<br>✅ Development |
 | `NEXT_PUBLIC_SITE_URL` | `https://pixelforgebd.com` | ✅ Production<br>✅ Preview<br>✅ Development |
 | `NODE_ENV` | `production` | ✅ Production only |
 

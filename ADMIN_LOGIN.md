@@ -2,9 +2,16 @@
 
 ## 🔑 Admin Credentials
 
+**⚠️ SECURITY NOTICE:** Admin credentials are stored securely and should never be committed to version control.
+
+To retrieve admin credentials:
+1. Check your secure password manager
+2. Or run: `npm run reset-admin-password` to generate new credentials
+3. Or contact your system administrator
+
 ```
 📧 Email:    admin@pixelforgebd.com
-🔒 Password: 2ZFun$lfb5@&|,%)
+🔒 Password: [Stored securely - not in repository]
 ```
 
 ---
@@ -31,7 +38,7 @@ https://pixelforgebd.com/admin/login
 
 2. **Enter Credentials**
    - **Email**: `admin@pixelforgebd.com`
-   - **Password**: `2ZFun$lfb5@&|,%)`
+   - **Password**: [Use credentials from your secure password manager]
 
 3. **Click "Sign in"**
 
@@ -49,12 +56,10 @@ https://pixelforgebd.com/admin/login
 
 ### If you get "Invalid email or password" error:
 
-1. **Check the password carefully** - It contains special characters:
-   ```
-   2ZFun$lfb5@&|,%)
-   ```
-   - Make sure you're copying the entire password
+1. **Check the password carefully** - Ensure you're using the correct password:
+   - Verify you're copying the entire password from your secure storage
    - Check for any hidden spaces before/after
+   - If password contains special characters, ensure they're copied correctly
 
 2. **Verify admin user exists** (if on production):
    - The admin was created in your local MongoDB

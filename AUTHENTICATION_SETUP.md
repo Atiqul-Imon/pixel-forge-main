@@ -44,9 +44,12 @@ npm run create-admin
 
 **Default Admin Credentials:**
 - Email: `admin@pixelforgebd.com`
-- Password: `admin123456`
+- Password: [Generated securely by create-admin script - check console output]
 
-⚠️ **Important:** Change the password after first login!
+⚠️ **Important:** 
+- The script generates a secure random password
+- Save the password in a secure password manager immediately
+- Change the password after first login if desired
 
 ### 3. **Start the Application**
 

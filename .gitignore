@@ -32,6 +32,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+!.env.template
+
+# Security: Never commit files with credentials
+**/credentials.json
+**/secrets.json
+**/*.key
+**/*.pem
+**/config.local.*
+**/ADMIN_CREDENTIALS.md
+**/SECRETS.md
 
 # vercel
 .vercel

@@ -49,7 +49,9 @@ Set these in your Vercel dashboard:
 
 ### Required Variables:
 ```
-MONGODB_URI=mongodb+srv://atiqulimondev_db_user:A35TFXREqNvwvs82@cluster0.xawbviz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# ⚠️ SECURITY: Never commit actual MongoDB URI to version control
+# Get your connection string from MongoDB Atlas Dashboard
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
 NODE_ENV=production
 ```
@@ -97,7 +99,7 @@ vercel --prod
 
 | Name | Value | Environment |
 |------|-------|-------------|
-| `MONGODB_URI` | `mongodb+srv://atiqulimondev_db_user:A35TFXREqNvwvs82@cluster0.xawbviz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0` | Production, Preview, Development |
+| `MONGODB_URI` | `mongodb+srv://username:password@cluster.mongodb.net/...` | Production, Preview, Development |
 | `NEXT_PUBLIC_SITE_URL` | `https://your-domain.vercel.app` | Production, Preview, Development |
 | `NODE_ENV` | `production` | Production |
 

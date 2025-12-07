@@ -43,8 +43,17 @@ async function testAdminLogin() {
     const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
     // Test credentials
-    const testEmail = 'admin@pixelforgebd.com';
-    const testPassword = '2ZFun$lfb5@&|,%)';
+    // ⚠️ SECURITY: Never hardcode passwords in scripts
+    // Get credentials from environment variables or secure storage
+    const testEmail = process.env.ADMIN_EMAIL || 'admin@pixelforgebd.com';
+    const testPassword = process.env.ADMIN_PASSWORD;
+    
+    if (!testPassword) {
+      console.error('❌ Error: ADMIN_PASSWORD environment variable not set');
+      console.error('   Set ADMIN_PASSWORD in .env.local for testing');
+      await mongoose.disconnect();
+      process.exit(1);
+    }
 
     console.log('🔍 Looking for admin user...');
     const admin = await User.findOne({ email: testEmail });
