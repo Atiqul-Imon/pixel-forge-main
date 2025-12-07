@@ -107,15 +107,43 @@ export async function POST(request: NextRequest) {
     // Find user with security fields FIRST to check database lock status
     const user = await (User as any).findOne({ email });
     
-    // If user exists and database shows account is unlocked, clear in-memory lock
-    // This ensures database resets take effect immediately
+    // If user exists and database shows account is unlocked, ALWAYS clear in-memory lock
+    // This ensures database resets take effect immediately, even if in-memory lock exists
     if (user && !user.isLocked && user.loginAttempts === 0 && !user.lockUntil) {
       clearLoginLock(email);
     }
 
     // Check login attempts (after potentially clearing in-memory lock)
+    // BUT: If database shows account is unlocked, skip in-memory lock check
     const attemptCheck = checkLoginAttempts(email);
-    if (!attemptCheck.allowed) {
+    if (!attemptCheck.allowed && user && user.isLocked) {
+      // Only respect in-memory lock if database also shows account is locked
+      const lockedUntil = attemptCheck.lockedUntil ? new Date(attemptCheck.lockedUntil) : undefined;
+      
+      await logAuditEvent({
+        userId: undefined,
+        action: 'login_account_locked',
+        resource: 'auth',
+        details: { email, lockedUntil },
+        ip: clientIP,
+        userAgent,
+        timestamp: new Date(),
+        success: false
+      });
+      
+      return createSecureResponse({
+        success: false,
+        message: `Account temporarily locked due to multiple failed attempts. Try again later.`
+      }, 423);
+    }
+    
+    // If database shows unlocked but in-memory has lock, clear it and continue
+    if (!attemptCheck.allowed && user && !user.isLocked && user.loginAttempts === 0 && !user.lockUntil) {
+      clearLoginLock(email);
+      // Continue with login attempt
+    } else if (!attemptCheck.allowed) {
+      // In-memory lock exists and we can't verify database (user not found yet)
+      // This should be rare, but handle it
       const lockedUntil = attemptCheck.lockedUntil ? new Date(attemptCheck.lockedUntil) : undefined;
       
       await logAuditEvent({
