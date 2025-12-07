@@ -102,7 +102,18 @@ export async function POST(request: NextRequest) {
       }, 400);
     }
     
-    // Check login attempts before database query
+    await connectDB();
+
+    // Find user with security fields FIRST to check database lock status
+    const user = await (User as any).findOne({ email });
+    
+    // If user exists and database shows account is unlocked, clear in-memory lock
+    // This ensures database resets take effect immediately
+    if (user && !user.isLocked && user.loginAttempts === 0 && !user.lockUntil) {
+      clearLoginLock(email);
+    }
+
+    // Check login attempts (after potentially clearing in-memory lock)
     const attemptCheck = checkLoginAttempts(email);
     if (!attemptCheck.allowed) {
       const lockedUntil = attemptCheck.lockedUntil ? new Date(attemptCheck.lockedUntil) : undefined;
@@ -123,11 +134,6 @@ export async function POST(request: NextRequest) {
         message: `Account temporarily locked due to multiple failed attempts. Try again later.`
       }, 423);
     }
-
-    await connectDB();
-
-    // Find user with security fields
-    const user = await User.findOne({ email });
     if (!user) {
       // Record failed attempt even for non-existent users to prevent enumeration
       recordLoginAttempt(email, false);
