@@ -7,7 +7,8 @@ import {
   setAuthCookies,
   checkRateLimit,
   checkLoginAttempts,
-  recordLoginAttempt
+  recordLoginAttempt,
+  clearLoginLock
 } from '@/lib/auth';
 import { LoginData, AuthResponse, AuthError } from '@/types/auth';
 import { 
@@ -185,6 +186,12 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Account is temporarily locked. Please try again later.'
       }, 423);
+    }
+
+    // If database shows account is unlocked and has no login attempts, clear in-memory lock
+    // This ensures that if we reset the password/unlock in database, the in-memory lock is cleared
+    if (!user.isLocked && user.loginAttempts === 0 && !user.lockUntil) {
+      clearLoginLock(email);
     }
 
     // Verify password

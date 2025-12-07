@@ -185,6 +185,11 @@ export const recordLoginAttempt = (identifier: string, success: boolean) => {
   loginAttemptStore.set(identifier, current);
 };
 
+// Clear login lock for a specific email (useful when database shows account is unlocked)
+export const clearLoginLock = (identifier: string): void => {
+  loginAttemptStore.delete(identifier);
+};
+
 // Enhanced user extraction with multiple token sources
 export const getUserFromRequest = async (request: NextRequest): Promise<JWTPayload | null> => {
   let token: string | undefined;
