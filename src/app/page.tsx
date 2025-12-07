@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Code, Palette, BarChart3, Headphones, Star, CheckCircle, Store, ShoppingCart, Building2, Zap } from 'lucide-react';
+import { ArrowRight, Code, Palette, BarChart3, Headphones, Star, CheckCircle, Store, ShoppingCart, Building2, Zap, Settings, Search } from 'lucide-react';
 import InteractiveButton from '@/components/InteractiveButton';
 import { Metadata } from 'next';
 
@@ -10,30 +10,50 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const services = [
+  const capabilities = [
     {
-      icon: <Code className="w-8 h-8" />,
-      title: 'Web Development',
-      description: 'Custom websites and web applications built with modern technologies',
-      features: ['React/Next.js', 'Node.js', 'MongoDB', 'Responsive Design']
+      icon: <Building2 className="w-8 h-8" />,
+      title: 'Web Platforms & Digital Infrastructure',
+      description: 'Custom web platforms built to support business operations, user growth, and future expansion. Architecture decisions prioritize performance, stability, and maintainability from day one.',
+      features: [
+        'Built for high traffic and future feature growth',
+        'Secure, scalable system design',
+        'SEO-ready and performance-optimized foundations',
+        'Production-grade, responsive interfaces'
+      ]
     },
     {
-      icon: <Palette className="w-8 h-8" />,
-      title: 'Landing Pages',
-      description: 'High-converting landing pages that drive business growth',
-      features: ['A/B Testing', 'SEO Optimized', 'Fast Loading', 'Mobile First']
+      icon: <Code className="w-8 h-8" />,
+      title: 'Digital Products & MVP Engineering',
+      description: 'Digital products engineered from concept to production with a focus on technical soundness and scalability. Foundations are structured to evolve beyond MVP phase without costly rewrites.',
+      features: [
+        'Modular, extensible system architecture',
+        'Clear separation of business logic',
+        'Scalable foundations for long-term product growth',
+        'Engineering decisions aligned with real-world usage'
+      ]
     },
     {
       icon: <BarChart3 className="w-8 h-8" />,
-      title: 'Digital Marketing',
-      description: 'Comprehensive digital marketing strategies to boost your online presence',
-      features: ['SEO/SEM', 'Social Media', 'Content Marketing', 'Analytics']
+      title: 'Performance, Search & Optimization',
+      description: 'Technical optimization applied at the system level to ensure speed, discoverability, and usability. Platforms are tuned to meet modern performance benchmarks and search engine standards.',
+      features: [
+        'Core Web Vitals–focused optimization',
+        'Clean technical SEO foundations',
+        'Performance monitoring and improvements',
+        'Analytics-ready system setup'
+      ]
     },
     {
-      icon: <Headphones className="w-8 h-8" />,
-      title: 'Support & Maintenance',
-      description: 'Ongoing support and maintenance to keep your website running smoothly',
-      features: ['24/7 Support', 'Regular Updates', 'Security Monitoring', 'Performance Optimization']
+      icon: <Settings className="w-8 h-8" />,
+      title: 'Ongoing Engineering Stewardship',
+      description: 'Long-term technical responsibility for stability, updates, and system health. Platforms remain secure, reliable, and adaptable as business requirements change.',
+      features: [
+        'Continuous system monitoring',
+        'Regular updates and audits',
+        'Performance and security reviews',
+        'Scalable support structures'
+      ]
     }
   ];
 
@@ -98,13 +118,13 @@ export default function Home() {
             {/* Main heading with enhanced styling */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent animate-gradient">
-                Pixel Forge
+                High-Performance Websites Built to Grow Your Business
               </span>
             </h1>
 
             {/* Subtitle with better contrast */}
             <h2 className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
-              We build exceptional websites and digital experiences that drive business growth. From custom web development to digital marketing, we help businesses thrive online.
+              Pixel Forge is a modern web development studio that helps businesses build fast, scalable, and conversion-focused digital platforms. We combine strategy, design, and engineering to turn online presence into real business results.
             </h2>
 
             {/* CTA Button with enhanced styling */}
@@ -114,24 +134,21 @@ export default function Home() {
                 trackEvent="serviceInterest"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group shadow-2xl hover:shadow-blue-500/25 hover:scale-105 transform"
               >
-                Get Started Today
+                Book a Free Strategy Call
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </InteractiveButton>
             </div>
 
-            {/* Features with enhanced styling */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300">
-              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                Free Consultation
+            {/* Trust indicators with subtle styling */}
+            <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+                Business-focused approach
               </div>
-              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                24/7 Support
+              <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+                Performance & SEO ready
               </div>
-              <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-                <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                Modern Tech
+              <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+                Long-term support mindset
               </div>
             </div>
           </div>
@@ -146,7 +163,7 @@ export default function Home() {
       </section>
 
 
-      {/* Services Section with Glassmorphism */}
+      {/* What Is Engineered Section with Glassmorphism */}
       <section className="relative py-20 overflow-hidden glassmorphism-section">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
@@ -166,16 +183,22 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 animate-card-float">
-              Professional <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">Web Development Services</span> in Bangladesh
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-card-float">
+              What Is <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">Engineered</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto glassmorphism-text">
-              Expert web development, e-commerce solutions, and digital marketing services in Dhaka, Chittagong, and across Bangladesh. We help businesses establish a strong online presence with modern, responsive websites.
+            <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto glassmorphism-text leading-relaxed">
+              Pixel Forge operates as an engineering-driven technology studio. Digital systems are designed with performance, scalability, and operational continuity in mind — treating technology as long-term infrastructure, not a one-off deliverable.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
+          <div className="mb-12">
+            <h3 className="text-2xl md:text-3xl font-semibold text-white text-center mb-8">
+              Core Capabilities
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {capabilities.map((capability, index) => (
               <div
                 key={index}
                 className="group relative animate-card-entrance"
@@ -184,7 +207,7 @@ export default function Home() {
                 }}
               >
                 {/* Glassmorphism Card */}
-                <div className="glassmorphism-card relative bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow">
+                <div className="glassmorphism-card relative bg-white/10 backdrop-blur-lg p-8 md:p-10 rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow h-full">
                   {/* Shimmer effect */}
                   <div className="absolute inset-0 rounded-3xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
@@ -205,10 +228,10 @@ export default function Home() {
                   {/* Content */}
                   <div className="relative z-10">
                     {/* Icon with enhanced glassmorphism effect */}
-                    <div className="relative mb-6">
+                    <div className="relative mb-7">
                       <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300 border border-white/30 group-hover:animate-icon-pulse">
                         <div className="text-blue-300 group-hover:text-blue-200 transition-colors duration-300">
-                          {service.icon}
+                          {capability.icon}
                         </div>
                       </div>
                       {/* Icon glow effect */}
@@ -218,23 +241,23 @@ export default function Home() {
                     </div>
 
                     {/* Title with glassmorphism text effect */}
-                    <h3 className="text-xl font-semibold glassmorphism-text mb-3 group-hover:text-blue-100 transition-colors duration-300">
-                      {service.title}
+                    <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-white mb-5 leading-tight group-hover:text-blue-100 transition-colors duration-300">
+                      {capability.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-300 mb-6 leading-relaxed group-hover:text-gray-200 transition-colors duration-300">
-                      {service.description}
+                    <p className="text-base md:text-lg text-gray-200 mb-8 leading-relaxed group-hover:text-gray-100 transition-colors duration-300">
+                      {capability.description}
                     </p>
 
                     {/* Features list with enhanced styling */}
-                    <ul className="space-y-3">
-                      {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-sm text-gray-300 group-hover:text-gray-200 transition-colors duration-300 group/item">
-                          <div className="w-5 h-5 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center mr-3 flex-shrink-0 border border-green-400/30 group-hover/item:bg-green-400/30 group-hover/item:scale-110 transition-all duration-300">
-                            <CheckCircle className="w-3 h-3 text-green-400 group-hover/item:text-green-300 transition-colors duration-300" />
+                    <ul className="space-y-4">
+                      {capability.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start text-base md:text-[15px] text-gray-200 group-hover:text-gray-100 transition-colors duration-300 group/item">
+                          <div className="w-6 h-6 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center mr-4 flex-shrink-0 border border-green-400/30 group-hover/item:bg-green-400/30 group-hover/item:scale-110 transition-all duration-300 mt-0.5">
+                            <CheckCircle className="w-4 h-4 text-green-400 group-hover/item:text-green-300 transition-colors duration-300" />
                           </div>
-                          <span className="group-hover/item:translate-x-1 transition-transform duration-300">{feature}</span>
+                          <span className="leading-relaxed group-hover/item:translate-x-1 transition-transform duration-300">{feature}</span>
                         </li>
                       ))}
                     </ul>
