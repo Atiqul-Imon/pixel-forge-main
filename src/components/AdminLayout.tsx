@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from './AdminSidebar';
 import AdminTopHeader from './AdminTopHeader';
+import NavigationLoader from './NavigationLoader';
 import { useAuth } from '@/contexts/AuthContext';
 import { ToastProvider } from './ui';
 
@@ -27,6 +28,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <ToastProvider>
+      <NavigationLoader />
       <style jsx global>{`
         @media print {
           /* Hide sidebar when printing */
