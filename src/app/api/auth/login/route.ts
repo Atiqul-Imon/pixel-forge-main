@@ -8,7 +8,8 @@ import {
   checkRateLimit,
   checkLoginAttempts,
   recordLoginAttempt,
-  clearLoginLock
+  clearLoginLock,
+  hashPassword
 } from '@/lib/auth';
 import { LoginData, AuthResponse, AuthError } from '@/types/auth';
 import { 
@@ -25,6 +26,8 @@ export async function POST(request: NextRequest) {
   const clientIP = await getClientIP(request);
   const userAgent = getUserAgent(request);
   let userEmail = '';
+  const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@pixelforgebd.com').toLowerCase();
+  const envAdminPassword = process.env.ADMIN_PASSWORD;
   
   try {
     // Security validation
@@ -105,7 +108,24 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     // Find user with security fields FIRST to check database lock status
-    const user = await (User as any).findOne({ email });
+    let user = await (User as any).findOne({ email });
+
+    // If the request is for the env-configured admin and they don't exist, create/sync them on the fly
+    if (!user && email === envAdminEmail && envAdminPassword) {
+      const hashedPassword = await hashPassword(envAdminPassword);
+      user = new (User as any)({
+        name: 'Pixel Forge Admin',
+        email: envAdminEmail,
+        password: hashedPassword,
+        role: 'admin',
+        isActive: true,
+        emailVerified: true,
+        loginAttempts: 0,
+        sessions: [],
+        twoFactorEnabled: false,
+      });
+      await user.save();
+    }
     
     // If user exists and database shows account is unlocked, ALWAYS clear in-memory lock
     // This ensures database resets take effect immediately, even if in-memory lock exists
@@ -182,6 +202,20 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Invalid email or password'
       }, 401);
+    }
+
+    // If this is the env admin account and password is out-of-sync, update it
+    if (email === envAdminEmail && envAdminPassword) {
+      const isEnvPasswordValid = await verifyPassword(envAdminPassword, user.password);
+      if (!isEnvPasswordValid) {
+        user.password = await hashPassword(envAdminPassword);
+        user.loginAttempts = 0;
+        user.lockUntil = undefined;
+        user.isActive = true;
+        user.emailVerified = true;
+        await user.save();
+        clearLoginLock(email);
+      }
     }
 
     // Check if user is active
