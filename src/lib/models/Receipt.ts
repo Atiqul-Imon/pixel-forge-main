@@ -52,36 +52,30 @@ const ReceiptSchema: Schema = new Schema({
     type: String,
     required: true,
     unique: true,
-    index: true,
     trim: true,
   },
   invoiceId: {
     type: Schema.Types.ObjectId,
     ref: 'Invoice',
-    index: true,
   },
   clientId: {
     type: Schema.Types.ObjectId,
     ref: 'Client',
     required: true,
-    index: true,
   },
   receiptDate: {
     type: Date,
     required: true,
     default: Date.now,
-    index: true,
   },
   paymentDate: {
     type: Date,
     required: true,
-    index: true,
   },
   paymentMethod: {
     type: String,
     enum: ['cash', 'bank_transfer', 'cheque', 'online', 'card', 'other'],
     required: true,
-    index: true,
   },
   paymentReference: {
     type: String,
@@ -103,7 +97,6 @@ const ReceiptSchema: Schema = new Schema({
     type: Number,
     required: true,
     min: 0,
-    index: true,
   },
   currency: {
     type: String,
@@ -126,7 +119,6 @@ const ReceiptSchema: Schema = new Schema({
   emailSent: {
     type: Boolean,
     default: false,
-    index: true,
   },
   emailSentAt: {
     type: Date,
@@ -143,6 +135,7 @@ const ReceiptSchema: Schema = new Schema({
 // Indexes for better query performance
 ReceiptSchema.index({ clientId: 1, receiptDate: -1 });
 ReceiptSchema.index({ invoiceId: 1 });
+ReceiptSchema.index({ clientId: 1, paymentDate: -1 });
 ReceiptSchema.index({ receiptDate: -1 });
 ReceiptSchema.index({ paymentDate: -1 });
 ReceiptSchema.index({ receiptNumber: 'text' });

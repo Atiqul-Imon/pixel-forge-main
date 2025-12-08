@@ -6,7 +6,7 @@ import { verifyToken } from '@/lib/auth';
 // GET - Fetch single receipt
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -16,7 +16,9 @@ export async function GET(
 
     await connectDB();
 
-    const receipt = await Receipt.findById(params.id)
+    const resolvedParams = await params;
+
+    const receipt = await Receipt.findById(resolvedParams.id)
       .populate('clientId')
       .populate('invoiceId')
       .lean();
@@ -38,7 +40,7 @@ export async function GET(
 // PUT - Update receipt
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -48,7 +50,9 @@ export async function PUT(
 
     await connectDB();
 
-    const receipt = await Receipt.findById(params.id);
+    const resolvedParams = await params;
+
+    const receipt = await Receipt.findById(resolvedParams.id);
     if (!receipt) {
       return NextResponse.json({ error: 'Receipt not found' }, { status: 404 });
     }
@@ -89,10 +93,11 @@ export async function PUT(
       message: 'Receipt updated successfully',
       receipt,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating receipt:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update receipt';
     return NextResponse.json(
-      { error: error.message || 'Failed to update receipt' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
@@ -101,7 +106,7 @@ export async function PUT(
 // DELETE - Delete receipt
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -111,7 +116,9 @@ export async function DELETE(
 
     await connectDB();
 
-    const receipt = await Receipt.findById(params.id);
+    const resolvedParams = await params;
+
+    const receipt = await Receipt.findById(resolvedParams.id);
     if (!receipt) {
       return NextResponse.json({ error: 'Receipt not found' }, { status: 404 });
     }
@@ -119,9 +126,11 @@ export async function DELETE(
     // If receipt is linked to invoice, update invoice status
     if (receipt.invoiceId) {
       const Invoice = await import('@/lib/models/Invoice').then(m => m.default);
+      // @ts-expect-error - Mongoose overloaded method type issue
       const invoice = await Invoice.findById(receipt.invoiceId);
       if (invoice) {
         const ReceiptModel = await import('@/lib/models/Receipt').then(m => m.default);
+        // @ts-expect-error - Mongoose overloaded method type issue
         const allReceipts = await ReceiptModel.find({ invoiceId: receipt.invoiceId, _id: { $ne: receipt._id } });
         const totalPaid = allReceipts.reduce((sum, r) => sum + r.amountReceived, 0);
         
@@ -134,13 +143,15 @@ export async function DELETE(
       }
     }
 
-    await Receipt.findByIdAndDelete(params.id);
+    // @ts-expect-error - Mongoose overloaded method type issue
+    await Receipt.findByIdAndDelete(resolvedParams.id);
 
     return NextResponse.json({ message: 'Receipt deleted successfully' });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting receipt:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete receipt';
     return NextResponse.json(
-      { error: error.message || 'Failed to delete receipt' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

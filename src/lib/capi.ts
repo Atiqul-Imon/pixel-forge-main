@@ -57,7 +57,7 @@ export async function sendCAPIEvents(
   accessToken: string,
   events: CAPIEvent[],
   testEventCode?: string
-): Promise<{ success: boolean; response?: any; error?: string }> {
+): Promise<{ success: boolean; response?: Record<string, unknown>; error?: string }> {
   try {
     const batch: CAPIBatch = {
       data: events,

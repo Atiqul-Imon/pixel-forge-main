@@ -1,7 +1,9 @@
 import nodemailer from 'nodemailer';
 import { randomBytes } from 'crypto';
+import mongoose from 'mongoose';
 import EmailCommunication from './models/EmailCommunication';
-import EmailTemplate from './models/EmailTemplate';
+import EmailTemplate, { IEmailTemplate } from './models/EmailTemplate';
+import { IEmailCommunication } from './models/EmailCommunication';
 import dbConnect from './mongodb';
 
 // Namecheap Private Email SMTP Configuration
@@ -86,6 +88,7 @@ export async function processEmailTemplate(
 ): Promise<{ subject: string; htmlBody: string; textBody?: string }> {
   await dbConnect();
   
+  // @ts-expect-error - Mongoose overloaded method type issue
   const template = await EmailTemplate.findById(templateId);
   if (!template || !template.isActive) {
     throw new Error('Email template not found or inactive');
@@ -209,11 +212,11 @@ export async function sendTrackedEmail(options: SendEmailOptions): Promise<{
     sentAt: new Date(),
     trackingToken,
     emailType,
-    templateId: templateId ? (templateId as any) : undefined,
-    campaignId: campaignId ? (campaignId as any) : undefined,
-    clientId: clientId ? (clientId as any) : undefined,
-    contactPersonId: contactPersonId ? (contactPersonId as any) : undefined,
-    dealId: dealId ? (dealId as any) : undefined,
+    templateId: templateId ? new mongoose.Types.ObjectId(templateId) : undefined,
+    campaignId: campaignId ? new mongoose.Types.ObjectId(campaignId) : undefined,
+    clientId: clientId ? new mongoose.Types.ObjectId(clientId) : undefined,
+    contactPersonId: contactPersonId ? new mongoose.Types.ObjectId(contactPersonId) : undefined,
+    dealId: dealId ? new mongoose.Types.ObjectId(dealId) : undefined,
     projectId,
     followUpScheduled,
     createdBy,
@@ -259,6 +262,7 @@ export async function sendEmailWithTemplate(
 export async function markEmailAsRead(trackingToken: string): Promise<void> {
   await dbConnect();
   
+  // @ts-expect-error - Mongoose overloaded method type issue
   const email = await EmailCommunication.findOne({ trackingToken });
   if (email && !email.readStatus) {
     email.readStatus = true;
@@ -283,6 +287,7 @@ export async function trackLinkClick(
 ): Promise<string> {
   await dbConnect();
   
+  // @ts-expect-error - Mongoose overloaded method type issue
   const email = await EmailCommunication.findOne({ trackingToken });
   if (email) {
     const existingLink = email.clickedLinks?.find(link => link.url === clickedUrl);
@@ -321,7 +326,7 @@ export async function getEmailStats(
 }> {
   await dbConnect();
   
-  const query: any = {};
+  const query: Record<string, unknown> = {};
   if (clientId) {
     query.clientId = clientId;
   }
@@ -332,6 +337,7 @@ export async function getEmailStats(
     };
   }
   
+  // @ts-expect-error - Mongoose overloaded method type issue
   const emails = await EmailCommunication.find(query);
   
   const totalSent = emails.length;

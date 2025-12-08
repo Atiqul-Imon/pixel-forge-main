@@ -7,11 +7,12 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ['mongoose'],
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Temporarily ignore to allow build while fixing warnings incrementally
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Temporarily ignore Mongoose type issues for deployment
   },
+  outputFileTracingRoot: './',
   images: {
     remotePatterns: [
       {

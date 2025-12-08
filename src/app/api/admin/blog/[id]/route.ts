@@ -19,6 +19,7 @@ export async function GET(
     await connectDB();
     const resolvedParams = await params;
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     const post = await BlogPost.findById(resolvedParams.id).lean();
     if (!post) {
       return NextResponse.json(
@@ -76,6 +77,7 @@ export async function PUT(
 
     // Check if slug already exists (excluding current post)
     if (slug) {
+      // @ts-expect-error - Mongoose overloaded method type issue
       const existingPost = await BlogPost.findOne({ 
         slug, 
         _id: { $ne: resolvedParams.id } 
@@ -88,7 +90,7 @@ export async function PUT(
       }
     }
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       title,
       slug,
       excerpt,
@@ -110,6 +112,7 @@ export async function PUT(
       updateData.publishedAt = new Date(publishedAt);
     }
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     const post = await BlogPost.findByIdAndUpdate(
       resolvedParams.id,
       updateData,
@@ -152,6 +155,7 @@ export async function DELETE(
     await connectDB();
     const resolvedParams = await params;
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     const post = await BlogPost.findByIdAndDelete(resolvedParams.id).lean();
     if (!post) {
       return NextResponse.json(

@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (leadId) query.leadId = leadId;
     if (dealId) query.dealId = dealId;
     if (clientId) query.clientId = clientId;
@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     const activities = await Activity.find(query)
       .sort({ date: -1 })
       .skip(skip)
@@ -123,6 +124,7 @@ export async function POST(request: NextRequest) {
 
     // Update lead's lastContactedAt if it's a contact activity
     if (leadId && (type === 'call' || type === 'email' || type === 'meeting' || type === 'whatsapp')) {
+      // @ts-expect-error - Mongoose overloaded method type issue
       await Lead.findByIdAndUpdate(leadId, {
         lastContactedAt: new Date(),
       });
@@ -130,6 +132,7 @@ export async function POST(request: NextRequest) {
 
     // Update client's lastContactedAt if it's a contact activity
     if (clientId && (type === 'call' || type === 'email' || type === 'meeting' || type === 'whatsapp' || type === 'proposal' || type === 'quote')) {
+      // @ts-expect-error - Mongoose overloaded method type issue
       await Client.findByIdAndUpdate(clientId, {
         lastContactedAt: new Date(),
       });

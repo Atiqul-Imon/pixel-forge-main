@@ -1,8 +1,8 @@
 // Simple in-memory cache implementation
 // In production, replace with Redis
 
-interface CacheItem {
-  value: any;
+interface CacheItem<T = unknown> {
+  value: T;
   expires: number;
 }
 
@@ -10,12 +10,12 @@ class MemoryCache {
   private cache = new Map<string, CacheItem>();
   private defaultTTL = 300; // 5 minutes
 
-  set(key: string, value: any, ttl: number = this.defaultTTL): void {
+  set<T = unknown>(key: string, value: T, ttl: number = this.defaultTTL): void {
     const expires = Date.now() + (ttl * 1000);
     this.cache.set(key, { value, expires });
   }
 
-  get(key: string): any | null {
+  get<T = unknown>(key: string): T | null {
     const item = this.cache.get(key);
     
     if (!item) {
@@ -69,7 +69,7 @@ export default cache;
 
 // Cache key generators
 export const cacheKeys = {
-  blogPosts: (filter: any, page: number, limit: number) => 
+  blogPosts: (filter: Record<string, unknown>, page: number, limit: number) => 
     `blog_posts_${JSON.stringify(filter)}_${page}_${limit}`,
   
   blogPost: (slug: string) => 

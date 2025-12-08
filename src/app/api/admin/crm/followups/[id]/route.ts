@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 // GET - Get single follow-up
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -18,11 +18,13 @@ export async function GET(
 
     await connectDB();
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    const resolvedParams = await params;
+
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid follow-up ID' }, { status: 400 });
     }
 
-    const task = await FollowUpTask.findById(params.id)
+    const task = await FollowUpTask.findById(resolvedParams.id)
       .populate('clientId', 'companyName primaryEmail')
       .populate('contactPersonId', 'fullName email')
       .lean();
@@ -44,7 +46,7 @@ export async function GET(
 // PUT - Update follow-up with automatic client status updates
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -56,7 +58,9 @@ export async function PUT(
 
     await connectDB();
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    const resolvedParams = await params;
+
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid follow-up ID' }, { status: 400 });
     }
 
@@ -64,7 +68,7 @@ export async function PUT(
     const { status, outcome, updateClientStatus, newClientStatus, ...updateData } = body;
 
     // Get current task to check clientId
-    const currentTask = await FollowUpTask.findById(params.id);
+    const currentTask = await FollowUpTask.findById(resolvedParams.id);
     if (!currentTask) {
       return NextResponse.json({ error: 'Follow-up not found' }, { status: 404 });
     }
@@ -113,7 +117,7 @@ export async function PUT(
 
     // Update the follow-up task
     const task = await FollowUpTask.findByIdAndUpdate(
-      params.id,
+      resolvedParams.id,
       updateFields,
       { new: true, runValidators: true }
     ).populate('clientId');
@@ -181,7 +185,7 @@ export async function PUT(
 // PATCH - Complete follow-up with automatic client status update
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -193,20 +197,22 @@ export async function PATCH(
 
     await connectDB();
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    const resolvedParams = await params;
+
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid follow-up ID' }, { status: 400 });
     }
 
     const body = await request.json();
     const { outcome, updateClientStatus, newClientStatus } = body;
 
-    const currentTask = await FollowUpTask.findById(params.id).populate('clientId');
+    const currentTask = await FollowUpTask.findById(resolvedParams.id).populate('clientId');
     if (!currentTask) {
       return NextResponse.json({ error: 'Follow-up not found' }, { status: 404 });
     }
 
     const task = await FollowUpTask.findByIdAndUpdate(
-      params.id,
+      resolvedParams.id,
       {
         status: 'completed',
         completedAt: new Date(),
@@ -278,7 +284,7 @@ export async function PATCH(
 // DELETE - Delete follow-up
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -288,11 +294,16 @@ export async function DELETE(
 
     await connectDB();
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    const resolvedParams = await params;
+
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid follow-up ID' }, { status: 400 });
     }
 
-    const task = await FollowUpTask.findByIdAndDelete(params.id);
+    // @ts-expect-error - Mongoose overloaded method type issue
+
+
+    const task = await FollowUpTask.findByIdAndDelete(resolvedParams.id);
     if (!task) {
       return NextResponse.json({ error: 'Follow-up not found' }, { status: 404 });
     }

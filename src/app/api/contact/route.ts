@@ -9,7 +9,7 @@ import { checkRateLimit } from '@/lib/auth';
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
     // Rate limiting check - 10 submissions per 15 minutes
     if (!checkRateLimit(clientIP, 10, 15 * 60 * 1000)) {

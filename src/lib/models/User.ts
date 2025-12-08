@@ -148,7 +148,7 @@ UserSchema.methods.incLoginAttempts = function() {
     });
   }
   
-  const updates: any = { $inc: { loginAttempts: 1 } };
+  const updates: { $inc?: { loginAttempts: number }; $set?: { lockUntil: number } } = { $inc: { loginAttempts: 1 } };
   
   // If we've reached max attempts and it's not locked yet, lock the account
   const maxAttempts = parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5');

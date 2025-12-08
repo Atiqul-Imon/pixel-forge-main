@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   
   try {
     // Get client IP for rate limiting
-    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
     // Rate limiting check - 200 requests per 15 minutes
     if (!checkRateLimit(clientIP, 200, 15 * 60 * 1000)) {

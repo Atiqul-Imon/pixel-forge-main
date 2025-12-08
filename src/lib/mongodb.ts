@@ -6,45 +6,63 @@ if (!MONGODB_URI) {
   console.warn('MONGODB_URI not found. Database connection will not be available.');
 }
 
-let cached: typeof mongoose | null = null;
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
+
+declare global {
+  // eslint-disable-next-line no-var
+  var mongooseCache: MongooseCache | undefined;
+}
+
+const cached = globalThis.mongooseCache || { conn: null, promise: null };
+globalThis.mongooseCache = cached;
 
 async function connectDB() {
-  if (cached) {
-    return cached;
+  if (cached.conn) {
+    return cached.conn;
   }
 
   if (!MONGODB_URI) {
     throw new Error('MongoDB URI not configured');
   }
 
-  try {
+  if (!cached.promise) {
     const opts = {
-      maxPoolSize: 10, // Maintain up to 10 socket connections
-      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      bufferCommands: false, // Disable mongoose buffering
+      maxPoolSize: 20, // Allow more pooled sockets for concurrent API hits
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      bufferCommands: false,
+      autoIndex: false, // Avoid index build on prod hot paths
+      maxIdleTimeMS: 30000,
+      family: 4, // IPv4 to reduce DNS latency on some hosts
     };
 
-    cached = await mongoose.connect(MONGODB_URI, opts);
-    
-    // Connection event listeners for monitoring
-    cached.connection.on('connected', () => {
-      console.log('MongoDB connected successfully');
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => {
+      // Connection event listeners for monitoring (quiet in production)
+      m.connection.on('connected', () => {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('MongoDB connected successfully');
+        }
+      });
+      
+      m.connection.on('error', (err) => {
+        console.error('MongoDB connection error:', err);
+      });
+      
+      m.connection.on('disconnected', () => {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('MongoDB disconnected');
+        }
+      });
+
+      return m;
     });
-    
-    cached.connection.on('error', (err) => {
-      console.error('MongoDB connection error:', err);
-    });
-    
-    cached.connection.on('disconnected', () => {
-      console.log('MongoDB disconnected');
-    });
-    
-    return cached;
-  } catch (e) {
-    console.error('MongoDB connection error:', e);
-    throw e;
   }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
 export default connectDB;

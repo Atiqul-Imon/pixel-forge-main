@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { getUserFromRequest } from '@/lib/auth';
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         
         // Remove session from user if sessionId exists
         if (tokenUser.sessionId) {
-          const user = await User.findById(tokenUser.userId) as any;
+          const user = await User.findById(tokenUser.userId);
           if (user && user.removeSession) {
             await user.removeSession(tokenUser.sessionId);
           }

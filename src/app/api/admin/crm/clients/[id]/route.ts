@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 // GET - Get single client by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -16,12 +16,14 @@ export async function GET(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid client ID' }, { status: 400 });
     }
 
-    const client = await Client.findById(params.id).lean();
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const client = await Client.findById(resolvedParams.id).lean();
     if (!client) {
       return NextResponse.json({ error: 'Client not found' }, { status: 404 });
     }
@@ -39,7 +41,7 @@ export async function GET(
 // PUT - Update client
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -48,14 +50,16 @@ export async function PUT(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid client ID' }, { status: 400 });
     }
 
     const body = await request.json();
+    // @ts-expect-error - Mongoose overloaded method type issue
     const client = await Client.findByIdAndUpdate(
-      params.id,
+      resolvedParams.id,
       { ...body, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
@@ -68,10 +72,11 @@ export async function PUT(
       message: 'Client updated successfully',
       client,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating client:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update client';
     return NextResponse.json(
-      { error: error.message || 'Failed to update client' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
@@ -80,7 +85,7 @@ export async function PUT(
 // DELETE - Delete client
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -89,12 +94,14 @@ export async function DELETE(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid client ID' }, { status: 400 });
     }
 
-    const client = await Client.findByIdAndDelete(params.id);
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const client = await Client.findByIdAndDelete(resolvedParams.id);
     if (!client) {
       return NextResponse.json({ error: 'Client not found' }, { status: 404 });
     }

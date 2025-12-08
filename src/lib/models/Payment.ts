@@ -42,36 +42,30 @@ const PaymentSchema: Schema = new Schema({
   invoiceId: {
     type: Schema.Types.ObjectId,
     ref: 'Invoice',
-    index: true,
   },
   receiptId: {
     type: Schema.Types.ObjectId,
     ref: 'Receipt',
-    index: true,
   },
   clientId: {
     type: Schema.Types.ObjectId,
     ref: 'Client',
     required: true,
-    index: true,
   },
   paymentDate: {
     type: Date,
     required: true,
     default: Date.now,
-    index: true,
   },
   amountPaid: {
     type: Number,
     required: true,
     min: 0,
-    index: true,
   },
   paymentMethod: {
     type: String,
     enum: ['cash', 'bank_transfer', 'cheque', 'online', 'card', 'other'],
     required: true,
-    index: true,
   },
   paymentReference: {
     type: String,
@@ -80,7 +74,6 @@ const PaymentSchema: Schema = new Schema({
   transactionId: {
     type: String,
     trim: true,
-    index: true,
   },
   bankDetails: {
     bankName: { type: String, trim: true },
@@ -94,7 +87,6 @@ const PaymentSchema: Schema = new Schema({
     type: String,
     enum: ['pending', 'completed', 'failed', 'refunded'],
     default: 'completed',
-    index: true,
   },
   notes: {
     type: String,
@@ -113,6 +105,7 @@ const PaymentSchema: Schema = new Schema({
 PaymentSchema.index({ clientId: 1, paymentDate: -1 });
 PaymentSchema.index({ invoiceId: 1 });
 PaymentSchema.index({ receiptId: 1 });
+PaymentSchema.index({ clientId: 1, status: 1, paymentDate: -1 });
 PaymentSchema.index({ paymentDate: -1 });
 PaymentSchema.index({ status: 1 });
 

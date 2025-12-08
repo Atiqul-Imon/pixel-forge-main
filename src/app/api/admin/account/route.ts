@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     let accountSettings = await AccountSettings.findOne().lean();
 
     // If no settings exist, return default structure
@@ -29,7 +30,7 @@ export async function GET(request: NextRequest) {
           prefix: 'PF-RCP',
           nextNumber: 1,
         },
-      } as any;
+      } as typeof accountSettings;
     }
 
     return NextResponse.json({ accountSettings });
@@ -55,6 +56,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
 
     // Try to find existing settings
+    // @ts-expect-error - Mongoose overloaded method type issue
     let accountSettings = await AccountSettings.findOne();
 
     if (!accountSettings) {
@@ -78,12 +80,13 @@ export async function PUT(request: NextRequest) {
     } else {
       // Update existing settings
       Object.keys(body).forEach((key) => {
+        const bodyValue = (body as Record<string, unknown>)[key];
         if (key === 'invoiceSettings' || key === 'receiptSettings' || key === 'taxInfo' || key === 'emailSettings') {
-          accountSettings[key] = { ...accountSettings[key], ...body[key] };
+          (accountSettings as Record<string, unknown>)[key] = { ...((accountSettings as Record<string, unknown>)[key] as Record<string, unknown>), ...(bodyValue as Record<string, unknown>) };
         } else if (key === 'bankAccounts') {
-          accountSettings.bankAccounts = body[key];
+          accountSettings.bankAccounts = bodyValue;
         } else {
-          accountSettings[key] = body[key];
+          (accountSettings as Record<string, unknown>)[key] = bodyValue;
         }
       });
     }
@@ -94,10 +97,11 @@ export async function PUT(request: NextRequest) {
       message: 'Account settings updated successfully',
       accountSettings,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating account settings:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update account settings';
     return NextResponse.json(
-      { error: error.message || 'Failed to update account settings' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

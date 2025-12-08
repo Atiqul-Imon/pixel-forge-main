@@ -8,7 +8,7 @@ import cache, { cacheKeys, CACHE_TTL } from '@/lib/cache';
 export async function GET(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
     // Rate limiting check - 150 requests per 15 minutes for admin
     if (!checkRateLimit(clientIP, 150, 15 * 60 * 1000)) {

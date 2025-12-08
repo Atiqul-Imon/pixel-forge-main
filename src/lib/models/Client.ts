@@ -184,7 +184,6 @@ const ClientSchema: Schema = new Schema({
   },
   contractRenewalDate: {
     type: Date,
-    index: true,
   },
   lastContactedAt: {
     type: Date,

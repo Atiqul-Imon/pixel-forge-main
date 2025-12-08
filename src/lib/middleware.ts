@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
   checkRateLimit, 
-  getUserFromRequest, 
   requireAuth, 
   requireAdmin 
 } from '@/lib/auth';
@@ -44,10 +43,10 @@ export interface MiddlewareOptions {
 
 // Comprehensive middleware wrapper
 export const withMiddleware = (
-  handler: (request: NextRequest, context?: any) => Promise<NextResponse>,
+  handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>,
   options: MiddlewareOptions = {}
 ) => {
-  return async (request: NextRequest, context?: any): Promise<NextResponse> => {
+  return async (request: NextRequest, context?: { params?: Record<string, string> }): Promise<NextResponse> => {
     const clientIP = await getClientIP(request);
     const userAgent = getUserAgent(request);
     const startTime = Date.now();
@@ -209,20 +208,20 @@ export const withMiddleware = (
 };
 
 // Convenience functions for common middleware patterns
-export const withAuth = (handler: (request: NextRequest, context?: any) => Promise<NextResponse>) =>
+export const withAuth = (handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>) =>
   withMiddleware(handler, { requireAuth: true, rateLimit: 'api' });
 
-export const withAdmin = (handler: (request: NextRequest, context?: any) => Promise<NextResponse>) =>
+export const withAdmin = (handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>) =>
   withMiddleware(handler, { requireAdmin: true, rateLimit: 'admin' });
 
 export const withRateLimit = (
-  handler: (request: NextRequest, context?: any) => Promise<NextResponse>,
+  handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>,
   rateLimit: keyof typeof RATE_LIMITS
 ) =>
   withMiddleware(handler, { rateLimit });
 
 export const withCustomRateLimit = (
-  handler: (request: NextRequest, context?: any) => Promise<NextResponse>,
+  handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>,
   maxRequests: number,
   windowMs: number
 ) =>
@@ -230,14 +229,14 @@ export const withCustomRateLimit = (
 
 // CORS middleware
 export const withCORS = (
-  handler: (request: NextRequest, context?: any) => Promise<NextResponse>,
+  handler: (request: NextRequest, context?: { params?: Record<string, string> }) => Promise<NextResponse>,
   options: {
     origin?: string | string[];
     methods?: string[];
     credentials?: boolean;
   } = {}
 ) => {
-  return async (request: NextRequest, context?: any): Promise<NextResponse> => {
+  return async (request: NextRequest, context?: { params?: Record<string, string> }): Promise<NextResponse> => {
     // Handle preflight requests
     if (request.method === 'OPTIONS') {
       const response = new NextResponse(null, { status: 200 });

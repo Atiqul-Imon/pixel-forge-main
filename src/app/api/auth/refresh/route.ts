@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { verifyToken, generateToken, setAuthCookies } from '@/lib/auth';
-import { AuthResponse, AuthError } from '@/types/auth';
+import { AuthResponse } from '@/types/auth';
 import { createSecureResponse, logAuditEvent, getClientIP, getUserAgent } from '@/lib/security';
 import { cookies } from 'next/headers';
 

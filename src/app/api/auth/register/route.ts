@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { hashPassword, generateToken, setAuthCookies, checkRateLimit } from '@/lib/auth';
-import { RegisterData, AuthResponse, AuthError } from '@/types/auth';
+import { RegisterData, AuthResponse } from '@/types/auth';
 import { 
   validateRequest, 
   sanitizeInput, 

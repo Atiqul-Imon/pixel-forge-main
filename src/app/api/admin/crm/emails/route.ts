@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'desc';
 
     // Build query
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (clientId) query.clientId = clientId;
     if (contactPersonId) query.contactPersonId = contactPersonId;
     if (emailType && emailType !== 'all') query.emailType = emailType;
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate pagination
     const skip = (page - 1) * limit;
-    const sort: any = {};
+    const sort: Record<string, 1 | -1> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
     const [emails, total] = await Promise.all([

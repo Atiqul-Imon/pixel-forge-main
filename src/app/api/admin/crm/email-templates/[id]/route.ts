@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 // GET - Get single template
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -16,12 +16,14 @@ export async function GET(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid template ID' }, { status: 400 });
     }
 
-    const template = await EmailTemplate.findById(params.id).lean();
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const template = await EmailTemplate.findById(resolvedParams.id).lean();
     if (!template) {
       return NextResponse.json({ error: 'Template not found' }, { status: 404 });
     }
@@ -39,7 +41,7 @@ export async function GET(
 // PUT - Update template
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -48,14 +50,16 @@ export async function PUT(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid template ID' }, { status: 400 });
     }
 
     const body = await request.json();
+    // @ts-expect-error - Mongoose overloaded method type issue
     const template = await EmailTemplate.findByIdAndUpdate(
-      params.id,
+      resolvedParams.id,
       { ...body, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
@@ -68,10 +72,11 @@ export async function PUT(
       message: 'Template updated successfully',
       template,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating template:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update template';
     return NextResponse.json(
-      { error: error.message || 'Failed to update template' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
@@ -80,7 +85,7 @@ export async function PUT(
 // DELETE - Delete template
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -89,12 +94,14 @@ export async function DELETE(
     }
 
     await connectDB();
+    const resolvedParams = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(resolvedParams.id)) {
       return NextResponse.json({ error: 'Invalid template ID' }, { status: 400 });
     }
 
-    const template = await EmailTemplate.findByIdAndDelete(params.id);
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const template = await EmailTemplate.findByIdAndDelete(resolvedParams.id);
     if (!template) {
       return NextResponse.json({ error: 'Template not found' }, { status: 404 });
     }

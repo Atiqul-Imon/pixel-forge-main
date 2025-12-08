@@ -7,7 +7,7 @@ import { requireAdmin, checkRateLimit } from '@/lib/auth';
 export async function GET(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
     // Rate limiting check - 150 requests per 15 minutes for admin
     if (!checkRateLimit(clientIP, 150, 15 * 60 * 1000)) {
@@ -42,20 +42,24 @@ export async function GET(request: NextRequest) {
     // Remove regex search - will use text search instead
 
     // Use text search if search query exists, otherwise use regex
-    let query;
+    let posts;
     if (search) {
-      query = BlogPost.find(
+      // @ts-expect-error - Mongoose overloaded method type issue
+      posts = await BlogPost.find(
         { ...filter, $text: { $search: search } },
         { score: { $meta: 'textScore' } }
-      ).sort({ score: { $meta: 'textScore' }, createdAt: -1 });
+      ).sort({ score: { $meta: 'textScore' }, createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean();
     } else {
-      query = BlogPost.find(filter).sort({ createdAt: -1 });
+      // @ts-expect-error - Mongoose overloaded method type issue
+      posts = await BlogPost.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean();
     }
-
-    const posts = await query
-      .skip(skip)
-      .limit(limit)
-      .lean();
 
     const total = await BlogPost.countDocuments(filter);
     const totalPages = Math.ceil(total / limit);
@@ -130,6 +134,7 @@ export async function POST(request: NextRequest) {
 
     // Check if slug already exists
     if (finalSlug) {
+      // @ts-expect-error - Mongoose overloaded method type issue
       const existingPost = await BlogPost.findOne({ slug: finalSlug }).lean();
       if (existingPost) {
         return NextResponse.json(

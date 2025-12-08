@@ -4,10 +4,11 @@ import { trackLinkClick } from '@/lib/crmEmail';
 // Email link click tracking endpoint - no auth required (public endpoint)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
-    const { token } = params;
+    const resolvedParams = await params;
+    const { token } = resolvedParams;
     const { searchParams } = new URL(request.url);
     const url = searchParams.get('url');
     

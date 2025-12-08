@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
@@ -23,8 +23,8 @@ export interface RefreshTokenPayload {
 
 // Security Configuration
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h'; // 24 hours for better UX
-const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN: SignOptions['expiresIn'] = (process.env.JWT_EXPIRES_IN as SignOptions['expiresIn']) || '24h'; // 24 hours for better UX
+const JWT_REFRESH_EXPIRES_IN: SignOptions['expiresIn'] = (process.env.JWT_REFRESH_EXPIRES_IN as SignOptions['expiresIn']) || '7d';
 const BCRYPT_SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || '12');
 const MAX_LOGIN_ATTEMPTS = parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5');
 const LOCKOUT_TIME = parseInt(process.env.LOCKOUT_TIME || '15'); // minutes
@@ -121,7 +121,6 @@ export const verifyToken = (token: string, tokenType: 'access' | 'refresh' = 'ac
 // Rate limiting
 export const checkRateLimit = (identifier: string, maxRequests: number = 100, windowMs: number = 15 * 60 * 1000): boolean => {
   const now = Date.now();
-  const windowStart = now - windowMs;
   
   // Clean old entries
   for (const [key, value] of rateLimitStore.entries()) {
@@ -241,18 +240,6 @@ export const setAuthCookies = async (accessToken: string, refreshToken: string) 
   });
 };
 
-// Legacy support for old cookie name
-export const setAuthCookie = async (token: string) => {
-  const cookieStore = await cookies();
-  cookieStore.set('authToken', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
-  });
-};
-
 // Clear auth cookies
 export const clearAuthCookies = async () => {
   const cookieStore = await cookies();
@@ -270,9 +257,6 @@ export const clearAuthCookies = async () => {
     });
   });
 };
-
-// Legacy support
-export const clearAuthCookie = clearAuthCookies;
 
 // Middleware to check if user is authenticated
 export const requireAuth = async (request: NextRequest): Promise<JWTPayload> => {

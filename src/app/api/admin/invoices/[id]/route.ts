@@ -6,7 +6,7 @@ import { verifyToken } from '@/lib/auth';
 // GET - Fetch single invoice
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -16,7 +16,10 @@ export async function GET(
 
     await connectDB();
 
-    const invoice = await Invoice.findById(params.id).populate('clientId');
+    const resolvedParams = await params;
+
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const invoice = await Invoice.findById(resolvedParams.id).populate('clientId');
     const invoiceData = invoice ? invoice.toObject() : null;
 
     if (!invoiceData) {
@@ -36,7 +39,7 @@ export async function GET(
 // PUT - Update invoice
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -46,7 +49,10 @@ export async function PUT(
 
     await connectDB();
 
-    const invoice = await Invoice.findById(params.id);
+    const resolvedParams = await params;
+
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const invoice = await Invoice.findById(resolvedParams.id);
     if (!invoice) {
       return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     }
@@ -80,7 +86,7 @@ export async function PUT(
     // If items are updated, recalculate totals
     if (items && items.length > 0) {
       let subtotal = 0;
-      items.forEach((item: any) => {
+      items.forEach((item: { quantity: number; unitPrice: number; amount?: number }) => {
         const itemTotal = item.quantity * item.unitPrice;
         subtotal += itemTotal;
         item.amount = itemTotal;
@@ -120,10 +126,11 @@ export async function PUT(
       message: 'Invoice updated successfully',
       invoice,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating invoice:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update invoice';
     return NextResponse.json(
-      { error: error.message || 'Failed to update invoice' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
@@ -132,7 +139,7 @@ export async function PUT(
 // DELETE - Delete invoice
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -142,7 +149,10 @@ export async function DELETE(
 
     await connectDB();
 
-    const invoice = await Invoice.findById(params.id);
+    const resolvedParams = await params;
+
+    // @ts-expect-error - Mongoose overloaded method type issue
+    const invoice = await Invoice.findById(resolvedParams.id);
     if (!invoice) {
       return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     }
@@ -158,10 +168,11 @@ export async function DELETE(
     await invoice.deleteOne();
 
     return NextResponse.json({ message: 'Invoice deleted successfully' });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting invoice:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete invoice';
     return NextResponse.json(
-      { error: error.message || 'Failed to delete invoice' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

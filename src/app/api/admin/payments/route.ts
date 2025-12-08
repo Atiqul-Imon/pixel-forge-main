@@ -22,19 +22,19 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (clientId) query.clientId = clientId;
     if (invoiceId) query.invoiceId = invoiceId;
     if (status && status !== 'all') query.status = status;
     
     if (fromDate || toDate) {
       query.paymentDate = {};
-      if (fromDate) query.paymentDate.$gte = new Date(fromDate);
-      if (toDate) query.paymentDate.$lte = new Date(toDate);
+      if (fromDate) (query.paymentDate as Record<string, Date>).$gte = new Date(fromDate);
+      if (toDate) (query.paymentDate as Record<string, Date>).$lte = new Date(toDate);
     }
 
     const skip = (page - 1) * limit;
-    const sort: any = { paymentDate: -1 };
+    const sort: Record<string, 1 | -1> = { paymentDate: -1 };
 
     const [payments, total] = await Promise.all([
       Payment.find(query)

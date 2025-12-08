@@ -84,7 +84,6 @@ const EmailCommunicationSchema: Schema = new Schema({
     type: String,
     required: [true, 'Email subject is required'],
     trim: true,
-    index: true,
   },
   htmlBody: {
     type: String,
@@ -103,12 +102,10 @@ const EmailCommunicationSchema: Schema = new Schema({
     type: Date,
     required: true,
     default: Date.now,
-    index: true,
   },
   readStatus: {
     type: Boolean,
     default: false,
-    index: true,
   },
   readAt: {
     type: Date,
@@ -128,7 +125,6 @@ const EmailCommunicationSchema: Schema = new Schema({
   replyStatus: {
     type: Boolean,
     default: false,
-    index: true,
   },
   repliedAt: {
     type: Date,
@@ -137,7 +133,6 @@ const EmailCommunicationSchema: Schema = new Schema({
     type: String,
     enum: ['none', 'soft', 'hard'],
     default: 'none',
-    index: true,
   },
   bouncedAt: {
     type: Date,
@@ -150,38 +145,31 @@ const EmailCommunicationSchema: Schema = new Schema({
     type: String,
     enum: ['outreach', 'proposal', 'invoice', 'follow-up', 'greeting', 'support', 'marketing', 'other'],
     default: 'other',
-    index: true,
   },
   templateId: {
     type: Schema.Types.ObjectId,
     ref: 'EmailTemplate',
-    index: true,
   },
   campaignId: {
     type: Schema.Types.ObjectId,
     ref: 'EmailCampaign',
-    index: true,
   },
   trackingToken: {
     type: String,
     required: true,
     unique: true,
-    index: true,
   },
   clientId: {
     type: Schema.Types.ObjectId,
     ref: 'Client',
-    index: true,
   },
   contactPersonId: {
     type: Schema.Types.ObjectId,
     ref: 'ContactPerson',
-    index: true,
   },
   dealId: {
     type: Schema.Types.ObjectId,
     ref: 'Deal',
-    index: true,
   },
   projectId: {
     type: String,
@@ -189,7 +177,6 @@ const EmailCommunicationSchema: Schema = new Schema({
   },
   followUpScheduled: {
     type: Date,
-    index: true,
   },
   followUpCompleted: {
     type: Boolean,
@@ -207,6 +194,8 @@ const EmailCommunicationSchema: Schema = new Schema({
 // Indexes
 EmailCommunicationSchema.index({ clientId: 1, sentAt: -1 });
 EmailCommunicationSchema.index({ contactPersonId: 1, sentAt: -1 });
+EmailCommunicationSchema.index({ clientId: 1, emailType: 1, sentAt: -1 });
+EmailCommunicationSchema.index({ contactPersonId: 1, emailType: 1, sentAt: -1 });
 EmailCommunicationSchema.index({ emailType: 1, sentAt: -1 });
 EmailCommunicationSchema.index({ readStatus: 1 });
 EmailCommunicationSchema.index({ replyStatus: 1 });

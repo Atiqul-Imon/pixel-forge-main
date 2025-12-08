@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const isActive = searchParams.get('isActive');
     const search = searchParams.get('search');
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (templateType && templateType !== 'all') query.templateType = templateType;
     if (category && category !== 'all') query.category = category;
     if (isActive === 'true') query.isActive = true;
@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+    // @ts-expect-error - Mongoose overloaded method type issue
     const templates = await EmailTemplate.find(query)
       .sort({ createdAt: -1 })
       .lean();
@@ -95,10 +96,11 @@ export async function POST(request: NextRequest) {
       { message: 'Email template created successfully', template },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating email template:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create email template';
     return NextResponse.json(
-      { error: error.message || 'Failed to create email template' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

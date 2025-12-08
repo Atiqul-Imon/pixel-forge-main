@@ -5,10 +5,13 @@ import { verifyToken } from '@/lib/auth';
 
 // GET - Fetch all clients with filters
 export async function GET(request: NextRequest) {
+  const started = Date.now();
+  let statusForLog = 200;
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
     if (!token || !verifyToken(token)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      statusForLog = 401;
+      return NextResponse.json({ error: 'Unauthorized' }, { status: statusForLog });
     }
 
     await connectDB();
@@ -25,7 +28,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'desc';
 
     // Build query
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (status && status !== 'all') query.relationshipStatus = status;
     if (tier && tier !== 'all') query.clientTier = tier;
     if (industry && industry !== 'all') query.industry = industry;
@@ -42,10 +45,11 @@ export async function GET(request: NextRequest) {
 
     // Calculate pagination
     const skip = (page - 1) * limit;
-    const sort: any = {};
+    const sort: Record<string, 1 | -1> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
     const [clients, total] = await Promise.all([
+      // @ts-expect-error - Mongoose overloaded method type issue
       Client.find(query).sort(sort).skip(skip).limit(limit).lean(),
       Client.countDocuments(query),
     ]);
@@ -61,19 +65,26 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching clients:', error);
+    statusForLog = 500;
     return NextResponse.json(
       { error: 'Failed to fetch clients' },
       { status: 500 }
     );
+  } finally {
+    const duration = Date.now() - started;
+    console.log(`[perf] admin.clients.list status=${statusForLog} duration_ms=${duration} sort=${request.nextUrl.searchParams.get('sortBy') || 'createdAt'} page=${request.nextUrl.searchParams.get('page') || '1'} limit=${request.nextUrl.searchParams.get('limit') || '50'}`);
   }
 }
 
 // POST - Create new client
 export async function POST(request: NextRequest) {
+  const started = Date.now();
+  let statusForLog = 201;
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
     if (!token || !verifyToken(token)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      statusForLog = 401;
+      return NextResponse.json({ error: 'Unauthorized' }, { status: statusForLog });
     }
 
     await connectDB();
@@ -90,9 +101,10 @@ export async function POST(request: NextRequest) {
     } = body;
 
     if (!companyName || !primaryEmail) {
+      statusForLog = 400;
       return NextResponse.json(
         { error: 'Company name and primary email are required' },
-        { status: 400 }
+        { status: statusForLog }
       );
     }
 
@@ -104,7 +116,7 @@ export async function POST(request: NextRequest) {
       relationshipStatus,
       clientTier,
       ...rest,
-      createdBy: verifyToken(token)?.email || 'system',
+      createdBy: (verifyToken(token) as { email?: string } | null)?.email || 'system',
     });
 
     await client.save();
@@ -113,20 +125,26 @@ export async function POST(request: NextRequest) {
       { message: 'Client created successfully', client },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating client:', error);
     
-    if (error.code === 11000) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 11000) {
+      statusForLog = 400;
       return NextResponse.json(
         { error: 'Client with this email already exists' },
-        { status: 400 }
+        { status: statusForLog }
       );
     }
     
+    statusForLog = 500;
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create client';
     return NextResponse.json(
-      { error: error.message || 'Failed to create client' },
+      { error: errorMessage },
       { status: 500 }
     );
+  } finally {
+    const duration = Date.now() - started;
+    console.log(`[perf] admin.clients.create status=${statusForLog} duration_ms=${duration}`);
   }
 }
 

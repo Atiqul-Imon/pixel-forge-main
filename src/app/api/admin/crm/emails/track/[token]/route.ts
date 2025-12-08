@@ -4,10 +4,11 @@ import { markEmailAsRead } from '@/lib/crmEmail';
 // Email tracking pixel endpoint - no auth required (public endpoint)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
-    const { token } = params;
+    const resolvedParams = await params;
+    const { token } = resolvedParams;
     
     // Mark email as read
     await markEmailAsRead(token);

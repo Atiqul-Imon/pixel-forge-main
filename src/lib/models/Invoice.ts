@@ -115,31 +115,26 @@ const InvoiceSchema: Schema = new Schema({
     type: String,
     required: true,
     unique: true,
-    index: true,
     trim: true,
   },
   clientId: {
     type: Schema.Types.ObjectId,
     ref: 'Client',
     required: true,
-    index: true,
   },
   invoiceDate: {
     type: Date,
     required: true,
     default: Date.now,
-    index: true,
   },
   dueDate: {
     type: Date,
     required: true,
-    index: true,
   },
   status: {
     type: String,
     enum: ['draft', 'sent', 'paid', 'overdue', 'cancelled', 'partially_paid'],
     default: 'draft',
-    index: true,
   },
   paymentTerms: {
     type: String,
@@ -183,7 +178,6 @@ const InvoiceSchema: Schema = new Schema({
     type: Number,
     required: true,
     min: 0,
-    index: true,
   },
   currency: {
     type: String,
@@ -230,7 +224,6 @@ const InvoiceSchema: Schema = new Schema({
   emailSent: {
     type: Boolean,
     default: false,
-    index: true,
   },
   emailSentAt: {
     type: Date,
@@ -238,7 +231,6 @@ const InvoiceSchema: Schema = new Schema({
   viewed: {
     type: Boolean,
     default: false,
-    index: true,
   },
   viewedAt: {
     type: Date,
@@ -255,6 +247,7 @@ const InvoiceSchema: Schema = new Schema({
 // Indexes for better query performance
 InvoiceSchema.index({ clientId: 1, invoiceDate: -1 });
 InvoiceSchema.index({ status: 1, dueDate: 1 });
+InvoiceSchema.index({ clientId: 1, status: 1, dueDate: 1 });
 InvoiceSchema.index({ invoiceDate: -1 });
 InvoiceSchema.index({ dueDate: 1 });
 InvoiceSchema.index({ totalAmount: -1 });

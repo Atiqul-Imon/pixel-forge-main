@@ -1,17 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { 
   verifyPassword, 
   generateToken, 
-  setAuthCookies,
   checkRateLimit,
   checkLoginAttempts,
   recordLoginAttempt,
   clearLoginLock,
   hashPassword
 } from '@/lib/auth';
-import { LoginData, AuthResponse, AuthError } from '@/types/auth';
+import { LoginData, AuthResponse } from '@/types/auth';
 import { 
   validateRequest, 
   sanitizeInput, 
@@ -23,11 +22,14 @@ import {
 } from '@/lib/security';
 
 export async function POST(request: NextRequest) {
+  const started = Date.now();
+  let statusForLog = 200;
   const clientIP = await getClientIP(request);
   const userAgent = getUserAgent(request);
   let userEmail = '';
   const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@pixelforgebd.com').toLowerCase();
   const envAdminPassword = process.env.ADMIN_PASSWORD;
+  let isAdminRequest = false;
   
   try {
     // Security validation
@@ -46,7 +48,7 @@ export async function POST(request: NextRequest) {
       return createSecureResponse({
         success: false,
         message: 'Invalid request format'
-      }, 400);
+      }, statusForLog = 400);
     }
     
     // Rate limiting check
@@ -64,11 +66,12 @@ export async function POST(request: NextRequest) {
       return createSecureResponse({
         success: false,
         message: 'Too many login attempts. Please try again later.'
-      }, 429);
+      }, statusForLog = 429);
     }
     
-    const body: LoginData = await request.json();
-    const { email: rawEmail, password: rawPassword, rememberMe = false } = body;
+    const body: LoginData & { isAdmin?: boolean } = await request.json();
+    const { email: rawEmail, password: rawPassword, rememberMe = false, isAdmin = false } = body;
+    isAdminRequest = isAdmin;
     
     // Sanitize inputs
     const email = sanitizeInput(rawEmail).toLowerCase();
@@ -102,18 +105,18 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Validation failed',
         errors
-      }, 400);
+      }, statusForLog = 400);
     }
     
     await connectDB();
 
     // Find user with security fields FIRST to check database lock status
-    let user = await (User as any).findOne({ email });
+    let user = await User.findOne({ email }).exec();
 
     // If the request is for the env-configured admin and they don't exist, create/sync them on the fly
     if (!user && email === envAdminEmail && envAdminPassword) {
       const hashedPassword = await hashPassword(envAdminPassword);
-      user = new (User as any)({
+      user = new User({
         name: 'Pixel Forge Admin',
         email: envAdminEmail,
         password: hashedPassword,
@@ -151,6 +154,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
       
+      statusForLog = 423;
       return createSecureResponse({
         success: false,
         message: `Account temporarily locked due to multiple failed attempts. Try again later.`
@@ -177,6 +181,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
       
+      statusForLog = 423;
       return createSecureResponse({
         success: false,
         message: `Account temporarily locked due to multiple failed attempts. Try again later.`
@@ -198,6 +203,7 @@ export async function POST(request: NextRequest) {
       });
       
       // Use generic message to prevent user enumeration
+      statusForLog = 401;
       return createSecureResponse({
         success: false,
         message: 'Invalid email or password'
@@ -218,6 +224,26 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Check role if admin login required
+    if (isAdminRequest && user.role !== 'admin') {
+      await logAuditEvent({
+        userId: user._id.toString(),
+        action: 'login_role_denied',
+        resource: 'auth',
+        details: { email, expected: 'admin', actual: user.role },
+        ip: clientIP,
+        userAgent,
+        timestamp: new Date(),
+        success: false
+      });
+      
+      statusForLog = 403;
+      return createSecureResponse({
+        success: false,
+        message: 'Admin access required'
+      }, 403);
+    }
+
     // Check if user is active
     if (!user.isActive) {
       await logAuditEvent({
@@ -231,6 +257,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
       
+      statusForLog = 403;
       return createSecureResponse({
         success: false,
         message: 'Account is deactivated. Please contact support.'
@@ -250,6 +277,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
       
+      statusForLog = 423;
       return createSecureResponse({
         success: false,
         message: 'Account is temporarily locked. Please try again later.'
@@ -280,6 +308,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
       
+      statusForLog = 401;
       return createSecureResponse({
         success: false,
         message: 'Invalid email or password'
@@ -293,7 +322,7 @@ export async function POST(request: NextRequest) {
     recordLoginAttempt(email, true);
 
     // Generate tokens with session tracking
-    const { accessToken, refreshToken, sessionId } = generateToken({
+    const { accessToken, sessionId } = generateToken({
       userId: user._id.toString(),
       email: user.email,
       role: user.role
@@ -342,6 +371,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Login error:', error);
+    statusForLog = 500;
     
     await logAuditEvent({
       userId: undefined,
@@ -361,5 +391,8 @@ export async function POST(request: NextRequest) {
       success: false,
       message: 'Login failed. Please try again.'
     }, 500);
+  } finally {
+    const duration = Date.now() - started;
+    console.log(`[perf] auth.login status=${statusForLog} email=${userEmail || 'unknown'} ip=${clientIP} ua=${userAgent} duration_ms=${duration}`);
   }
 }

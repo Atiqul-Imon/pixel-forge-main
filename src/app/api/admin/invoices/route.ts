@@ -23,14 +23,14 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (clientId) query.clientId = clientId;
     if (status && status !== 'all') query.status = status;
     
     if (fromDate || toDate) {
       query.invoiceDate = {};
-      if (fromDate) query.invoiceDate.$gte = new Date(fromDate);
-      if (toDate) query.invoiceDate.$lte = new Date(toDate);
+      if (fromDate) (query.invoiceDate as Record<string, Date>).$gte = new Date(fromDate);
+      if (toDate) (query.invoiceDate as Record<string, Date>).$lte = new Date(toDate);
     }
     
     if (search) {
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     }
 
     const skip = (page - 1) * limit;
-    const sort: any = { invoiceDate: -1 };
+    const sort: Record<string, 1 | -1> = { invoiceDate: -1 };
 
     const [invoices, total] = await Promise.all([
       Invoice.find(query)

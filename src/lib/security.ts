@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { headers } from 'next/headers';
 
 // Security headers configuration
 export const SECURITY_HEADERS = {
@@ -88,7 +87,7 @@ export const validateCSRFToken = (token: string, expectedToken: string): boolean
 };
 
 // Secure response wrapper
-export const createSecureResponse = (data: any, status: number = 200): NextResponse => {
+export const createSecureResponse = (data: unknown, status: number = 200): NextResponse => {
   const response = NextResponse.json(data, { status });
   
   // Add security headers
@@ -202,7 +201,7 @@ export interface AuditLog {
   userId?: string;
   action: string;
   resource: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   ip: string;
   userAgent: string;
   timestamp: Date;

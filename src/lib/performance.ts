@@ -35,7 +35,7 @@ export class PerformanceMonitor {
     });
   }
 
-  static logQuery(label: string, query: any, duration: number): void {
+  static logQuery(label: string, query: string | Record<string, unknown>, duration: number): void {
     if (process.env.NODE_ENV === 'development') {
       console.log(`[QUERY] ${label}: ${duration}ms`, {
         query: typeof query === 'string' ? query : JSON.stringify(query),
