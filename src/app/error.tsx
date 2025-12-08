@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { AlertTriangle, Home, RefreshCw, ArrowLeft } from 'lucide-react';
+import Button from '@/components/ui/Button';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -49,28 +49,32 @@ export default function Error({ error, reset }: ErrorProps) {
         {/* Action Buttons */}
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
+            <Button
               onClick={reset}
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
+              variant="danger"
+              size="lg"
+              leftIcon={<RefreshCw className="w-5 h-5" />}
             >
-              <RefreshCw className="w-5 h-5" />
               Try Again
-            </button>
+            </Button>
             
-            <button
+            <Button
               onClick={() => window.history.back()}
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
+              variant="secondary"
+              size="lg"
+              leftIcon={<ArrowLeft className="w-5 h-5" />}
             >
-              <ArrowLeft className="w-5 h-5" />
               Go Back
-            </button>
+            </Button>
             
-            <Link
-              href="/"
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-            >
-              <Home className="w-5 h-5" />
-              Home Page
+            <Link href="/admin">
+              <Button
+                variant="primary"
+                size="lg"
+                leftIcon={<Home className="w-5 h-5" />}
+              >
+                Go to Dashboard
+              </Button>
             </Link>
           </div>
         </div>

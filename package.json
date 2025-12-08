@@ -19,6 +19,8 @@
     "@types/mongoose": "^5.11.96",
     "@types/nodemailer": "^7.0.1",
     "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.13",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.544.0",
@@ -28,7 +30,9 @@
     "next-sitemap": "^4.2.3",
     "nodemailer": "^7.0.9",
     "react": "19.1.2",
-    "react-dom": "19.1.2"
+    "react-dom": "19.1.2",
+    "recharts": "^3.5.1",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
