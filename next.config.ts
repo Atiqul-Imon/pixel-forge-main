@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   env: {
@@ -6,13 +7,10 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' || 'http://localhost:3001',
   },
   serverExternalPackages: ['mongoose'],
-  eslint: {
-    ignoreDuringBuilds: true, // Temporarily ignore to allow build while fixing warnings incrementally
-  },
   typescript: {
     ignoreBuildErrors: true, // Temporarily ignore Mongoose type issues for deployment
   },
-  outputFileTracingRoot: './',
+  outputFileTracingRoot: path.resolve(__dirname),
   images: {
     remotePatterns: [
       {
