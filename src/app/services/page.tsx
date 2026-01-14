@@ -1,6 +1,6 @@
 'use client';
 
-import { Code, BarChart3, Settings, CheckCircle, ArrowRight, Zap, Shield, Globe, Star, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Building2, Search, Palette } from 'lucide-react';
+import { Code, BarChart3, Settings, CheckCircle, ArrowRight, Zap, Shield, Globe, Star, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Building2, Search, Palette, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { trackEvent } from '@/lib/gtag';
@@ -45,6 +45,18 @@ export default function ServicesPage() {
         'Structured support and improvement cycles'
       ],
       color: 'orange'
+    },
+    {
+      icon: <FileText className="w-12 h-12" />,
+      title: 'Data Conversion',
+      description: 'Automate data processing work with professional data capture, storage, and searchable document management. Ideal for Government, Banks, NGOs, and Hospitals.',
+      features: [
+        'Data capture from paper-based documents',
+        'Secure and organized data storage',
+        'Make your data searchable and accessible',
+        'Tailored solutions for Government, Banks, NGOs, Hospitals'
+      ],
+      color: 'purple'
     }
   ];
 

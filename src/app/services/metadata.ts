@@ -18,7 +18,17 @@ export const metadata: Metadata = {
     'technical infrastructure',
     'scalable web architecture',
     'engineering-driven development',
-    'system performance optimization'
+    'system performance optimization',
+    'data conversion services',
+    'data processing automation',
+    'document digitization',
+    'paper document conversion',
+    'data capture services',
+    'searchable data storage',
+    'government data conversion',
+    'bank document digitization',
+    'hospital data management',
+    'NGO data processing'
   ],
   openGraph: {
     title: 'Engineering Capabilities - Digital Platform Engineering & Infrastructure | Pixel Forge',

@@ -106,17 +106,22 @@ async function createAdmin() {
     // Get or create User model
     const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
-    // Admin credentials
-    const adminEmail = 'admin@pixelforgebd.com';
-    const adminName = 'Pixel Forge Admin';
-    const adminPassword = generateSecurePassword(16);
+    // Admin credentials - can be customized via command line args
+    const args = process.argv.slice(2);
+    const emailArg = args.find(arg => arg.startsWith('--email='));
+    const nameArg = args.find(arg => arg.startsWith('--name='));
+    const passwordArg = args.find(arg => arg.startsWith('--password='));
+    
+    const adminEmail = emailArg ? emailArg.split('=')[1] : `admin${Date.now()}@pixelforgebd.com`;
+    const adminName = nameArg ? nameArg.split('=')[1] : 'Pixel Forge Admin';
+    const adminPassword = passwordArg ? passwordArg.split('=')[1] : generateSecurePassword(16);
 
     // Check if admin already exists
     const existingAdmin = await User.findOne({ email: adminEmail });
     if (existingAdmin) {
       console.log('⚠️  Admin user already exists!');
       console.log(`   Email: ${adminEmail}`);
-      console.log('\n   To reset the password, delete the user first or use the password reset feature.\n');
+      console.log('\n   To create a new admin, use a different email or delete the existing user first.\n');
       await mongoose.disconnect();
       return;
     }
