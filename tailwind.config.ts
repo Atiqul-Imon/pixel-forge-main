@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
@@ -16,22 +17,70 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        content: "72rem",
+        "content-wide": "80rem",
+        reading: "40rem",
+        "reading-wide": "48rem",
+      },
+      spacing: {
+        "section-y-sm": "5rem",
+        "section-y-md": "7rem",
+        "section-y-lg": "8rem",
+      },
+      borderRadius: {
+        card: "1rem",
+      },
+      boxShadow: {
+        elevated:
+          "0 24px 64px -24px rgba(0, 0, 0, 0.15)",
+        "elevated-sm":
+          "0 12px 40px -12px rgba(0, 0, 0, 0.1)",
+        float:
+          "0 8px 30px -8px rgba(15, 23, 42, 0.12), 0 4px 16px -4px rgba(15, 23, 42, 0.08)",
+        glow:
+          "0 0 0 1px rgba(37, 99, 235, 0.12), 0 24px 48px -12px rgba(30, 64, 175, 0.18)",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        card: {
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        "muted-foreground": "var(--muted-foreground)",
+        /** Agency blue — Plego-style enterprise polish */
+        brand: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+          DEFAULT: '#2563eb',
+        },
         primary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7e22ce',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
-          DEFAULT: '#8B5CF6',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+          DEFAULT: '#2563eb',
         },
         secondary: {
           50: '#f9fafb',
@@ -102,7 +151,24 @@ const config: Config = {
         accent: "var(--accent)",
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: [
+          'var(--font-sans)',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'sans-serif',
+        ],
+        display: ['var(--font-display)', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+      },
+      fontSize: {
+        display: ['3.5rem', { lineHeight: '1.08', letterSpacing: '-0.02em', fontWeight: '600' }],
+        "display-sm": ['3rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '600' }],
+        /** Slightly larger body for marketing readability */
+        body: ['1.0625rem', { lineHeight: '1.65', letterSpacing: '-0.01em' }],
+        "body-lg": ['1.125rem', { lineHeight: '1.7', letterSpacing: '-0.01em' }],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -126,7 +192,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindcssAnimate],
 };
 
 export default config;

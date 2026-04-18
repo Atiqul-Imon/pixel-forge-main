@@ -764,7 +764,7 @@ export default function POSPage() {
 
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:border-purple-500 transition-all">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                <div className="p-2 bg-primary-100 text-primary-600 rounded-lg">
                   <Zap className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">Additional Features</h3>
@@ -774,23 +774,23 @@ export default function POSPage() {
               </p>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
                   <span>Purchase Order Management</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
                   <span>Supplier Management</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
                   <span>Employee Management</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
                   <span>Custom Reports & Analytics</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
                   <span>E-commerce Integration</span>
                 </li>
               </ul>

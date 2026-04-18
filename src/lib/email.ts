@@ -160,7 +160,7 @@ export const sendAutoReply = async (leadData: {
             </p>
             <div style="margin-top: 15px;">
               <a href="https://pixelforgebd.com" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Website</a>
-              <a href="https://pixelforgebd.com/portfolio" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Portfolio</a>
+              <a href="https://pixelforgebd.com/portfolio" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Solutions</a>
               <a href="https://pixelforgebd.com/contact" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Contact</a>
             </div>
           </div>

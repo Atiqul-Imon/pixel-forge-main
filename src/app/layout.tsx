@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import FacebookPixel from "@/components/FacebookPixel";
@@ -9,9 +9,27 @@ import ConditionalLayout from "@/components/ConditionalLayout";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ConsentProvider } from "@/contexts/ConsentContext";
 
+/** Inter: high legibility for UI & long-form marketing copy */
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+/** Fraunces: editorial / display — premium contrast vs. Inter */
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -68,7 +86,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_BD",
+    locale: "en_US",
     url: "https://pixelforgebd.com",
     siteName: "Pixel Forge",
     title: "Pixel Forge - Engineering-Driven Technology Studio | Digital Platform Engineering & Infrastructure",
@@ -99,11 +117,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-        <html lang="en" className={inter.variable}>
+        <html lang="en" className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
           <head>
             <StructuredData />
           </head>
-      <body className="font-sans antialiased">
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased selection:bg-primary-200/70 selection:text-primary-950">
         <ConsentProvider>
           <AuthProvider>
             <PixelInitializer />

@@ -1,543 +1,93 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ExternalLink, Filter, ArrowRight, Code, Palette, BarChart3, Headphones, CheckCircle, Target, Rocket, Layers, Smartphone, Monitor, Database, Cloud, Lock, Globe, Zap, Shield, X, Maximize2 } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { useEffect } from 'react';
 import { trackEvent } from '@/lib/gtag';
-import { getResponsivePortfolioImage, PORTFOLIO_IMAGES } from '@/utils/cloudinary';
+import { PageSection } from '@/components/marketing/PageSection';
+import { MarketingPageHero } from '@/components/marketing/MarketingPageHero';
+import { MarketingCtaBand } from '@/components/marketing/MarketingCtaBand';
+import { RevealOnScroll } from '@/components/marketing/RevealOnScroll';
+import { solutionTypes } from '@/data/solution-types';
 
-export default function PortfolioPage() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedImageTitle, setSelectedImageTitle] = useState<string>('');
-
-  const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'website', name: 'Websites' },
-    { id: 'landing-page', name: 'Landing Pages' },
-    { id: 'ecommerce', name: 'E-commerce' },
-    { id: 'portfolio', name: 'Portfolios' }
-  ];
-
-  const projects = [
-    {
-      id: 1,
-      title: 'Prokrishi Hub - Organic Food E-commerce',
-      description: 'Premium organic food e-commerce platform featuring fresh organic produce, natural products, and healthy food options. Modern e-commerce design with seamless shopping experience, product catalog, and secure payment integration.',
-      image: getResponsivePortfolioImage('prokrishihub', 'card'),
-      category: 'ecommerce',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Payment Integration', 'Organic Products'],
-      liveUrl: 'https://prokrishihub.com/',
-      featured: true
-    },
-    {
-      id: 2,
-      title: 'Scarlet - Beauty & Skincare',
-      description: 'Premium beauty and skincare e-commerce platform featuring K-beauty products, international brands, and comprehensive product catalog with modern design.',
-      image: getResponsivePortfolioImage('scarlet', 'card'),
-      category: 'ecommerce',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'Beauty Platform'],
-      liveUrl: 'https://www.scarletunlimited.net/',
-      featured: true
-    },
-    {
-      id: 3,
-      title: 'Shahan Ahmed - Data Analyst Portfolio',
-      description: 'Professional portfolio website for a data analyst showcasing expertise in research, data analysis, BI, and market research with modern design and interactive elements.',
-      image: getResponsivePortfolioImage('shahan', 'card'),
-      category: 'portfolio',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Portfolio', 'Data Visualization'],
-      liveUrl: 'https://www.shahanahmed.com/',
-      featured: true
-    },
-    {
-      id: 4,
-      title: 'Shantibari - Women\'s Organization',
-      description: 'Comprehensive organization website for Shantibari, a women\'s empowerment organization in Bangladesh, featuring services, team profiles, events, and community support programs.',
-      image: getResponsivePortfolioImage('shantibari', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Organization', 'Community Platform'],
-      liveUrl: 'https://www.shantibaribd.org/',
-      featured: true
-    },
-    {
-      id: 5,
-      title: 'Pixel Forge Website',
-      description: 'Professional agency website showcasing web development services with modern design, SEO optimization, and lead generation features.',
-      image: getResponsivePortfolioImage('pixelforge', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'SEO'],
-      liveUrl: 'https://pixelforgebd.com/',
-      featured: false
-    },
-    {
-      id: 6,
-      title: 'Maisha Printing - Professional Printing Services',
-      description: 'Professional printing services website featuring comprehensive printing solutions including t-shirt printing, glass printing, calendar printing, ID cards, and more. Modern design with service showcase and customer testimonials.',
-      image: getResponsivePortfolioImage('maishaprinting', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Printing Services', 'Business Website', 'Service Platform'],
-      liveUrl: 'https://maisha-printing.vercel.app/',
-      featured: true
-    },
-    {
-      id: 7,
-      title: 'Dr. Sarah Johnson - Medical Practice',
-      description: 'Professional medical practice website for Dr. Sarah Johnson, an Internal Medicine specialist. Features comprehensive contact information, appointment booking, office hours, emergency contact details, and patient-centered healthcare services with modern, trustworthy design.',
-      image: getResponsivePortfolioImage('drsarah', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Medical Website', 'Healthcare', 'Professional Design'],
-      liveUrl: 'https://doctor-website-template.netlify.app/',
-      featured: true
-    },
-    {
-      id: 8,
-      title: 'FitLife Pro - Premium Fitness Center',
-      description: 'Modern fitness center landing page featuring premium gym services, membership plans, personal training, group classes, and wellness programs. Professional design with comprehensive service showcase and member testimonials.',
-      image: getResponsivePortfolioImage('fitnesspro', 'card'),
-      category: 'landing-page',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Fitness Website', 'Landing Page', 'Membership System'],
-      liveUrl: 'https://fitnesspro-two.vercel.app/',
-      featured: true
-    },
-    {
-      id: 9,
-      title: 'Doctor\'s Tech Solutions - Complete Healthcare Platform',
-      description: 'Comprehensive doctor\'s tech solutions platform built with Next.js, featuring healthcare management tools, patient management systems, appointment scheduling, and medical practice solutions. Modern, secure, and user-friendly healthcare technology platform.',
-      image: getResponsivePortfolioImage('doctorstech', 'card'),
-      category: 'website',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Healthcare Technology', 'Medical Platform', 'Patient Management'],
-      liveUrl: 'https://doctors-solutions.vercel.app/',
-      featured: true
-    }
-  ];
-
-  const filteredProjects = activeFilter === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
-
+export default function SolutionsPage() {
   useEffect(() => {
-    // Track portfolio page view
-    trackEvent.servicePageView('Portfolio');
+    trackEvent.servicePageView('Solutions');
   }, []);
 
-  const openImageModal = (imageUrl: string, title: string) => {
-    console.log('Opening modal with image URL:', imageUrl);
-    setSelectedImage(imageUrl);
-    setSelectedImageTitle(title);
-  };
-
-  const closeImageModal = () => {
-    setSelectedImage(null);
-    setSelectedImageTitle('');
-  };
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-          
-          {/* Geometric patterns */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            <div className="absolute top-40 right-20 w-3 h-3 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
-            <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
-            <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-pink-400 rounded-full animate-pulse animation-delay-3000"></div>
-            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-yellow-400 rounded-full animate-pulse animation-delay-4000"></div>
-          </div>
-
-          {/* Floating portfolio elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 text-white/20 text-4xl font-mono animate-float"><Code className="w-12 h-12" /></div>
-            <div className="absolute top-1/3 right-1/4 text-white/20 text-3xl font-mono animate-float animation-delay-2000"><Palette className="w-10 h-10" /></div>
-            <div className="absolute bottom-1/3 left-1/3 text-white/20 text-3xl font-mono animate-float animation-delay-4000"><BarChart3 className="w-10 h-10" /></div>
-            <div className="absolute bottom-1/4 right-1/3 text-white/20 text-2xl font-mono animate-float animation-delay-6000"><Headphones className="w-8 h-8" /></div>
-          </div>
-
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 z-10">
-          <div className="text-center">
-            {/* Portfolio Visual */}
-            <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white/10 backdrop-blur-md rounded-2xl mb-6 shadow-2xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-                <div className="relative w-full h-full">
-                  {/* Central Portfolio Icon */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white/90 text-3xl sm:text-4xl font-bold group-hover:scale-110 transition-transform duration-300">
-                      🎨
-                    </div>
-                  </div>
-                  
-                  {/* Floating Project Elements */}
-                  <div className="absolute top-1 left-1 text-white/80 text-sm animate-bounce">💻</div>
-                  <div className="absolute top-1 right-1 text-white/80 text-sm animate-bounce animation-delay-1000">🛒</div>
-                  <div className="absolute bottom-1 left-1 text-white/80 text-sm animate-bounce animation-delay-2000">📱</div>
-                  <div className="absolute bottom-1 right-1 text-white/80 text-sm animate-bounce animation-delay-3000">⚡</div>
-                  
-                  {/* Corner Success Indicators */}
-                  <div className="absolute top-0 left-0 w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
-                  <div className="absolute top-0 right-0 w-1 h-1 bg-blue-400 rounded-full animate-pulse animation-delay-1000"></div>
-                  <div className="absolute bottom-0 left-0 w-1 h-1 bg-purple-400 rounded-full animate-pulse animation-delay-2000"></div>
-                  <div className="absolute bottom-0 right-0 w-1 h-1 bg-orange-400 rounded-full animate-pulse animation-delay-3000"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Main heading with enhanced styling */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent animate-gradient">
-                Our Portfolio
-              </span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
-              Explore our collection of successful projects and see how we&apos;ve helped businesses 
-              achieve their digital goals through innovative web solutions.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center shadow-2xl hover:shadow-blue-500/25"
-                onClick={() => trackEvent.ctaClick('Get Started - Portfolio Hero')}
-              >
-                Start Your Project
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-              <Link
-                href="/services"
-                className="border-2 border-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
-              >
-                View Our Services
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* All Projects with Filter - Glassmorphism */}
-      <section className="relative py-24 overflow-hidden glassmorphism-section">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
-          
-          {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-20 left-20 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
-            <div className="absolute top-40 right-32 w-3 h-3 bg-blue-300/40 rounded-full animate-pulse animation-delay-1000"></div>
-            <div className="absolute bottom-40 left-1/3 w-2 h-2 bg-purple-300/40 rounded-full animate-pulse animation-delay-2000"></div>
-            <div className="absolute bottom-20 right-1/4 w-3 h-3 bg-pink-300/40 rounded-full animate-pulse animation-delay-3000"></div>
-            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-300/40 rounded-full animate-pulse animation-delay-4000"></div>
-          </div>
-
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:50px_50px] opacity-30"></div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 animate-card-float">
-              All <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">Projects</span>
-            </h2>
-            
-            {/* Filter Buttons with Glassmorphism */}
-            <div className="flex flex-wrap justify-center gap-3">
-              {categories.map((category, index) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveFilter(category.id)}
-                  className={`group relative px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center backdrop-blur-sm border ${
-                    activeFilter === category.id
-                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border-blue-400/30 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
-                      : 'bg-white/10 text-gray-300 border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30 hover:shadow-lg'
-                  } animate-card-entrance`}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <Filter className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                  {category.name}
-                  
-                  {/* Hover effect overlay */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
-              <div
-                key={project.id}
-                className="group relative animate-card-entrance"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                {/* Glassmorphism Project Card */}
-                <div 
-                  className="glassmorphism-card relative bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 hover:border-white/30 transition-all duration-500 hover:-translate-y-2 hover:scale-105 shadow-2xl hover:shadow-blue-500/20 animate-card-float group-hover:animate-glassmorphism-glow overflow-hidden cursor-default sm:cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Only open modal on desktop (sm and up)
-                    if (project.image && window.innerWidth >= 640) {
-                      openImageModal(project.image, project.title);
-                    }
-                  }}
-                >
-                  {/* Shimmer effect */}
-                  <div className="absolute inset-0 rounded-3xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Gradient border effect */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
-                  
-                  {/* Animated background glow */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-400/10 to-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Floating particles inside card */}
-                  <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                    <div className="absolute top-4 left-4 w-1 h-1 bg-white/40 rounded-full animate-pulse animation-delay-1000"></div>
-                    <div className="absolute top-8 right-6 w-1.5 h-1.5 bg-blue-300/40 rounded-full animate-pulse animation-delay-2000"></div>
-                    <div className="absolute bottom-6 left-6 w-1 h-1 bg-purple-300/40 rounded-full animate-pulse animation-delay-3000"></div>
-                    <div className="absolute bottom-4 right-4 w-1.5 h-1.5 bg-pink-300/40 rounded-full animate-pulse animation-delay-4000"></div>
-                  </div>
-
-                  {/* Project Image - Clickable and Bigger */}
-                  <div className="relative overflow-hidden">
-                    <div className="w-full h-72 bg-gradient-to-br from-white/10 via-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-sm group/image relative">
-                      {project.image ? (
-                        <Image 
-                          src={project.image} 
-                          alt={`${project.title} - ${project.description.substring(0, 100)}...`}
-                          width={1200}
-                          height={800}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 rounded-t-3xl pointer-events-none"
-                          onLoad={() => console.log('Image loaded successfully:', project.title)}
-                          onError={(e) => {
-                            console.error('Image failed to load:', project.title, project.image);
-                            e.currentTarget.style.display = 'none';
-                            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                            if (nextElement) {
-                              nextElement.style.display = 'flex';
-                            }
-                          }}
-                        />
-                      ) : null}
-                      <div className={`text-6xl font-bold text-white/60 group-hover/image:text-white/80 transition-colors duration-300 ${project.image ? 'hidden' : 'flex'} items-center justify-center w-full h-full`}>
-                        {project.title.charAt(0)}
-                      </div>
-                      
-                      {/* Hover overlay for image - Hidden on mobile */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none hidden sm:flex">
-                        <div className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2 pointer-events-none">
-                          <Maximize2 className="w-4 h-4" />
-                          Click to View Full Image
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Live URL Button */}
-                    {project.liveUrl && project.liveUrl !== '#' && (
-                      <div className="absolute top-3 right-3 z-10">
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-medium border border-white/30 flex items-center gap-2 hover:bg-white/30 transition-all duration-300"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            trackEvent.portfolioProjectClick(project.title);
-                            if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
-                              ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
-                            }
-                          }}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Visit Site
-                        </a>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Category Badge with glassmorphism */}
-                  <div className="absolute top-3 left-3 z-20">
-                    <span className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs font-medium capitalize border border-white/30">
-                      {project.category.replace('-', ' ')}
-                    </span>
-                  </div>
-                  
-                  {/* Project Content */}
-                  <div className="p-6 relative z-10">
-                    {project.liveUrl && project.liveUrl !== '#' ? (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block cursor-pointer group/title"
-                        onClick={() => {
-                          trackEvent.portfolioProjectClick(project.title);
-                          if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).trackPortfolioView) {
-                            ((window as unknown as Record<string, unknown>).trackPortfolioView as (projectName: string) => void)(project.title);
-                          }
-                        }}
-                      >
-                        <h3 className="text-xl font-bold glassmorphism-text mb-3 group-hover:text-blue-100 group-hover/title:text-blue-200 transition-colors duration-300 hover:underline">
-                          {project.title}
-                        </h3>
-                      </a>
-                    ) : (
-                      <h3 className="text-xl font-bold glassmorphism-text mb-3 group-hover:text-blue-100 transition-colors duration-300">
-                        {project.title}
-                      </h3>
-                    )}
-                    
-                    <p className="text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-200 transition-colors duration-300">
-                      {project.description}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-2 py-1 bg-white/10 backdrop-blur-sm text-gray-300 rounded-lg text-xs font-medium border border-white/20 hover:bg-white/20 hover:text-white transition-all duration-300 group-hover:scale-105"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 bg-white/10 backdrop-blur-sm text-gray-400 rounded-lg text-xs font-medium border border-white/20">
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Project Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-white/20">
-                      <div className="flex items-center gap-1 text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                        <div className="w-4 h-4 bg-green-400/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-green-400/30">
-                          <CheckCircle className="w-2 h-2 text-green-400" />
-                        </div>
-                        Completed
-                      </div>
-                      {project.liveUrl && project.liveUrl !== '#' && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 hover:text-blue-300 font-medium text-sm flex items-center gap-1 transition-colors duration-300 group-hover:translate-x-1"
-                          onClick={() => trackEvent.portfolioProjectClick(project.title)}
-                        >
-                          Visit
-                          <ArrowRight className="w-3 h-3" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Hover effect overlay with gradient */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Corner accent */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Create Something
-              <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Amazing?
-              </span>
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Let&apos;s work together to bring your vision to life. 
-              We&apos;re excited to help you achieve your digital goals.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <Link
-                href="/contact"
-                className="group bg-white text-slate-900 px-10 py-5 rounded-2xl text-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center justify-center shadow-2xl hover:shadow-white/25 hover:scale-105"
-                onClick={() => trackEvent.ctaClick('Start Your Project - Portfolio CTA')}
-              >
-                Start Your Project
-                <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-              <Link
-                href="/services"
-                className="border-2 border-white/30 text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm hover:scale-105"
-              >
-                View Our Services
-              </Link>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-gray-400">
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5" />
-                <span className="text-sm">100% Secure</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                <span className="text-sm">Quality Assured</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Rocket className="w-5 h-5" />
-                <span className="text-sm">Fast Delivery</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Image Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-          onClick={closeImageModal}
+    <div className="min-h-screen bg-white">
+      <MarketingPageHero
+        eyebrow="Solutions"
+        title="What we build"
+        description="Categories of websites and software we design and ship—aligned to your operations, customers, and growth plans. Engagements are scoped to what you need; this is not a client list."
+      >
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-8 py-3.5 text-base font-bold uppercase tracking-wide text-white shadow-lg shadow-black/20 transition-interactive hover:bg-orange-400"
+          onClick={() => trackEvent.ctaClick('Talk to us - Solutions Hero')}
         >
-          <div 
-            className="bg-gray-900 rounded-2xl shadow-2xl max-w-7xl max-h-[95vh] w-full flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <h3 className="text-xl font-bold text-white">{selectedImageTitle} - Preview</h3>
-              <button
-                onClick={closeImageModal}
-                className="text-white/70 hover:text-white transition-colors p-2"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            
-            {/* Modal Image - Scrollable */}
-            <div className="p-6">
-              <div className="mb-6 max-h-[500px] overflow-auto border border-white/20 rounded-lg">
-                <Image
-                  src={selectedImage}
-                  alt={`${selectedImageTitle} - Full preview of web development project`}
-                  width={1200}
-                  height={800}
-                  className="w-full object-contain rounded-lg"
-                />
-              </div>
-            </div>
+          Talk to us
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Link>
+        <Link
+          href="/services"
+          className="inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/10 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-interactive hover:bg-white/15"
+        >
+          How we work
+        </Link>
+      </MarketingPageHero>
+
+      <PageSection variant="muted" className="!py-16 md:!py-24">
+        <RevealOnScroll>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">Categories</p>
+            <div className="mx-auto mt-3 h-1 w-12 rounded-full bg-primary-600" aria-hidden />
+            <h2 className="font-display mt-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+              Software and web by use case
+            </h2>
+            <p className="mt-4 text-lg text-slate-600">
+              Pick what is closest to your need—we combine these patterns with discovery, architecture, and delivery.
+            </p>
           </div>
+        </RevealOnScroll>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {solutionTypes.map((item, i) => (
+            <RevealOnScroll key={item.id} delayMs={i * 45}>
+              <article className="flex h-full flex-col rounded-2xl border border-slate-200/90 bg-white p-8 shadow-sm transition-interactive hover:border-primary-200/80 hover:shadow-elevated-sm">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100/90">
+                  <item.Icon className="h-6 w-6" strokeWidth={2} aria-hidden />
+                </div>
+                <h3 className="font-display mt-5 text-lg font-semibold text-slate-900">{item.title}</h3>
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate-600">{item.summary}</p>
+                <ul className="mt-6 space-y-2 border-t border-slate-100 pt-6">
+                  {item.examples.map((ex) => (
+                    <li key={ex} className="flex gap-2 text-sm text-slate-700">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-500" aria-hidden />
+                      {ex}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </RevealOnScroll>
+          ))}
         </div>
-      )}
+
+        <RevealOnScroll delayMs={120}>
+          <p className="mx-auto mt-14 max-w-2xl text-center text-sm leading-relaxed text-slate-500">
+            Need something that spans several categories? We typically align on outcomes first, then propose a technical
+            approach—tell us your constraints on the contact page.
+          </p>
+        </RevealOnScroll>
+      </PageSection>
+
+      <MarketingCtaBand
+        title="Tell us what you are building"
+        description="We will respond with a practical next step—scope, risks, and how we can help."
+        primary={{ href: '/contact', label: 'Get in touch' }}
+        secondary={{ href: '/services', label: 'Our process' }}
+      />
     </div>
   );
 }
-

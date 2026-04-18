@@ -1,38 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Design System - Custom Styles */
+/* Enterprise design tokens (blue + slate) */
 @layer base {
   :root {
-    --primary-50: #faf5ff;
-    --primary-100: #f3e8ff;
-    --primary-200: #e9d5ff;
-    --primary-300: #d8b4fe;
-    --primary-400: #c084fc;
-    --primary-500: #a855f7;
-    --primary-600: #9333ea;
-    --primary-700: #7e22ce;
-    --primary-800: #6b21a8;
-    --primary-900: #581c87;
-    --primary-950: #3b0764;
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-200: #bfdbfe;
+    --primary-300: #93c5fd;
+    --primary-400: #60a5fa;
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --primary-800: #1e40af;
+    --primary-900: #1e3a8a;
+    --primary-950: #172554;
   }
 }
 
 @layer utilities {
-  /* Animation utilities */
-  @keyframes slideUp {
-    from {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
   @keyframes wave {
     0%, 100% {
       transform: translateX(0);
@@ -123,8 +110,8 @@
   }
 }
 
-/* Cookie Consent Animations */
-@keyframes slideUp {
+/* Cookie / toast slide (distinct name — avoids clashing with Tailwind keyframes) */
+@keyframes consentSlideUp {
   from {
     transform: translateY(100%);
     opacity: 0;
@@ -145,7 +132,7 @@
 }
 
 .animate-slideUp {
-  animation: slideUp 0.4s ease-out forwards;
+  animation: consentSlideUp 0.4s ease-out forwards;
 }
 
 .animate-fadeIn {
@@ -183,19 +170,36 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #3b82f6;
-  --primary-dark: #1d4ed8;
-  --secondary: #64748b;
-  --accent: #f59e0b;
+  /* Higher contrast neutrals — WCAG-friendly body + headings */
+  --background: #f8fafc;
+  --foreground: #0a0f1a;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --muted-bg: #f8fafc;
+  --border: #cbd5e1;
+  --card: #ffffff;
+  --card-foreground: #0a0f1a;
+  --primary: #1d4ed8;
+  --primary-dark: #1e40af;
+  --primary-foreground: #ffffff;
+  --accent: #dbeafe;
+  --secondary: #475569;
 }
 
 @layer base {
   :root {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  .font-display {
+    font-family: var(--font-display), ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    font-feature-settings: 'liga' 1, 'kern' 1;
+    font-optical-sizing: auto;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 }
 
@@ -228,24 +232,91 @@ html {
     perspective: 1000;
   }
   
-  /* Optimize sections with glassmorphism for mobile */
-  section {
-    /* Enable hardware acceleration */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.0625rem; /* 17px — comfortable reading */
+  line-height: 1.65;
+  letter-spacing: -0.012em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Premium marketing surfaces */
+/* Dark hero option */
+.mesh-hero {
+  background-color: #0f172a;
+  background-image:
+    radial-gradient(ellipse 100% 80% at 50% -30%, rgba(59, 130, 246, 0.2), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(37, 99, 235, 0.12), transparent 45%),
+    radial-gradient(ellipse 50% 40% at 0% 20%, rgba(56, 189, 248, 0.1), transparent 50%);
+}
+
+/* Plego-style light hero: airy, enterprise */
+.plego-hero {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 40%, #f1f5f9 100%);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(37, 99, 235, 0.06), transparent 50%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.mesh-light {
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -40%, rgba(37, 99, 235, 0.06), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(148, 163, 184, 0.05), transparent 50%);
+}
+
+/* Abstract marketing layers — fine grid, mesh stacks (home / landing) */
+.pf-fine-grid {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.pf-build-atmosphere {
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(99, 102, 241, 0.09), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 85% 10%, rgba(14, 165, 233, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 50% 100%, rgba(139, 92, 246, 0.06), transparent 45%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.4) 45%, rgba(241, 245, 249, 0.95) 100%);
+}
+
+.pf-glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(248, 250, 252, 0.75) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Colorful abstract home — mesh + headline shimmer */
+.pf-mesh-vivid {
+  background-color: #0f172a;
+  background-image:
+    radial-gradient(ellipse 90% 70% at 10% 20%, rgba(56, 189, 248, 0.35), transparent 52%),
+    radial-gradient(ellipse 70% 60% at 90% 15%, rgba(167, 139, 250, 0.32), transparent 48%),
+    radial-gradient(ellipse 60% 50% at 50% 90%, rgba(244, 114, 182, 0.2), transparent 45%),
+    radial-gradient(ellipse 50% 40% at 70% 60%, rgba(34, 211, 238, 0.15), transparent 40%);
+}
+
+.pf-text-gradient-vivid {
+  background: linear-gradient(120deg, #22d3ee 0%, #a78bfa 35%, #f472b6 70%, #fb923c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #f59e0b);
+  background: linear-gradient(135deg, #1d4ed8, #2563eb, #0ea5e9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -269,7 +340,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6;
+  background: #2563eb;
   border-radius: 4px;
 }
 
@@ -277,17 +348,29 @@ body {
   background: #1d4ed8;
 }
 
-/* Smooth animations - Mobile optimized */
-* {
-  transition: all 0.2s ease-in-out;
+@layer components {
+  .transition-interactive {
+    transition-property: color, background-color, border-color, text-decoration-color, box-shadow, transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
+  /** Marketing copy — premium contrast & measure */
+  .text-body {
+    @apply text-[17px] leading-[1.65] text-slate-700;
+  }
+
+  .text-body-muted {
+    @apply text-base leading-relaxed text-slate-600;
+  }
+
+  .text-heading-primary {
+    @apply font-display font-semibold tracking-[-0.02em] text-slate-950;
+  }
 }
 
 /* Mobile scroll optimization */
 @media (max-width: 768px) {
-  * {
-    /* Reduce transitions on mobile for better performance */
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-  }
   
   /* Disable expensive animations on mobile */
   .animate-blob,
@@ -313,49 +396,15 @@ body {
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
   }
-  
-  /* Optimize animated background elements for mobile */
-  .absolute {
-    /* Enable hardware acceleration for positioned elements */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  
-  /* Reduce blur effects on mobile for better performance */
-  .filter {
-    filter: none;
-  }
-  
-  .blur-xl,
-  .blur-3xl {
-    filter: blur(8px);
-  }
-  
-  .blur-2xl {
-    filter: blur(4px);
-  }
-  
-  /* Optimize mix-blend-multiply for mobile */
-  .mix-blend-multiply {
-    mix-blend-mode: normal;
-  }
-  
-  /* Reduce opacity of background elements on mobile */
-  .opacity-70 {
-    opacity: 0.3;
-  }
-  
-  .opacity-20 {
-    opacity: 0.1;
-  }
 }
 
-/* Focus styles */
-button:focus,
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid #3b82f6;
+/* Focus styles — visible ring without mouse-click outline noise */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid #1d4ed8;
   outline-offset: 2px;
 }
 
@@ -436,15 +485,6 @@ select:focus {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 @keyframes card-float {
   0%, 100% {
     transform: translateY(0px) rotateX(0deg);
@@ -467,21 +507,6 @@ select:focus {
 
 .animate-glassmorphism-glow {
   animation: glassmorphism-glow 4s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Mobile optimization for shimmer effect */
-@media (max-width: 768px) {
-  .animate-shimmer {
-    /* Disable shimmer animation on mobile for better performance */
-    animation: none;
-    background: none;
-  }
 }
 
 .animate-card-float {
@@ -634,27 +659,6 @@ select:focus {
   section .animate-pulse {
     animation-duration: 2s;
   }
-  
-  /* Optimize grid layouts for mobile */
-  .grid {
-    /* Enable hardware acceleration for grid items */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-}
-
-/* Image Modal Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
 }
 
 /* Print Styles for Invoices and Receipts */

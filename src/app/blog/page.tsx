@@ -6,8 +6,9 @@ import { ArrowRight, Calendar, Clock, User } from 'lucide-react';
 import Image from 'next/image';
 import BlogStructuredData from '@/components/BlogStructuredData';
 import { trackEvent } from '@/lib/gtag';
-
-// Note: Metadata is now handled in layout.tsx since this is a client component
+import { PageSection } from '@/components/marketing/PageSection';
+import { MarketingPageHero } from '@/components/marketing/MarketingPageHero';
+import { MarketingCtaBand } from '@/components/marketing/MarketingCtaBand';
 
 interface BlogPost {
   _id: string;
@@ -23,17 +24,14 @@ interface BlogPost {
   featured: boolean;
 }
 
-
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-
   useEffect(() => {
     fetchPosts();
-    // Track blog page view
     trackEvent.servicePageView('Blog');
   }, [currentPage]);
 
@@ -44,211 +42,193 @@ export default function BlogPage() {
         page: currentPage.toString(),
         limit: '10',
       });
-
-      // Add timeout to prevent infinite loading
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
 
       const response = await fetch(`/api/blog?${params}`, {
         signal: controller.signal,
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (response.ok) {
         const data = await response.json();
         setPosts(data.posts || []);
         setTotalPages(data.pagination?.totalPages || 1);
       } else {
-        console.error('Failed to fetch posts');
         setPosts([]);
       }
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+    } catch {
       setPosts([]);
     } finally {
       setLoading(false);
     }
   };
 
-
-
   if (loading) {
     return (
-      <div className="min-h-screen pt-16 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Loading Articles</h2>
-          <p className="text-gray-600">Please wait while we fetch the latest content...</p>
-        </div>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white pt-16">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+        <p className="mt-4 text-sm font-medium text-zinc-600">Loading articles…</p>
       </div>
     );
   }
 
-
- // Empty state when no posts
   if (!loading && posts.length === 0) {
     return (
-      <div className="min-h-screen pt-16">
+      <div className="min-h-screen bg-white">
         <BlogStructuredData posts={posts} />
-        {/* Hero Section */}
-        <section className="py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Our <span className="gradient-text">Blog</span>
-              </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-                Discover insights, tutorials, and industry trends from our team of expert developers.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Empty State */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">No Articles Yet</h2>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                We're working on creating amazing content for you. Check back soon for the latest insights and tutorials!
-              </p>
-              <Link
-                href="/contact"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 inline-flex items-center group"
-                onClick={() => trackEvent.ctaClick('Get in Touch - Empty State')}
-              >
-                Get in Touch
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center text-white">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Need Help with Your Project?
-              </h2>
-              <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Ready to turn these insights into reality? Let&apos;s work together to build 
-                something amazing for your business.
-              </p>
-              <Link
-                href="/contact"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center group"
-              >
-                Start Your Project
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingPageHero
+          eyebrow="Blog"
+          title="Insights & tutorials"
+          description="New posts are on the way. In the meantime, start a conversation about your project."
+        >
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-8 py-3.5 text-base font-bold uppercase tracking-wide text-white shadow-lg shadow-black/20 transition-interactive hover:bg-orange-400"
+            onClick={() => trackEvent.ctaClick('Get in Touch - Empty State')}
+          >
+            Get in touch
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+        </MarketingPageHero>
       </div>
     );
   }
 
+  const featuredPost = posts.find((p) => p.featured) ?? posts[0];
+  const gridPosts = featuredPost ? posts.filter((p) => p._id !== featuredPost._id) : posts;
+
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen bg-white">
       <BlogStructuredData posts={posts} />
-      {/* Hero Section */}
-      <section className="py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Our <span className="gradient-text">Blog</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Discover insights, tutorials, and industry trends from our team of expert developers.
-            </p>
-          </div>
-        </div>
-      </section>
+      <MarketingPageHero
+        eyebrow="Blog"
+        title={<>Ideas for builders &amp; operators</>}
+        description="Practical notes on engineering, performance, and shipping reliable web products."
+      />
 
-      {/* Blog Posts */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <PageSection variant="muted" className="!py-12 md:!py-16" container="wide">
+        {featuredPost ? (
+          <Link
+            href={`/blog/${featuredPost.slug}`}
+            className="group mb-10 flex flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-elevated-sm transition-interactive hover:border-zinc-300 hover:shadow-elevated md:mb-12 lg:flex-row"
+            onClick={() => trackEvent.blogPostView(featuredPost.title)}
+          >
+            <div className="relative aspect-[16/10] w-full shrink-0 bg-zinc-100 lg:aspect-auto lg:w-3/5 lg:max-w-none lg:min-h-[300px]">
+              <Image
+                src={featuredPost.image}
+                alt={`${featuredPost.title} - ${featuredPost.excerpt}`}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                priority
+              />
+            </div>
+            <div className="flex flex-1 flex-col justify-center p-6 md:p-10">
+              <span className="w-fit rounded-sm bg-primary-700 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-sm">
+                Featured
+              </span>
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
+                <span className="flex items-center gap-1">
+                  <User className="h-3.5 w-3.5" />
+                  {featuredPost.author}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  {new Date(featuredPost.publishedAt).toLocaleDateString()}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  {featuredPost.readTime}
+                </span>
+              </div>
+              <h2 className="font-display mt-4 text-2xl font-semibold tracking-tight text-zinc-900 transition-interactive group-hover:text-primary-700 md:text-3xl">
+                {featuredPost.title}
+              </h2>
+              <p className="mt-3 line-clamp-4 text-base leading-relaxed text-zinc-600">{featuredPost.excerpt}</p>
+              <span className="mt-6 inline-flex items-center text-sm font-semibold text-primary-700">
+                Read article
+                <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </Link>
+        ) : null}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <Link
-                key={post._id}
-                href={`/blog/${post.slug}`}
-                className="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
-                onClick={() => trackEvent.blogPostView(post.title)}
-              >
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={`${post.title} - ${post.excerpt}`}
-                    width={400}
-                    height={300}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1" />
-                      <span>{post.author}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 mb-3">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                      {post.category}
-                    </span>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Clock className="w-4 h-4 mr-1" />
-                      <span>{post.readTime}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Need Help with Your Project?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Ready to turn these insights into reality? Let&apos;s work together to build 
-              something amazing for your business.
-            </p>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {gridPosts.map((post) => (
             <Link
-              href="/contact"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center group"
-              onClick={() => trackEvent.ctaClick('Start Your Project - Blog CTA')}
+              key={post._id}
+              href={`/blog/${post.slug}`}
+              className="group overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm transition-interactive hover:border-zinc-300 hover:shadow-elevated-sm"
+              onClick={() => trackEvent.blogPostView(post.title)}
             >
-              Start Your Project
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-100">
+                <Image
+                  src={post.image}
+                  alt={`${post.title} - ${post.excerpt}`}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+              <div className="p-6">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
+                  <span className="flex items-center gap-1">
+                    <User className="h-3.5 w-3.5" />
+                    {post.author}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {new Date(post.publishedAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <h2 className="font-display mt-3 text-lg font-semibold text-zinc-900 transition-interactive group-hover:text-primary-700">
+                  {post.title}
+                </h2>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-600">{post.excerpt}</p>
+                <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-4">
+                  <span className="rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-800">
+                    {post.category}
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-zinc-500">
+                    <Clock className="h-3.5 w-3.5" />
+                    {post.readTime}
+                  </span>
+                </div>
+              </div>
             </Link>
-          </div>
+          ))}
         </div>
-      </section>
+
+        {totalPages > 1 ? (
+          <div className="mt-12 flex justify-center gap-3">
+            <button
+              type="button"
+              disabled={currentPage <= 1}
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              className="rounded-xl border border-zinc-200 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-800 shadow-sm transition-interactive hover:bg-zinc-50 disabled:opacity-40"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              className="rounded-xl border border-zinc-200 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-800 shadow-sm transition-interactive hover:bg-zinc-50 disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        ) : null}
+      </PageSection>
+
+      <MarketingCtaBand
+        title="Need hands-on help?"
+        description="Turn these ideas into a shipped product—we build and maintain platforms end-to-end."
+        primary={{ href: '/contact', label: 'Start your project' }}
+        secondary={{ href: '/services', label: 'View services' }}
+      />
     </div>
   );
 }

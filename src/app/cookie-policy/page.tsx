@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Cookie, Shield, TrendingUp, Settings, ArrowLeft } from 'lucide-react';
+import { MarketingPageHero } from '@/components/marketing/MarketingPageHero';
 
 export const metadata: Metadata = {
   title: 'Cookie Policy | Pixel Forge - How We Use Cookies & Tracking Technologies',
@@ -16,31 +17,22 @@ export default function CookiePolicy() {
   const lastUpdated = 'September 30, 2025';
   
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50 to-purple-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
-            href="/" 
-            className="inline-flex items-center text-purple-100 hover:text-white mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Link>
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mr-6">
-              <Cookie className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold">Cookie Policy</h1>
-          </div>
-          <p className="text-xl text-purple-100 mb-4">
-            This policy explains how and why we use cookies and similar technologies on our website.
-          </p>
-          <p className="text-sm text-purple-200">
-            Last Updated: {lastUpdated}
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-white pt-16">
+      <MarketingPageHero
+        eyebrow="Legal"
+        title="Cookie Policy"
+        description={`How and why we use cookies and similar technologies. Last updated: ${lastUpdated}.`}
+        align="left"
+        compact
+      >
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-300 transition-interactive hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to home
+        </Link>
+      </MarketingPageHero>
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

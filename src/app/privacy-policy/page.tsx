@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Shield, Lock, Eye, UserCheck, Mail, ArrowLeft } from 'lucide-react';
+import { MarketingPageHero } from '@/components/marketing/MarketingPageHero';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Pixel Forge - Your Data Protection & Privacy Rights',
@@ -16,42 +17,33 @@ export default function PrivacyPolicy() {
   const lastUpdated = 'September 30, 2025';
   
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
-            href="/" 
-            className="inline-flex items-center text-blue-100 hover:text-white mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Link>
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mr-6">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold">Privacy Policy</h1>
-          </div>
-          <p className="text-xl text-blue-100 mb-4">
-            Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.
-          </p>
-          <p className="text-sm text-blue-200">
-            Last Updated: {lastUpdated}
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-white pt-16">
+      <MarketingPageHero
+        eyebrow="Legal"
+        title="Privacy Policy"
+        description={`How we collect, use, and protect your personal information. Last updated: ${lastUpdated}.`}
+        align="left"
+        compact
+      >
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-300 transition-interactive hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to home
+        </Link>
+      </MarketingPageHero>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         {/* Introduction */}
-        <section className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+        <section className="mb-8 rounded-2xl border border-zinc-200/90 bg-white p-8 shadow-sm">
+          <h2 className="font-display text-2xl font-semibold text-zinc-900 mb-4">1. Introduction</h2>
+          <p className="text-zinc-700 leading-relaxed mb-4">
             Welcome to Pixel Forge (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your personal data and respecting your privacy rights. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website{' '}
-            <Link href="/" className="text-blue-600 hover:underline">pixelforgebd.com</Link>, use our services, or interact with us.
+            <Link href="/" className="font-medium text-primary-600 hover:text-primary-700 underline-offset-2 hover:underline">pixelforgebd.com</Link>, use our services, or interact with us.
           </p>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="text-zinc-700 leading-relaxed">
             This policy applies to all visitors, users, and others who access or use our services. By using our website, you agree to the collection and use of information in accordance with this policy.
           </p>
         </section>

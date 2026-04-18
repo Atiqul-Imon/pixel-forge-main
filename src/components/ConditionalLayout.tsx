@@ -13,7 +13,11 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
   return (
     <>
       {!isAdminRoute && <Navbar />}
-      <main className="min-h-screen">
+      <main
+        className={
+          isAdminRoute ? 'min-h-screen' : 'min-h-screen bg-background pt-16 text-foreground antialiased'
+        }
+      >
         {children}
       </main>
       {!isAdminRoute && <Footer />}
