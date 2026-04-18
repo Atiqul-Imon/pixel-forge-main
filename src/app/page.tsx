@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import HomeView from './HomeView';
 
 export const metadata: Metadata = {
-  title: 'High-Performance Websites Built to Grow Your Business | Pixel Forge',
+  title: {
+    absolute: 'Pixel Forge',
+  },
   description:
     'Pixel Forge is a modern web development studio that helps businesses build fast, scalable, and conversion-focused digital platforms. We combine strategy, design, and engineering to turn online presence into real business results.',
   keywords: [
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
     'next.js development',
   ],
   openGraph: {
-    title: 'High-Performance Websites Built to Grow Your Business | Pixel Forge',
+    title: 'Pixel Forge',
     description:
       'Fast, scalable, conversion-focused platforms—strategy, design, and engineering in one partnership.',
     images: ['/logo/pixelforgelogo2.png'],
